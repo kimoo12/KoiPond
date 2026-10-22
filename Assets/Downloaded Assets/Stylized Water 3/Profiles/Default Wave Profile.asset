@@ -96,6 +96,7 @@ MonoBehaviour:
     amplitudeByLength: 0
     minMaxSteepness: {x: 0.1, y: 1}
     steepnessByLength: 0
+    directionBase: 0
     directionAngleVariation: 180
   layers:
   - enabled: 1
@@ -138,7 +139,7 @@ Texture2D:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
   m_IsAlphaChannelOptional: 0
-  serializedVersion: 3
+  serializedVersion: 4
   m_Width: 4
   m_Height: 2
   m_CompleteImageSize: 64
