@@ -269,13 +269,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::KoiPond.KoiFishController
   animator: {fileID: 4199672358425396764}
   swimSpeed: 0.65
-  turnSpeed: 45
-  bankingAngle: 12
+  burstSpeed: 0.95
+  turnSpeed: 40
+  bankingAngle: 18
+  maxPitchAngle: 20
+  driftBobFrequency: 0.9
+  driftBobAmplitude: 0.035
+  lateralSwayFrequency: 1.4
+  lateralSwayAmplitude: 0.02
+  waterPlane: {fileID: 0}
+  pondBedCollider: {fileID: 0}
+  minDepth: 0.12
+  maxDepth: 0.95
+  bedClearance: 0.1
+  shoreMargin: 0.22
+  obstacleAvoidanceDistance: 1.4
   autonomousWandering: 1
-  wanderCenter: {x: 0, y: 0, z: 0}
-  wanderRadius: 4
-  minY: -1.5
-  maxY: -0.1
+  wanderCenter: {x: -0.35, y: 0, z: -0.44}
+  wanderRadius: 4.2
   minStateDuration: 3
   maxStateDuration: 8
   showOnScreenControls: 1
