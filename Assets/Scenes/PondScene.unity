@@ -3749,7 +3749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1594268228765379702, guid: a8674be4eb77e8b41a1016d74c0adf59, type: 3}
       propertyPath: m_Name
-      value: KoiFish
+      value: Koi_Stage3_Adult
       objectReference: {fileID: 0}
     - target: {fileID: 2263308972336444139, guid: a8674be4eb77e8b41a1016d74c0adf59, type: 3}
       propertyPath: m_LocalRotation.w
