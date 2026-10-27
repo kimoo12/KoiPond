@@ -19,6 +19,9 @@ namespace KoiPond
         [SerializeField] private Transform targetTransform;
 
         [Header("Orbit Controls")]
+        [Tooltip("When true, camera position and angle remain fixed in place")]
+        [SerializeField] private bool lockControls = false;
+
         [Tooltip("Mouse orbit sensitivity")]
         [SerializeField] private float mouseSensitivity = 3.5f;
 
@@ -100,6 +103,8 @@ namespace KoiPond
 
         private void LateUpdate()
         {
+            if (lockControls) return;
+
             // Smoothly interpolate yaw, pitch, and zoom distance
             currentYaw = Mathf.SmoothDamp(currentYaw, targetYaw, ref yawVelocity, smoothTime);
             currentPitch = Mathf.SmoothDamp(currentPitch, targetPitch, ref pitchVelocity, smoothTime);
@@ -114,6 +119,8 @@ namespace KoiPond
 
         private void HandleInput()
         {
+            if (lockControls) return;
+
             float deltaYaw = 0f;
             float deltaPitch = 0f;
             float scroll = 0f;
@@ -210,6 +217,12 @@ namespace KoiPond
         public void SetTargetCenter(Vector3 newCenter)
         {
             targetCenter = newCenter;
+        }
+
+        public bool LockControls
+        {
+            get => lockControls;
+            set => lockControls = value;
         }
     }
 }

@@ -54,17 +54,23 @@ namespace KoiPond
         [Tooltip("Reference to the pond bed collider. Fish will not swim outside the pond bed.")]
         [SerializeField] private Collider pondBedCollider;
 
-        [Tooltip("Minimum depth below the water plane (shallowest level fish wanders to).")]
-        [SerializeField] private float minDepth = 0.12f;
+        [Tooltip("Reference to the fish mouth bone transform for precise surface contact.")]
+        [SerializeField] private Transform mouthTransform;
+
+        [Tooltip("Reference to the feeding ripple effect system.")]
+        [SerializeField] private KoiFeedingRippleEffect feedingRippleEffect;
+
+        [Tooltip("Minimum depth below the water plane (shallowest level fish wanders to). Keeps dorsal fin submerged.")]
+        [SerializeField] private float minDepth = 0.32f;
 
         [Tooltip("Maximum depth below the water plane (deepest level fish wanders to).")]
-        [SerializeField] private float maxDepth = 0.95f;
+        [SerializeField] private float maxDepth = 0.85f;
 
         [Tooltip("Clearance maintained above the bottom of the pond bed.")]
-        [SerializeField] private float bedClearance = 0.10f;
+        [SerializeField] private float bedClearance = 0.12f;
 
         [Tooltip("Minimum water depth required near shores to keep fish away from dry banks.")]
-        [SerializeField] private float shoreMargin = 0.22f;
+        [SerializeField] private float shoreMargin = 0.25f;
 
         [Tooltip("Distance ahead to probe for pond bed banks to steer away smoothly.")]
         [SerializeField] private float obstacleAvoidanceDistance = 1.4f;
@@ -101,10 +107,10 @@ namespace KoiPond
         private float currentPitch = 0f;
         private float pitchVelocity;
         private float eatTimer = 0f;
-        private float eatDuration = 2.5f;
+        private float eatDuration = 2.6f;
         private Vector3 eatSurfaceTarget;
         private float timeAlive = 0f;
-        private float surfaceEatHeightOffset = 0.04f;
+        private bool hasStartedFeedingRipples = false;
 
         private static readonly int ParamIsSwimming = Animator.StringToHash("IsSwimming");
         private static readonly int ParamSpeed = Animator.StringToHash("Speed");
@@ -201,6 +207,16 @@ namespace KoiPond
         {
             EnsureAnimator();
 
+            if (mouthTransform == null)
+            {
+                mouthTransform = transform.Find("Armature/Root/Spine_Front/Head/Mouth");
+            }
+
+            if (feedingRippleEffect == null)
+            {
+                feedingRippleEffect = Object.FindFirstObjectByType<KoiFeedingRippleEffect>();
+            }
+
             if (waterPlane == null)
             {
                 var pond1 = GameObject.Find("Pond_1");
@@ -275,12 +291,22 @@ namespace KoiPond
 
         private void LateUpdate()
         {
-            // Safety check: ensure water surface plane is never breached
             float waterY = WaterSurfaceY;
-            if (transform.position.y > waterY)
+
+            // Absolute hard constraint 1: Mouth must never exceed the water surface
+            if (mouthTransform != null && mouthTransform.position.y > waterY)
             {
                 Vector3 p = transform.position;
-                p.y = waterY;
+                p.y -= (mouthTransform.position.y - waterY);
+                transform.position = p;
+            }
+
+            // Absolute hard constraint 2: Keep fish naturally immersed below water surface
+            float maxBodyY = (eatTimer > 0f) ? (waterY - 0.16f) : (waterY - minDepth + 0.03f);
+            if (transform.position.y > maxBodyY)
+            {
+                Vector3 p = transform.position;
+                p.y = maxBodyY;
                 transform.position = p;
             }
         }
@@ -414,58 +440,98 @@ namespace KoiPond
 
         /// <summary>
         /// Natural eating behavior: fish angles smoothly upward toward the water surface,
-        /// performs surface feeding with deceleration, and smoothly glides back down.
+        /// performs surface feeding with deceleration, mouth reaches the surface film,
+        /// spawns ripples at water-contact point, and smoothly glides back down.
         /// </summary>
         private void UpdateEating(float dt)
         {
             eatTimer -= dt;
             float progress = 1f - (eatTimer / eatDuration); // 0 (start) to 1 (end)
-
             float waterY = WaterSurfaceY;
-            float surfaceMouthY = waterY - surfaceEatHeightOffset;
 
-            if (progress < 0.35f)
+            if (progress < 0.30f)
             {
                 // Phase 1: Glide gently up toward surface feeding target
-                Vector3 toSurface = eatSurfaceTarget - transform.position;
+                Vector3 mouthPos = mouthTransform != null ? mouthTransform.position : transform.position;
+                Vector3 toSurface = eatSurfaceTarget - mouthPos;
                 if (toSurface.sqrMagnitude > 0.01f)
                 {
                     Quaternion targetLook = Quaternion.LookRotation(toSurface.normalized, Vector3.up);
-                    // Gentle upward pitch
                     Vector3 euler = targetLook.eulerAngles;
-                    float pitchClamped = Mathf.Clamp(Mathf.DeltaAngle(0f, euler.x), -16f, 16f);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(pitchClamped, euler.y, 0f), 4f * dt);
+                    float pitchClamped = Mathf.Clamp(Mathf.DeltaAngle(0f, euler.x), -22f, -10f);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(pitchClamped, euler.y, 0f), 5f * dt);
                 }
 
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, swimSpeed * 0.4f, ref speedVelocity, 0.4f);
+                currentSpeed = Mathf.SmoothDamp(currentSpeed, swimSpeed * 0.45f, ref speedVelocity, 0.4f);
                 MoveFish(transform.forward * (currentSpeed * dt));
             }
-            else if (progress < 0.75f)
+            else if (progress < 0.76f)
             {
-                // Phase 2: Nibbling at the surface, hovering and decelerating naturally
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, 0.03f, ref speedVelocity, 0.5f);
-                currentRoll = Mathf.SmoothDamp(currentRoll, Mathf.Sin(timeAlive * 3f) * 3f, ref rollVelocity, 0.3f);
+                // Phase 2: Nibbling at the surface: mouth reaches water surface, body naturally submerged at upward angle
+                if (!hasStartedFeedingRipples)
+                {
+                    hasStartedFeedingRipples = true;
+                    Vector3 contactPos = mouthTransform != null ? mouthTransform.position : transform.position;
+                    if (feedingRippleEffect != null)
+                    {
+                        feedingRippleEffect.StartFeeding(contactPos, waterY);
+                    }
+                }
 
+                currentSpeed = Mathf.SmoothDamp(currentSpeed, 0.02f, ref speedVelocity, 0.4f);
+                currentRoll = Mathf.SmoothDamp(currentRoll, Mathf.Sin(timeAlive * 3f) * 2f, ref rollVelocity, 0.3f);
+
+                // Natural upward tilt (-14 to -16 degrees) keeps head elevated to surface and body comfortably immersed
                 Vector3 rot = transform.rotation.eulerAngles;
-                transform.rotation = Quaternion.Euler(Mathf.SmoothDamp(Mathf.DeltaAngle(0f, rot.x), -4f, ref pitchVelocity, 0.3f), rot.y, currentRoll);
+                float targetEatingPitch = -15f;
+                transform.rotation = Quaternion.Euler(Mathf.SmoothDamp(Mathf.DeltaAngle(0f, rot.x), targetEatingPitch, ref pitchVelocity, 0.25f), rot.y, currentRoll);
 
-                // Small gentle mouth bobbing at surface
-                float nibbleBob = Mathf.Sin(timeAlive * 5f) * 0.008f;
-                Vector3 pos = transform.position;
-                pos.y = Mathf.MoveTowards(pos.y, surfaceMouthY + nibbleBob, 0.15f * dt);
-                transform.position = pos;
+                // Subtle mouth nibbling bob at surface
+                float nibbleBob = Mathf.Sin(timeAlive * 6f) * 0.003f;
+                float targetMouthY = waterY - 0.004f + nibbleBob;
+
+                if (mouthTransform != null)
+                {
+                    float currentMouthY = mouthTransform.position.y;
+                    float verticalError = targetMouthY - currentMouthY;
+                    Vector3 pos = transform.position;
+                    pos.y += Mathf.Clamp(verticalError * 9f * dt, -0.4f * dt, 0.4f * dt);
+                    transform.position = pos;
+
+                    // Ensure mouth never breaches the surface
+                    if (mouthTransform.position.y > waterY)
+                    {
+                        pos = transform.position;
+                        pos.y -= (mouthTransform.position.y - waterY);
+                        transform.position = pos;
+                    }
+
+                    if (feedingRippleEffect != null)
+                    {
+                        feedingRippleEffect.UpdateFeedingPosition(mouthTransform.position);
+                    }
+                }
 
                 MoveFish(transform.forward * (currentSpeed * dt));
             }
             else
             {
-                // Phase 3: Finishing bite, leveling off and gently descending back into water
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, swimSpeed * 0.5f, ref speedVelocity, 0.6f);
-                currentRoll = Mathf.SmoothDamp(currentRoll, 0f, ref rollVelocity, 0.5f);
+                // Phase 3: Finishing bite, stop ripples, level off and dive smoothly back down into water
+                if (hasStartedFeedingRipples)
+                {
+                    hasStartedFeedingRipples = false;
+                    if (feedingRippleEffect != null)
+                    {
+                        feedingRippleEffect.StopFeeding();
+                    }
+                }
+
+                currentSpeed = Mathf.SmoothDamp(currentSpeed, swimSpeed * 0.55f, ref speedVelocity, 0.5f);
+                currentRoll = Mathf.SmoothDamp(currentRoll, 0f, ref rollVelocity, 0.4f);
 
                 Vector3 rot = transform.rotation.eulerAngles;
-                float targetPitchDown = 8f; // Gentle pitch down to re-submerge smoothly
-                transform.rotation = Quaternion.Euler(Mathf.SmoothDamp(Mathf.DeltaAngle(0f, rot.x), targetPitchDown, ref pitchVelocity, 0.5f), rot.y, currentRoll);
+                float targetPitchDown = 12f; // Pitch down to re-submerge smoothly into deep water
+                transform.rotation = Quaternion.Euler(Mathf.SmoothDamp(Mathf.DeltaAngle(0f, rot.x), targetPitchDown, ref pitchVelocity, 0.4f), rot.y, currentRoll);
 
                 MoveFish(transform.forward * (currentSpeed * dt));
 
@@ -655,7 +721,7 @@ namespace KoiPond
         {
             Vector3 pos = transform.position;
             float waterY = WaterSurfaceY;
-            float maxAllowedY = (eatTimer > 0f) ? waterY : ShallowestY;
+            float maxAllowedY = (eatTimer > 0f) ? (waterY - 0.16f) : ShallowestY;
             float minAllowedY = DeepestY;
 
             // 1. Smooth horizontal containment inside pond bed
@@ -711,9 +777,13 @@ namespace KoiPond
             }
 
             // 3. Absolute hard ceiling: never swim above the water plane transform position
-            if (pos.y > waterY)
+            if (pos.y > waterY - 0.16f && eatTimer > 0f)
             {
-                pos.y = waterY;
+                pos.y = waterY - 0.16f;
+            }
+            else if (pos.y > ShallowestY && eatTimer <= 0f)
+            {
+                pos.y = ShallowestY;
             }
 
             transform.position = pos;
@@ -726,23 +796,26 @@ namespace KoiPond
         public void Eat()
         {
             EnsureAnimator();
+            EnsureReferences();
+
             if (animator != null)
             {
                 animator.ResetTrigger(ParamEat);
                 animator.SetTrigger(ParamEat);
-                animator.CrossFadeInFixedTime("Eat", 0.3f, 0, 0f);
+                animator.CrossFadeInFixedTime("Eat", 0.25f, 0, 0f);
             }
 
-            eatDuration = 2.5f;
+            eatDuration = 2.6f;
             eatTimer = eatDuration;
+            hasStartedFeedingRipples = false;
 
-            // Pick a feeding point at the surface slightly forward from current position
+            // Pick a feeding point at the water surface slightly forward from current position
             Vector3 fwdFlat = transform.forward;
             fwdFlat.y = 0f;
             if (fwdFlat.sqrMagnitude < 0.01f) fwdFlat = Vector3.forward;
 
-            Vector3 candidateSurface = transform.position + fwdFlat.normalized * 0.4f;
-            candidateSurface.y = WaterSurfaceY - surfaceEatHeightOffset;
+            Vector3 candidateSurface = transform.position + fwdFlat.normalized * 0.5f;
+            candidateSurface.y = WaterSurfaceY;
 
             // Verify feeding spot is inside pond bed
             if (TryGetBedHeight(candidateSurface.x, candidateSurface.z, out float bedY, out _))
@@ -754,13 +827,13 @@ namespace KoiPond
                 else
                 {
                     Vector3 center = GetPondCenter();
-                    eatSurfaceTarget = new Vector3(center.x, WaterSurfaceY - surfaceEatHeightOffset, center.z);
+                    eatSurfaceTarget = new Vector3(center.x, WaterSurfaceY, center.z);
                 }
             }
             else
             {
                 Vector3 center = GetPondCenter();
-                eatSurfaceTarget = new Vector3(center.x, WaterSurfaceY - surfaceEatHeightOffset, center.z);
+                eatSurfaceTarget = new Vector3(center.x, WaterSurfaceY, center.z);
             }
         }
 

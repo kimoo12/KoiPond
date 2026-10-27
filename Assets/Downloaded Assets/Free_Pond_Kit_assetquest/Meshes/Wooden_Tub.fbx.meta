@@ -3,7 +3,12 @@ guid: 50d639336a19ef346bab0d4a91cf6bb3
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pond_Pack_MAT
+    second: {fileID: 2100000, guid: b31a9a1869b0d3c41b123eb14c140a93, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

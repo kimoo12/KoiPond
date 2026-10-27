@@ -3,7 +3,12 @@ guid: af1c4a7d1c46bff498e56c9bd3ed6609
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pond_Plants_Atlas_MAT
+    second: {fileID: 2100000, guid: 25745fe8ceb12f74597bf3d4230fd2b1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
