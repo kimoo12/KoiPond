@@ -5,11 +5,20 @@ using UnityEngine.InputSystem;
 
 namespace KoiPond
 {
+    public enum KoiState
+    {
+        Swimming,
+        Idle,
+        ApproachingFood,
+        Feeding,
+        Submerging
+    }
+
     /// <summary>
     /// Controls the Koi fish animations, swimming dynamics, banking, drifting, feeding,
     /// smooth depth envelope management, and pond boundary containment.
-    /// Ensures natural, organic fish locomotion while respecting the water surface,
-    /// depth boundaries, and pond bed geometry.
+    /// Ensures natural, organic fish locomotion while strictly respecting the water surface,
+    /// pond bed clearance, and solid geometry.
     /// </summary>
     [RequireComponent(typeof(Animator))]
     public class KoiFishController : MonoBehaviour
@@ -20,32 +29,26 @@ namespace KoiPond
 
         [Header("Movement & Swimming Dynamics")]
         [Tooltip("Base swimming cruising speed in meters per second")]
-        [SerializeField] private float swimSpeed = 0.65f;
+        [SerializeField] private float swimSpeed = 0.60f;
 
         [Tooltip("Max speed burst during energetic swimming")]
-        [SerializeField] private float burstSpeed = 0.95f;
+        [SerializeField] private float burstSpeed = 0.85f;
 
         [Tooltip("Turning rate in degrees per second")]
-        [SerializeField] private float turnSpeed = 40f;
+        [SerializeField] private float turnSpeed = 28f;
 
         [Tooltip("Banking (roll) angle when turning")]
-        [SerializeField] private float bankingAngle = 18f;
+        [SerializeField] private float bankingAngle = 6f;
 
         [Tooltip("Pitch angle limits when ascending or descending")]
-        [SerializeField] private float maxPitchAngle = 20f;
+        [SerializeField] private float maxPitchAngle = 10f;
 
         [Header("Natural Organic Drifting & Undulation")]
         [Tooltip("Frequency of natural subtle sinusoidal vertical bobbing")]
-        [SerializeField] private float driftBobFrequency = 0.9f;
+        [SerializeField] private float driftBobFrequency = 0.6f;
 
-        [Tooltip("Amplitude of natural subtle vertical bobbing")]
-        [SerializeField] private float driftBobAmplitude = 0.035f;
-
-        [Tooltip("Frequency of subtle lateral fish fin sway")]
-        [SerializeField] private float lateralSwayFrequency = 1.4f;
-
-        [Tooltip("Amplitude of subtle lateral fish fin sway")]
-        [SerializeField] private float lateralSwayAmplitude = 0.02f;
+        [Tooltip("Amplitude of natural subtle vertical bobbing (kept minimal to prevent wobble)")]
+        [SerializeField] private float driftBobAmplitude = 0.008f;
 
         [Header("Water & Depth Limits")]
         [Tooltip("Reference to the water plane transform. Fish will never swim above this transform's Y position.")]
@@ -60,122 +63,81 @@ namespace KoiPond
         [Tooltip("Reference to the feeding ripple effect system.")]
         [SerializeField] private KoiFeedingRippleEffect feedingRippleEffect;
 
-        [Tooltip("Minimum depth below the water plane (shallowest level fish wanders to). Keeps dorsal fin submerged.")]
-        [SerializeField] private float minDepth = 0.32f;
+        [Tooltip("Clearance maintained between the lowest point of the fish and the pond floor.")]
+        [SerializeField] private float minFloorClearance = 0.12f;
 
-        [Tooltip("Maximum depth below the water plane (deepest level fish wanders to).")]
-        [SerializeField] private float maxDepth = 0.85f;
+        [Tooltip("Clearance maintained between the highest dorsal point of the fish and the water surface.")]
+        [SerializeField] private float minSurfaceClearance = 0.06f;
 
-        [Tooltip("Clearance maintained above the bottom of the pond bed.")]
-        [SerializeField] private float bedClearance = 0.12f;
+        [Tooltip("Minimum water depth required to swim without clipping.")]
+        [SerializeField] private float minRequiredWaterDepth = 0.72f;
 
-        [Tooltip("Minimum water depth required near shores to keep fish away from dry banks.")]
-        [SerializeField] private float shoreMargin = 0.25f;
-
-        [Tooltip("Distance ahead to probe for pond bed banks to steer away smoothly.")]
-        [SerializeField] private float obstacleAvoidanceDistance = 1.4f;
+        [Tooltip("Distance ahead to probe for obstacles and shallow banks.")]
+        [SerializeField] private float obstacleAvoidanceDistance = 1.6f;
 
         [Header("Autonomous Behavior")]
         [Tooltip("If true, fish naturally wanders around the pond")]
         [SerializeField] private bool autonomousWandering = true;
 
-        [Tooltip("Center of the wandering pond area (fallback if pond bed is unassigned)")]
-        [SerializeField] private Vector3 wanderCenter = new Vector3(-0.39f, 0f, -0.50f);
+        [Tooltip("Center of the deep basin area")]
+        [SerializeField] private Vector3 basinCenter = new Vector3(-0.39f, 0f, -0.50f);
 
-        [Tooltip("Wander area radius in X and Z")]
-        [SerializeField] private float wanderRadius = 4.2f;
+        [Tooltip("Deep basin ellipse radii (X = minor axis, Z = major axis)")]
+        [SerializeField] private Vector2 basinRadii = new Vector2(1.4f, 2.5f);
 
         [Tooltip("Minimum time spent in one state (idle or swimming)")]
-        [SerializeField] private float minStateDuration = 4f;
+        [SerializeField] private float minStateDuration = 5f;
 
         [Tooltip("Maximum time spent in one state")]
-        [SerializeField] private float maxStateDuration = 9f;
+        [SerializeField] private float maxStateDuration = 10f;
 
         [Header("Debug UI")]
         [Tooltip("Show on-screen buttons to test Eat and Swim/Idle")]
         [SerializeField] private bool showOnScreenControls = true;
 
+        // Bone references for procedural secondary animation
+        private Transform pectoralFinL;
+        private Transform pectoralFinR;
+        private Transform spineBack;
+        private Transform spineTail1;
+        private Transform spineTail2;
+        private Transform tailFin;
+
+        // Current state
+        private KoiState currentState = KoiState.Swimming;
+
         // Runtime dynamic state
         private Vector3 currentTargetPoint;
         private float stateTimer;
-        private bool isCurrentlySwimming = true;
-        private float currentSpeed = 0.65f;
-        private float targetSpeed = 0.65f;
+        private float currentSpeed = 0.60f;
+        private float targetSpeed = 0.60f;
         private float speedVelocity;
         private float currentRoll = 0f;
         private float rollVelocity;
         private float currentPitch = 0f;
         private float pitchVelocity;
-        private float eatTimer = 0f;
-        private float eatDuration = 2.6f;
-        private Vector3 eatSurfaceTarget;
         private float timeAlive = 0f;
-        private bool hasStartedFeedingRipples = false;
+        private float yawTurnRate = 0f;
+        private float previousYaw = 0f;
+
+        // Feeding state variables
+        private float feedTimer = 0f;
+        private Vector3 targetBodyFeedingPos;
+        private Vector3 feedPosVelocity;
+        private Vector3 postFeedResumeHeading;
+        private bool bite1Fired;
+        private bool bite2Fired;
+        private bool bite3Fired;
+        private bool bite4Fired;
 
         private static readonly int ParamIsSwimming = Animator.StringToHash("IsSwimming");
         private static readonly int ParamSpeed = Animator.StringToHash("Speed");
         private static readonly int ParamEat = Animator.StringToHash("Eat");
 
-        /// <summary>
-        /// World Y coordinate of the water surface.
-        /// </summary>
+        public KoiState CurrentState => currentState;
         public float WaterSurfaceY => waterPlane != null ? waterPlane.position.y : 0f;
 
-        /// <summary>
-        /// Shallowest standard wandering world Y coordinate.
-        /// </summary>
-        public float ShallowestY
-        {
-            get
-            {
-                float surfaceY = WaterSurfaceY;
-                float d1 = Mathf.Abs(minDepth);
-                float d2 = Mathf.Abs(maxDepth);
-                float shallow = Mathf.Min(d1, d2);
-                return Mathf.Min(surfaceY, surfaceY - shallow);
-            }
-        }
-
-        /// <summary>
-        /// Deepest standard wandering world Y coordinate.
-        /// </summary>
-        public float DeepestY
-        {
-            get
-            {
-                float surfaceY = WaterSurfaceY;
-                float d1 = Mathf.Abs(minDepth);
-                float d2 = Mathf.Abs(maxDepth);
-                float deep = Mathf.Max(d1, d2);
-                return surfaceY - deep;
-            }
-        }
-
-        public Transform WaterPlane
-        {
-            get => waterPlane;
-            set => waterPlane = value;
-        }
-
-        public Collider PondBedCollider
-        {
-            get => pondBedCollider;
-            set => pondBedCollider = value;
-        }
-
-        public float MinDepth
-        {
-            get => minDepth;
-            set => minDepth = Mathf.Max(0f, value);
-        }
-
-        public float MaxDepth
-        {
-            get => maxDepth;
-            set => maxDepth = Mathf.Max(0f, value);
-        }
-
-        public bool IsSwimming => isCurrentlySwimming;
+        public bool IsSwimming => currentState == KoiState.Swimming;
         public Vector3 CurrentTargetPoint => currentTargetPoint;
 
         private void Reset()
@@ -186,8 +148,8 @@ namespace KoiPond
         private void OnValidate()
         {
             EnsureReferences();
-            if (minDepth < 0f) minDepth = 0f;
-            if (maxDepth < 0f) maxDepth = 0f;
+            if (minFloorClearance < 0.05f) minFloorClearance = 0.05f;
+            if (minSurfaceClearance < 0.02f) minSurfaceClearance = 0.02f;
         }
 
         private void Awake()
@@ -195,26 +157,51 @@ namespace KoiPond
             EnsureReferences();
         }
 
-        private void EnsureAnimator()
+        private void EnsureReferences()
         {
             if (animator == null)
             {
                 animator = GetComponent<Animator>();
             }
-        }
-
-        private void EnsureReferences()
-        {
-            EnsureAnimator();
 
             if (mouthTransform == null)
             {
                 mouthTransform = transform.Find("Armature/Root/Spine_Front/Head/Mouth");
             }
 
+            if (pectoralFinL == null)
+            {
+                pectoralFinL = transform.Find("Armature/Root/Spine_Front/PectoralFin_L");
+            }
+
+            if (pectoralFinR == null)
+            {
+                pectoralFinR = transform.Find("Armature/Root/Spine_Front/PectoralFin_R");
+            }
+
+            if (spineBack == null)
+            {
+                spineBack = transform.Find("Armature/Root/Spine_Back");
+            }
+
+            if (spineTail1 == null)
+            {
+                spineTail1 = transform.Find("Armature/Root/Spine_Back/Spine_Tail1");
+            }
+
+            if (spineTail2 == null)
+            {
+                spineTail2 = transform.Find("Armature/Root/Spine_Back/Spine_Tail1/Spine_Tail2");
+            }
+
+            if (tailFin == null)
+            {
+                tailFin = transform.Find("Armature/Root/Spine_Back/Spine_Tail1/Spine_Tail2/TailFin");
+            }
+
             if (feedingRippleEffect == null)
             {
-                feedingRippleEffect = Object.FindFirstObjectByType<KoiFeedingRippleEffect>();
+                feedingRippleEffect = Object.FindAnyObjectByType<KoiFeedingRippleEffect>();
             }
 
             if (waterPlane == null)
@@ -248,12 +235,12 @@ namespace KoiPond
         {
             EnsureReferences();
             PickNewWanderTarget();
-            isCurrentlySwimming = true;
+            currentState = KoiState.Swimming;
             targetSpeed = swimSpeed;
             currentSpeed = swimSpeed;
             stateTimer = Random.Range(minStateDuration, maxStateDuration);
+            previousYaw = transform.eulerAngles.y;
 
-            // Eased initial soft containment
             EnforcePondConstraints(Time.deltaTime);
 
             if (animator != null)
@@ -266,34 +253,63 @@ namespace KoiPond
 
         private void Update()
         {
-            timeAlive += Time.deltaTime;
+            float dt = Time.deltaTime;
+            timeAlive += dt;
             HandleInputs();
 
-            if (eatTimer > 0f)
+            // Track yaw turn rate for smooth fin response
+            float currentYaw = transform.eulerAngles.y;
+            yawTurnRate = Mathf.DeltaAngle(previousYaw, currentYaw) / Mathf.Max(0.001f, dt);
+            previousYaw = currentYaw;
+
+            switch (currentState)
             {
-                UpdateEating(Time.deltaTime);
-            }
-            else if (autonomousWandering)
-            {
-                UpdateAutonomousWandering(Time.deltaTime);
+                case KoiState.ApproachingFood:
+                    UpdateApproachingFood(dt);
+                    break;
+                case KoiState.Feeding:
+                    UpdateFeeding(dt);
+                    break;
+                case KoiState.Submerging:
+                    UpdateSubmerging(dt);
+                    break;
+                case KoiState.Swimming:
+                case KoiState.Idle:
+                    if (autonomousWandering)
+                    {
+                        UpdateAutonomousWandering(dt);
+                    }
+                    EnforcePondConstraints(dt);
+                    break;
             }
 
-            // Smooth boundary enforcement
-            EnforcePondConstraints(Time.deltaTime);
-
-            // Keep animator parameters in sync with natural speed
+            // Sync animator speed smoothly with swimming speed
             if (animator != null)
             {
-                animator.SetBool(ParamIsSwimming, isCurrentlySwimming);
+                animator.SetBool(ParamIsSwimming, currentState == KoiState.Swimming || currentState == KoiState.ApproachingFood || currentState == KoiState.Submerging);
                 animator.SetFloat(ParamSpeed, currentSpeed);
+
+                if (currentState == KoiState.Swimming)
+                {
+                    animator.speed = Mathf.Lerp(0.80f, 1.20f, currentSpeed / burstSpeed);
+                }
+                else if (currentState == KoiState.Idle)
+                {
+                    animator.speed = 0.75f;
+                }
+                else
+                {
+                    animator.speed = 1.0f;
+                }
             }
         }
 
         private void LateUpdate()
         {
+            float dt = Time.deltaTime;
             float waterY = WaterSurfaceY;
 
-            // Absolute hard constraint 1: Mouth must never exceed the water surface
+            // 1. Soft ceiling: Mouth must never exceed the water surface
             if (mouthTransform != null && mouthTransform.position.y > waterY)
             {
                 Vector3 p = transform.position;
@@ -301,13 +317,36 @@ namespace KoiPond
                 transform.position = p;
             }
 
-            // Absolute hard constraint 2: Keep fish naturally immersed below water surface
-            float maxBodyY = (eatTimer > 0f) ? (waterY - 0.16f) : (waterY - minDepth + 0.03f);
-            if (transform.position.y > maxBodyY)
+            // 2. Gentle Pectoral Fin Paddling & Steering (Subtle, no excessive flapping)
+            if (currentState == KoiState.Swimming || currentState == KoiState.Idle)
             {
-                Vector3 p = transform.position;
-                p.y = maxBodyY;
-                transform.position = p;
+                float paddleFreq = Mathf.Lerp(1.2f, 2.0f, currentSpeed / swimSpeed);
+                float paddleAngle = Mathf.Sin(timeAlive * paddleFreq) * 2.2f * Mathf.Clamp01(currentSpeed / swimSpeed + 0.2f);
+
+                float steerYaw = Mathf.Clamp(yawTurnRate / 24f, -1f, 1f);
+                float leftFinRoll = paddleAngle - steerYaw * 4f;
+                float rightFinRoll = -paddleAngle - steerYaw * 4f;
+
+                if (pectoralFinL != null)
+                {
+                    pectoralFinL.localRotation *= Quaternion.Euler(0f, leftFinRoll, -paddleAngle * 0.2f);
+                }
+                if (pectoralFinR != null)
+                {
+                    pectoralFinR.localRotation *= Quaternion.Euler(0f, rightFinRoll, paddleAngle * 0.2f);
+                }
+            }
+
+            // 4. Subtle, Smooth Secondary Spine Undulation (Gentle tail propulsion)
+            if (currentState == KoiState.Swimming)
+            {
+                float undulateFreq = Mathf.Lerp(1.2f, 2.0f, currentSpeed / swimSpeed);
+                float undulateAngle = Mathf.Sin(timeAlive * undulateFreq) * (1.2f * (currentSpeed / swimSpeed));
+
+                if (spineBack != null) spineBack.localRotation *= Quaternion.Euler(0f, undulateAngle * 0.25f, 0f);
+                if (spineTail1 != null) spineTail1.localRotation *= Quaternion.Euler(0f, -undulateAngle * 0.4f, 0f);
+                if (spineTail2 != null) spineTail2.localRotation *= Quaternion.Euler(0f, undulateAngle * 0.65f, 0f);
+                if (tailFin != null) tailFin.localRotation *= Quaternion.Euler(0f, -undulateAngle * 0.85f, 0f);
             }
         }
 
@@ -324,7 +363,7 @@ namespace KoiPond
 
                 if (keyboard.tKey.wasPressedThisFrame)
                 {
-                    SetSwimming(!isCurrentlySwimming);
+                    SetSwimming(currentState != KoiState.Swimming);
                 }
             }
 
@@ -340,21 +379,19 @@ namespace KoiPond
         }
 
         /// <summary>
-        /// Updates the autonomous wandering locomotion, turning arcs, smooth banking, and gentle idle drifts.
+        /// Updates autonomous wandering locomotion, smooth arcs, minimal banking, and zero body wobble.
         /// </summary>
         private void UpdateAutonomousWandering(float dt)
         {
             stateTimer -= dt;
             if (stateTimer <= 0f)
             {
-                // Alternation: 70% active swimming, 30% calm idle gliding/hovering
-                bool nextState = Random.value > 0.30f;
+                bool nextState = Random.value > 0.25f;
                 SetSwimming(nextState);
                 if (nextState)
                 {
-                    // Vary speed naturally between cruising and occasional gentle burst
-                    bool isBurst = Random.value < 0.25f;
-                    targetSpeed = isBurst ? Random.Range(swimSpeed * 1.15f, burstSpeed) : Random.Range(swimSpeed * 0.85f, swimSpeed * 1.1f);
+                    bool isBurst = Random.value < 0.20f;
+                    targetSpeed = isBurst ? Random.Range(swimSpeed * 1.10f, burstSpeed) : Random.Range(swimSpeed * 0.90f, swimSpeed * 1.05f);
                     PickNewWanderTarget();
                 }
                 else
@@ -364,13 +401,12 @@ namespace KoiPond
                 stateTimer = Random.Range(minStateDuration, maxStateDuration);
             }
 
-            if (isCurrentlySwimming)
+            if (currentState == KoiState.Swimming)
             {
-                // Smooth acceleration into target speed
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedVelocity, 0.7f);
+                currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedVelocity, 0.9f);
 
                 Vector3 toTarget = currentTargetPoint - transform.position;
-                if (toTarget.sqrMagnitude < 0.5f)
+                if (toTarget.sqrMagnitude < 0.7f)
                 {
                     PickNewWanderTarget();
                     toTarget = currentTargetPoint - transform.position;
@@ -378,182 +414,172 @@ namespace KoiPond
 
                 Vector3 desiredDirection = toTarget.normalized;
 
-                // Smooth organic bank avoidance
+                // Smooth obstacle avoidance
                 Vector3 avoidance = CalculatePondBedAvoidance();
                 if (avoidance.sqrMagnitude > 0.001f)
                 {
                     desiredDirection = (desiredDirection + avoidance * 2.2f).normalized;
                 }
 
-                // Smoothly steer toward desired heading
                 if (desiredDirection.sqrMagnitude > 0.001f)
                 {
                     Quaternion lookRot = Quaternion.LookRotation(desiredDirection, Vector3.up);
                     Vector3 lookEuler = lookRot.eulerAngles;
 
-                    // Organic pitch calculation with smooth clamp
+                    // Clamped, subtle pitch & bank
                     float rawPitch = Mathf.DeltaAngle(0f, lookEuler.x);
                     float targetPitchAngle = Mathf.Clamp(rawPitch, -maxPitchAngle, maxPitchAngle);
 
-                    // Organic banking roll from yaw turn rate
                     float yawDiff = Mathf.DeltaAngle(transform.eulerAngles.y, lookEuler.y);
                     float targetRoll = -Mathf.Clamp(yawDiff / 32f, -1f, 1f) * bankingAngle;
 
-                    currentRoll = Mathf.SmoothDamp(currentRoll, targetRoll, ref rollVelocity, 0.38f);
-                    currentPitch = Mathf.SmoothDamp(currentPitch, targetPitchAngle, ref pitchVelocity, 0.45f);
+                    currentRoll = Mathf.SmoothDamp(currentRoll, targetRoll, ref rollVelocity, 0.6f);
+                    currentPitch = Mathf.SmoothDamp(currentPitch, targetPitchAngle, ref pitchVelocity, 0.7f);
 
-                    // Slerp horizontal yaw for smooth graceful turn arcs
                     Quaternion currentYawRot = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
                     Quaternion targetYawRot = Quaternion.Euler(0f, lookEuler.y, 0f);
                     Quaternion newYawRot = Quaternion.RotateTowards(currentYawRot, targetYawRot, turnSpeed * dt);
 
                     transform.rotation = Quaternion.Euler(currentPitch, newYawRot.eulerAngles.y, currentRoll);
 
-                    // Move forward with gentle natural undulation
+                    // Forward locomotion (clean and stable forward motion)
                     Vector3 moveDelta = transform.forward * (currentSpeed * dt);
-
-                    // Add subtle natural lateral fin sway
-                    float sway = Mathf.Cos(timeAlive * lateralSwayFrequency * (currentSpeed / swimSpeed)) * (lateralSwayAmplitude * currentSpeed * dt);
-                    moveDelta += transform.right * sway;
-
                     MoveFish(moveDelta);
                 }
             }
             else
             {
-                // Gentle idle drift and floating hover
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, 0f, ref speedVelocity, 1.1f);
-                currentRoll = Mathf.SmoothDamp(currentRoll, 0f, ref rollVelocity, 0.8f);
-                currentPitch = Mathf.SmoothDamp(currentPitch, 0f, ref pitchVelocity, 0.8f);
+                currentSpeed = Mathf.SmoothDamp(currentSpeed, 0f, ref speedVelocity, 1.2f);
+                currentRoll = Mathf.SmoothDamp(currentRoll, 0f, ref rollVelocity, 1.0f);
+                currentPitch = Mathf.SmoothDamp(currentPitch, 0f, ref pitchVelocity, 1.0f);
 
-                // Natural subtle floating bob and drift while hovering
                 float bobVelocity = Mathf.Sin(timeAlive * driftBobFrequency) * driftBobAmplitude;
-                float driftSway = Mathf.Sin(timeAlive * 0.7f) * 0.012f;
 
                 Vector3 currentEuler = transform.rotation.eulerAngles;
                 transform.rotation = Quaternion.Euler(currentPitch, currentEuler.y, currentRoll);
 
-                Vector3 driftVector = (transform.forward * (currentSpeed + 0.02f) + Vector3.up * bobVelocity + transform.right * driftSway) * dt;
+                Vector3 driftVector = (transform.forward * (currentSpeed + 0.01f) + Vector3.up * bobVelocity) * dt;
                 MoveFish(driftVector);
             }
         }
 
-        /// <summary>
-        /// Natural eating behavior: fish angles smoothly upward toward the water surface,
-        /// performs surface feeding with deceleration, mouth reaches the surface film,
-        /// spawns ripples at water-contact point, and smoothly glides back down.
-        /// </summary>
-        private void UpdateEating(float dt)
+        private void UpdateApproachingFood(float dt)
         {
-            eatTimer -= dt;
-            float progress = 1f - (eatTimer / eatDuration); // 0 (start) to 1 (end)
-            float waterY = WaterSurfaceY;
+            feedTimer += dt;
 
-            if (progress < 0.30f)
+            transform.position = Vector3.SmoothDamp(transform.position, targetBodyFeedingPos, ref feedPosVelocity, 0.45f);
+
+            float targetPitchAngle = -14f;
+            currentPitch = Mathf.SmoothDamp(currentPitch, targetPitchAngle, ref pitchVelocity, 0.40f);
+            currentRoll = Mathf.SmoothDamp(currentRoll, 0f, ref rollVelocity, 0.40f);
+            transform.rotation = Quaternion.Euler(currentPitch, transform.eulerAngles.y, currentRoll);
+
+            currentSpeed = Mathf.SmoothDamp(currentSpeed, 0.03f, ref speedVelocity, 0.45f);
+
+            if (feedTimer >= 0.65f)
             {
-                // Phase 1: Glide gently up toward surface feeding target
-                Vector3 mouthPos = mouthTransform != null ? mouthTransform.position : transform.position;
-                Vector3 toSurface = eatSurfaceTarget - mouthPos;
-                if (toSurface.sqrMagnitude > 0.01f)
-                {
-                    Quaternion targetLook = Quaternion.LookRotation(toSurface.normalized, Vector3.up);
-                    Vector3 euler = targetLook.eulerAngles;
-                    float pitchClamped = Mathf.Clamp(Mathf.DeltaAngle(0f, euler.x), -22f, -10f);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(pitchClamped, euler.y, 0f), 5f * dt);
-                }
-
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, swimSpeed * 0.45f, ref speedVelocity, 0.4f);
-                MoveFish(transform.forward * (currentSpeed * dt));
-            }
-            else if (progress < 0.76f)
-            {
-                // Phase 2: Nibbling at the surface: mouth reaches water surface, body naturally submerged at upward angle
-                if (!hasStartedFeedingRipples)
-                {
-                    hasStartedFeedingRipples = true;
-                    Vector3 contactPos = mouthTransform != null ? mouthTransform.position : transform.position;
-                    if (feedingRippleEffect != null)
-                    {
-                        feedingRippleEffect.StartFeeding(contactPos, waterY);
-                    }
-                }
-
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, 0.02f, ref speedVelocity, 0.4f);
-                currentRoll = Mathf.SmoothDamp(currentRoll, Mathf.Sin(timeAlive * 3f) * 2f, ref rollVelocity, 0.3f);
-
-                // Natural upward tilt (-14 to -16 degrees) keeps head elevated to surface and body comfortably immersed
-                Vector3 rot = transform.rotation.eulerAngles;
-                float targetEatingPitch = -15f;
-                transform.rotation = Quaternion.Euler(Mathf.SmoothDamp(Mathf.DeltaAngle(0f, rot.x), targetEatingPitch, ref pitchVelocity, 0.25f), rot.y, currentRoll);
-
-                // Subtle mouth nibbling bob at surface
-                float nibbleBob = Mathf.Sin(timeAlive * 6f) * 0.003f;
-                float targetMouthY = waterY - 0.004f + nibbleBob;
-
-                if (mouthTransform != null)
-                {
-                    float currentMouthY = mouthTransform.position.y;
-                    float verticalError = targetMouthY - currentMouthY;
-                    Vector3 pos = transform.position;
-                    pos.y += Mathf.Clamp(verticalError * 9f * dt, -0.4f * dt, 0.4f * dt);
-                    transform.position = pos;
-
-                    // Ensure mouth never breaches the surface
-                    if (mouthTransform.position.y > waterY)
-                    {
-                        pos = transform.position;
-                        pos.y -= (mouthTransform.position.y - waterY);
-                        transform.position = pos;
-                    }
-
-                    if (feedingRippleEffect != null)
-                    {
-                        feedingRippleEffect.UpdateFeedingPosition(mouthTransform.position);
-                    }
-                }
-
-                MoveFish(transform.forward * (currentSpeed * dt));
-            }
-            else
-            {
-                // Phase 3: Finishing bite, stop ripples, level off and dive smoothly back down into water
-                if (hasStartedFeedingRipples)
-                {
-                    hasStartedFeedingRipples = false;
-                    if (feedingRippleEffect != null)
-                    {
-                        feedingRippleEffect.StopFeeding();
-                    }
-                }
-
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, swimSpeed * 0.55f, ref speedVelocity, 0.5f);
-                currentRoll = Mathf.SmoothDamp(currentRoll, 0f, ref rollVelocity, 0.4f);
-
-                Vector3 rot = transform.rotation.eulerAngles;
-                float targetPitchDown = 12f; // Pitch down to re-submerge smoothly into deep water
-                transform.rotation = Quaternion.Euler(Mathf.SmoothDamp(Mathf.DeltaAngle(0f, rot.x), targetPitchDown, ref pitchVelocity, 0.4f), rot.y, currentRoll);
-
-                MoveFish(transform.forward * (currentSpeed * dt));
-
-                if (eatTimer <= 0f)
-                {
-                    PickNewWanderTarget();
-                    targetSpeed = swimSpeed;
-                }
+                currentState = KoiState.Feeding;
             }
         }
 
-        /// <summary>
-        /// Moves the fish with soft collision deflection against the pond bed.
-        /// </summary>
+        private void UpdateFeeding(float dt)
+        {
+            feedTimer += dt;
+
+            float hoverBob = Mathf.Sin(timeAlive * 4f) * 0.002f;
+            Vector3 desiredPos = targetBodyFeedingPos + Vector3.up * hoverBob;
+            transform.position = Vector3.SmoothDamp(transform.position, desiredPos, ref feedPosVelocity, 0.30f);
+
+            float targetPitchAngle = -14f;
+            currentPitch = Mathf.SmoothDamp(currentPitch, targetPitchAngle, ref pitchVelocity, 0.30f);
+            currentRoll = Mathf.SmoothDamp(currentRoll, 0f, ref rollVelocity, 0.40f);
+            transform.rotation = Quaternion.Euler(currentPitch, transform.eulerAngles.y, currentRoll);
+
+            Vector3 mouthPos = mouthTransform != null ? mouthTransform.position : transform.position + transform.forward * 0.35f;
+
+            if (feedTimer >= 0.72f && !bite1Fired)
+            {
+                bite1Fired = true;
+                if (feedingRippleEffect != null)
+                {
+                    feedingRippleEffect.SpawnBiteRipple(mouthPos, WaterSurfaceY, includeSplash: true);
+                }
+            }
+            else if (feedTimer >= 1.03f && !bite2Fired)
+            {
+                bite2Fired = true;
+                if (feedingRippleEffect != null)
+                {
+                    feedingRippleEffect.SpawnBiteRipple(mouthPos, WaterSurfaceY, includeSplash: false);
+                }
+            }
+            else if (feedTimer >= 1.37f && !bite3Fired)
+            {
+                bite3Fired = true;
+                if (feedingRippleEffect != null)
+                {
+                    feedingRippleEffect.SpawnBiteRipple(mouthPos, WaterSurfaceY, includeSplash: false);
+                }
+            }
+            else if (feedTimer >= 1.68f && !bite4Fired)
+            {
+                bite4Fired = true;
+                if (feedingRippleEffect != null)
+                {
+                    feedingRippleEffect.SpawnBiteRipple(mouthPos, WaterSurfaceY, includeSplash: false);
+                }
+            }
+
+            if (feedTimer >= 1.95f)
+            {
+                currentState = KoiState.Submerging;
+                // Seamless exit: set resume heading forward along current body heading
+                postFeedResumeHeading = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
+                if (postFeedResumeHeading.sqrMagnitude < 0.01f) postFeedResumeHeading = Vector3.forward;
+                currentTargetPoint = transform.position + postFeedResumeHeading * 1.8f;
+                currentTargetPoint.y = WaterSurfaceY - 0.45f;
+            }
+        }
+
+        private void UpdateSubmerging(float dt)
+        {
+            feedTimer += dt;
+
+            // Smoothly pitch from -14 to +8, then back to 0 as it levels off
+            float submergePhase = (feedTimer - 1.95f) / 1.15f; // 0.0 to 1.0
+            float targetPitchAngle = Mathf.Sin(submergePhase * Mathf.PI) * 7f; // Peaks at +7 degrees midway, returns smoothly to 0
+
+            currentPitch = Mathf.SmoothDamp(currentPitch, targetPitchAngle, ref pitchVelocity, 0.45f);
+            currentRoll = Mathf.SmoothDamp(currentRoll, 0f, ref rollVelocity, 0.45f);
+            transform.rotation = Quaternion.Euler(currentPitch, transform.eulerAngles.y, currentRoll);
+
+            // Smoothly accelerate forward along the existing heading without sudden speed bursts
+            currentSpeed = Mathf.SmoothDamp(currentSpeed, swimSpeed * 0.85f, ref speedVelocity, 0.65f);
+            Vector3 moveDelta = transform.forward * (currentSpeed * dt);
+            MoveFish(moveDelta);
+
+            // Smoothly descent Y position into normal swimming depth envelope
+            float targetSubmergeY = WaterSurfaceY - 0.42f;
+            Vector3 p = transform.position;
+            p.y = Mathf.MoveTowards(p.y, targetSubmergeY, 0.22f * dt);
+            transform.position = p;
+
+            if (feedTimer >= 3.10f)
+            {
+                PickNewWanderTarget();
+                currentState = KoiState.Swimming;
+                targetSpeed = swimSpeed;
+                stateTimer = Random.Range(minStateDuration, maxStateDuration);
+            }
+        }
+
         private void MoveFish(Vector3 moveVector)
         {
             if (pondBedCollider != null && moveVector.sqrMagnitude > 0.000001f)
             {
                 Ray moveRay = new Ray(transform.position, moveVector.normalized);
-                if (pondBedCollider.Raycast(moveRay, out RaycastHit hit, moveVector.magnitude + 0.12f))
+                if (pondBedCollider.Raycast(moveRay, out RaycastHit hit, moveVector.magnitude + 0.35f))
                 {
-                    // Deflect smoothly along the pond bed contour
                     moveVector = Vector3.ProjectOnPlane(moveVector, hit.normal);
                     PickNewWanderTarget();
                 }
@@ -562,10 +588,6 @@ namespace KoiPond
             transform.position += moveVector;
         }
 
-        /// <summary>
-        /// Probes ahead and diagonally to detect pond bed banks, returning a gentle steering force
-        /// that keeps the fish smoothly turning inside deeper water.
-        /// </summary>
         private Vector3 CalculatePondBedAvoidance()
         {
             if (pondBedCollider == null) return Vector3.zero;
@@ -575,48 +597,44 @@ namespace KoiPond
             Vector3 forward = transform.forward;
             Vector3 right = transform.right;
 
-            // Forward probe
             if (CheckProbe(pos, forward, obstacleAvoidanceDistance, out RaycastHit fwdHit))
             {
                 Vector3 away = fwdHit.normal;
                 away.y = 0f;
                 float weight = 1f - (fwdHit.distance / obstacleAvoidanceDistance);
-                avoidForce += away.normalized * (weight * 2.2f);
+                avoidForce += away.normalized * (weight * 2.4f);
             }
 
-            // Forward-Right probe
-            Vector3 fwdRight = (forward + right * 0.6f).normalized;
+            Vector3 fwdRight = (forward + right * 0.65f).normalized;
             if (CheckProbe(pos, fwdRight, obstacleAvoidanceDistance * 0.85f, out RaycastHit rHit))
             {
                 Vector3 away = rHit.normal;
                 away.y = 0f;
                 float weight = 1f - (rHit.distance / (obstacleAvoidanceDistance * 0.85f));
-                avoidForce += away.normalized * weight;
+                avoidForce += away.normalized * (weight * 1.4f);
             }
 
-            // Forward-Left probe
-            Vector3 fwdLeft = (forward - right * 0.6f).normalized;
+            Vector3 fwdLeft = (forward - right * 0.65f).normalized;
             if (CheckProbe(pos, fwdLeft, obstacleAvoidanceDistance * 0.85f, out RaycastHit lHit))
             {
                 Vector3 away = lHit.normal;
                 away.y = 0f;
                 float weight = 1f - (lHit.distance / (obstacleAvoidanceDistance * 0.85f));
-                avoidForce += away.normalized * weight;
+                avoidForce += away.normalized * (weight * 1.4f);
             }
 
-            // Soft shore depth check ahead
-            Vector3 aheadPos = pos + forward * 0.9f;
+            Vector3 aheadPos = pos + forward * 1.0f;
             if (TryGetBedHeight(aheadPos.x, aheadPos.z, out float aheadBedY, out _))
             {
                 float aheadWaterDepth = WaterSurfaceY - aheadBedY;
-                if (aheadWaterDepth < shoreMargin)
+                if (aheadWaterDepth < minRequiredWaterDepth)
                 {
-                    Vector3 pondCenter = GetPondCenter();
-                    Vector3 toCenter = new Vector3(pondCenter.x - pos.x, 0f, pondCenter.z - pos.z);
+                    Vector3 center = GetPondCenter();
+                    Vector3 toCenter = new Vector3(center.x - pos.x, 0f, center.z - pos.z);
                     if (toCenter.sqrMagnitude > 0.01f)
                     {
-                        float pushStrength = (shoreMargin - aheadWaterDepth) / shoreMargin;
-                        avoidForce += toCenter.normalized * (pushStrength * 2.5f);
+                        float pushStrength = (minRequiredWaterDepth - aheadWaterDepth) / minRequiredWaterDepth;
+                        avoidForce += toCenter.normalized * (pushStrength * 2.8f);
                     }
                 }
             }
@@ -630,12 +648,34 @@ namespace KoiPond
             return pondBedCollider.Raycast(ray, out hit, distance);
         }
 
-        /// <summary>
-        /// Attempts to get the pond bed surface height at a given (X, Z) coordinate.
-        /// </summary>
+        public float GetHighestBedUnderBody(Vector3 fishPos, Vector3 forward, Vector3 right)
+        {
+            float maxBedY = -999f;
+            float scaleZ = transform.lossyScale.z;
+            float scaleX = transform.lossyScale.x;
+
+            Vector3[] samplePoints = new Vector3[] {
+                fishPos,
+                fishPos + forward * (0.35f * scaleZ),
+                fishPos - forward * (0.35f * scaleZ),
+                fishPos + right * (0.15f * scaleX),
+                fishPos - right * (0.15f * scaleX)
+            };
+
+            for (int i = 0; i < samplePoints.Length; i++)
+            {
+                if (TryGetBedHeight(samplePoints[i].x, samplePoints[i].z, out float bY, out _))
+                {
+                    if (bY > maxBedY) maxBedY = bY;
+                }
+            }
+
+            return maxBedY;
+        }
+
         public bool TryGetBedHeight(float x, float z, out float bedY, out Vector3 bedNormal)
         {
-            bedY = DeepestY;
+            bedY = WaterSurfaceY - 1.10f;
             bedNormal = Vector3.up;
 
             if (pondBedCollider == null) return false;
@@ -652,9 +692,6 @@ namespace KoiPond
             return false;
         }
 
-        /// <summary>
-        /// Selects a new wander target inside the submerged pond basin within the depth range.
-        /// </summary>
         public void PickNewWanderTarget()
         {
             Vector3 center = GetPondCenter();
@@ -662,22 +699,24 @@ namespace KoiPond
 
             for (int attempt = 0; attempt < 30; attempt++)
             {
-                Vector2 randomCircle = Random.insideUnitCircle * wanderRadius;
-                Vector3 candidate = center + new Vector3(randomCircle.x, 0f, randomCircle.y);
+                Vector2 randomCircle = Random.insideUnitCircle;
+                Vector3 candidate = center + new Vector3(randomCircle.x * basinRadii.x, 0f, randomCircle.y * basinRadii.y);
 
                 if (TryGetBedHeight(candidate.x, candidate.z, out float bedY, out _))
                 {
                     float waterDepth = WaterSurfaceY - bedY;
-                    if (waterDepth >= shoreMargin + 0.08f)
+                    if (waterDepth >= minRequiredWaterDepth + 0.05f)
                     {
-                        float localMinY = Mathf.Max(DeepestY, bedY + bedClearance);
-                        float localMaxY = ShallowestY;
+                        float scaleY = transform.lossyScale.y;
+                        float bottomExtent = 0.28f * scaleY + minFloorClearance;
+                        float topExtent = 0.26f * scaleY + minSurfaceClearance;
+
+                        float localMinY = bedY + bottomExtent;
+                        float localMaxY = WaterSurfaceY - topExtent;
 
                         if (localMinY <= localMaxY)
                         {
                             float targetY = Random.Range(localMinY, localMaxY);
-                            targetY = Mathf.Min(targetY, WaterSurfaceY);
-
                             currentTargetPoint = new Vector3(candidate.x, targetY, candidate.z);
                             foundValidTarget = true;
                             break;
@@ -688,15 +727,11 @@ namespace KoiPond
 
             if (!foundValidTarget)
             {
-                float safeY = (ShallowestY + DeepestY) * 0.5f;
-                safeY = Mathf.Min(safeY, WaterSurfaceY);
+                float safeY = WaterSurfaceY - 0.42f;
                 currentTargetPoint = new Vector3(center.x, safeY, center.z);
             }
         }
 
-        /// <summary>
-        /// Returns the horizontal center of the pond bed.
-        /// </summary>
         public Vector3 GetPondCenter()
         {
             if (pondBedCollider != null)
@@ -705,150 +740,113 @@ namespace KoiPond
                 return new Vector3(boundsCenter.x, WaterSurfaceY, boundsCenter.z);
             }
 
-            if (waterPlane != null)
-            {
-                return new Vector3(waterPlane.position.x, WaterSurfaceY, waterPlane.position.z);
-            }
-
-            return wanderCenter;
+            return basinCenter;
         }
 
-        /// <summary>
-        /// Eased pond containment: smoothly pushes fish away from shores and soft-clamps depth,
-        /// with an absolute hard ceiling at the water plane transform position.
-        /// </summary>
         public void EnforcePondConstraints(float dt)
         {
             Vector3 pos = transform.position;
             float waterY = WaterSurfaceY;
-            float maxAllowedY = (eatTimer > 0f) ? (waterY - 0.16f) : ShallowestY;
-            float minAllowedY = DeepestY;
+            Vector3 center = GetPondCenter();
 
-            // 1. Smooth horizontal containment inside pond bed
-            if (pondBedCollider != null)
+            float scaleY = transform.lossyScale.y;
+            float scaleZ = transform.lossyScale.z;
+            float fishHalfLength = 0.30f * scaleZ;
+
+            float pitchRad = Mathf.Abs(currentPitch) * Mathf.Deg2Rad;
+            float pitchDrop = Mathf.Sin(pitchRad) * (fishHalfLength * 0.7f);
+
+            float highestBedUnderFish = GetHighestBedUnderBody(pos, transform.forward, transform.right);
+
+            float bottomExtent = 0.28f * scaleY + pitchDrop + minFloorClearance;
+            float minAllowedY = highestBedUnderFish + bottomExtent;
+
+            float topExtent = 0.26f * scaleY + pitchDrop + minSurfaceClearance;
+            float maxAllowedY = waterY - topExtent;
+
+            float currentWaterDepth = waterY - highestBedUnderFish;
+            if (currentWaterDepth < minRequiredWaterDepth)
             {
-                Vector3 center = GetPondCenter();
-
-                if (TryGetBedHeight(pos.x, pos.z, out float bedY, out _))
+                Vector3 toCenter = new Vector3(center.x - pos.x, 0f, center.z - pos.z);
+                if (toCenter.sqrMagnitude > 0.001f)
                 {
-                    float waterDepth = waterY - bedY;
-                    if (waterDepth < shoreMargin)
-                    {
-                        // Eased soft push back toward pond center
-                        Vector3 toCenter = new Vector3(center.x - pos.x, 0f, center.z - pos.z);
-                        if (toCenter.sqrMagnitude > 0.001f)
-                        {
-                            float pushFactor = Mathf.Clamp01((shoreMargin - waterDepth) / shoreMargin);
-                            pos += toCenter.normalized * (swimSpeed * pushFactor * 2.5f * dt);
-                        }
-                    }
-
-                    // Keep fish above the bed floor with soft ease
-                    minAllowedY = Mathf.Max(minAllowedY, bedY + bedClearance);
-                }
-                else
-                {
-                    // Outside collider perimeter: guide smoothly back toward center
-                    Vector3 toCenter = new Vector3(center.x - pos.x, 0f, center.z - pos.z);
-                    if (toCenter.sqrMagnitude > 0.001f)
-                    {
-                        pos += toCenter.normalized * (swimSpeed * 3f * dt);
-                    }
-                    PickNewWanderTarget();
+                    float pushFactor = Mathf.Clamp01((minRequiredWaterDepth - currentWaterDepth) / minRequiredWaterDepth);
+                    pos += toCenter.normalized * (swimSpeed * pushFactor * 3.0f * dt);
                 }
             }
 
-            // 2. Smooth vertical depth clamping
             if (minAllowedY > maxAllowedY)
             {
-                minAllowedY = maxAllowedY;
+                maxAllowedY = minAllowedY + 0.02f;
             }
 
-            // Soft clamp between minAllowedY and maxAllowedY
+            // Smooth gentle dampening to eliminate vertical snapping or bobbing
             if (pos.y < minAllowedY)
             {
-                pos.y = Mathf.MoveTowards(pos.y, minAllowedY, 1.5f * dt);
-                if (pos.y < minAllowedY - 0.1f) pos.y = minAllowedY;
+                pos.y = Mathf.MoveTowards(pos.y, minAllowedY, 1.2f * dt);
+                if (pos.y < minAllowedY - 0.05f) pos.y = minAllowedY;
             }
             else if (pos.y > maxAllowedY)
             {
-                pos.y = Mathf.MoveTowards(pos.y, maxAllowedY, 1.5f * dt);
-                if (pos.y > maxAllowedY + 0.05f) pos.y = maxAllowedY;
-            }
-
-            // 3. Absolute hard ceiling: never swim above the water plane transform position
-            if (pos.y > waterY - 0.16f && eatTimer > 0f)
-            {
-                pos.y = waterY - 0.16f;
-            }
-            else if (pos.y > ShallowestY && eatTimer <= 0f)
-            {
-                pos.y = ShallowestY;
+                pos.y = Mathf.MoveTowards(pos.y, maxAllowedY, 1.2f * dt);
+                if (pos.y > maxAllowedY + 0.03f) pos.y = maxAllowedY;
             }
 
             transform.position = pos;
         }
 
-        /// <summary>
-        /// Trigger the feeding / eating animation naturally with surface approach.
-        /// </summary>
         [ContextMenu("Trigger Eat Animation")]
         public void Eat()
         {
-            EnsureAnimator();
+            if (currentState == KoiState.Feeding || currentState == KoiState.ApproachingFood || currentState == KoiState.Submerging) return;
+
             EnsureReferences();
 
             if (animator != null)
             {
                 animator.ResetTrigger(ParamEat);
                 animator.SetTrigger(ParamEat);
-                animator.CrossFadeInFixedTime("Eat", 0.25f, 0, 0f);
+                animator.CrossFadeInFixedTime("Eat", 0.30f, 0, 0f);
             }
 
-            eatDuration = 2.6f;
-            eatTimer = eatDuration;
-            hasStartedFeedingRipples = false;
+            currentState = KoiState.ApproachingFood;
+            feedTimer = 0f;
+            bite1Fired = false;
+            bite2Fired = false;
+            bite3Fired = false;
+            bite4Fired = false;
 
-            // Pick a feeding point at the water surface slightly forward from current position
             Vector3 fwdFlat = transform.forward;
             fwdFlat.y = 0f;
             if (fwdFlat.sqrMagnitude < 0.01f) fwdFlat = Vector3.forward;
+            fwdFlat.Normalize();
 
-            Vector3 candidateSurface = transform.position + fwdFlat.normalized * 0.5f;
-            candidateSurface.y = WaterSurfaceY;
+            Vector3 surfaceTarget = transform.position + fwdFlat * 0.40f;
+            surfaceTarget.y = WaterSurfaceY;
 
-            // Verify feeding spot is inside pond bed
-            if (TryGetBedHeight(candidateSurface.x, candidateSurface.z, out float bedY, out _))
+            targetBodyFeedingPos = new Vector3(
+                surfaceTarget.x - fwdFlat.x * 0.35f,
+                WaterSurfaceY - 0.23f,
+                surfaceTarget.z - fwdFlat.z * 0.35f
+            );
+
+            // Keep within pond bounds
+            if (TryGetBedHeight(targetBodyFeedingPos.x, targetBodyFeedingPos.z, out float bedY, out _))
             {
-                if (WaterSurfaceY - bedY >= shoreMargin)
-                {
-                    eatSurfaceTarget = candidateSurface;
-                }
-                else
+                if (WaterSurfaceY - bedY < 0.35f) // Near very shallow rim
                 {
                     Vector3 center = GetPondCenter();
-                    eatSurfaceTarget = new Vector3(center.x, WaterSurfaceY, center.z);
+                    targetBodyFeedingPos = new Vector3(center.x, WaterSurfaceY - 0.23f, center.z);
                 }
-            }
-            else
-            {
-                Vector3 center = GetPondCenter();
-                eatSurfaceTarget = new Vector3(center.x, WaterSurfaceY, center.z);
             }
         }
 
-        /// <summary>
-        /// Transition fish to swimming state.
-        /// </summary>
         [ContextMenu("Set State: Swimming")]
         public void SetSwimState()
         {
             SetSwimming(true);
         }
 
-        /// <summary>
-        /// Transition fish to idle hovering state.
-        /// </summary>
         [ContextMenu("Set State: Idle")]
         public void SetIdleState()
         {
@@ -857,45 +855,22 @@ namespace KoiPond
 
         public void SetSwimming(bool swim)
         {
-            isCurrentlySwimming = swim;
+            if (currentState == KoiState.ApproachingFood || currentState == KoiState.Feeding || currentState == KoiState.Submerging) return;
+
+            currentState = swim ? KoiState.Swimming : KoiState.Idle;
             targetSpeed = swim ? swimSpeed : 0f;
-            EnsureAnimator();
+            EnsureReferences();
             if (animator != null)
             {
-                animator.SetBool(ParamIsSwimming, isCurrentlySwimming);
-                if (isCurrentlySwimming)
+                animator.SetBool(ParamIsSwimming, swim);
+                if (swim)
                 {
-                    animator.CrossFadeInFixedTime("Swim", 0.4f);
+                    animator.CrossFadeInFixedTime("Swim", 0.5f);
                 }
                 else
                 {
-                    animator.CrossFadeInFixedTime("Idle", 0.5f);
+                    animator.CrossFadeInFixedTime("Idle", 0.6f);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Advances autonomous wandering and constraint enforcement by a given delta time (useful for testing).
-        /// </summary>
-        public void SimulateStep(float dt)
-        {
-            timeAlive += dt;
-            if (eatTimer > 0f)
-            {
-                UpdateEating(dt);
-            }
-            else if (autonomousWandering)
-            {
-                UpdateAutonomousWandering(dt);
-            }
-
-            EnforcePondConstraints(dt);
-
-            if (transform.position.y > WaterSurfaceY)
-            {
-                Vector3 p = transform.position;
-                p.y = WaterSurfaceY;
-                transform.position = p;
             }
         }
 
@@ -905,7 +880,7 @@ namespace KoiPond
 
             GUILayout.BeginArea(new Rect(15, 15, 230, 165), GUI.skin.box);
             GUILayout.Label("<b>Koi Fish Controls</b>", GUILayout.Height(22));
-            GUILayout.Label("Current: " + (isCurrentlySwimming ? "<color=green>Swimming</color>" : "<color=yellow>Idle</color>"));
+            GUILayout.Label("State: <color=cyan>" + currentState.ToString() + "</color>");
             GUILayout.Label(string.Format("Depth: {0:F2}m (Water: {1:F2}m)", WaterSurfaceY - transform.position.y, WaterSurfaceY));
 
             if (GUILayout.Button("Feed Koi [E / Space / Click]", GUILayout.Height(30)))
@@ -913,9 +888,9 @@ namespace KoiPond
                 Eat();
             }
 
-            if (GUILayout.Button(isCurrentlySwimming ? "Switch to Idle [T]" : "Switch to Swim [T]", GUILayout.Height(30)))
+            if (GUILayout.Button(currentState == KoiState.Swimming ? "Switch to Idle [T]" : "Switch to Swim [T]", GUILayout.Height(30)))
             {
-                SetSwimming(!isCurrentlySwimming);
+                SetSwimming(currentState != KoiState.Swimming);
             }
 
             GUILayout.EndArea();
@@ -925,35 +900,21 @@ namespace KoiPond
         {
             Vector3 center = GetPondCenter();
 
-            // Water plane level disk
             Gizmos.color = new Color(0f, 0.8f, 1f, 0.35f);
-            Gizmos.DrawWireSphere(new Vector3(center.x, WaterSurfaceY, center.z), wanderRadius);
+            Gizmos.DrawWireSphere(new Vector3(center.x, WaterSurfaceY, center.z), basinRadii.y);
 
-            // Shallowest depth limit plane
-            Gizmos.color = new Color(0f, 1f, 0.5f, 0.25f);
-            Gizmos.DrawWireSphere(new Vector3(center.x, ShallowestY, center.z), wanderRadius);
-
-            // Deepest depth limit plane
-            Gizmos.color = new Color(0f, 0.3f, 0.8f, 0.25f);
-            Gizmos.DrawWireSphere(new Vector3(center.x, DeepestY, center.z), wanderRadius);
-
-            // Target visualization
-            if (isCurrentlySwimming)
+            if (currentState == KoiState.Swimming)
             {
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawLine(transform.position, currentTargetPoint);
                 Gizmos.DrawWireSphere(currentTargetPoint, 0.2f);
             }
-
-            // Avoidance probes
-            if (pondBedCollider != null)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawRay(transform.position, transform.forward * obstacleAvoidanceDistance);
-            }
         }
     }
 }
+
+
+
 
 
 

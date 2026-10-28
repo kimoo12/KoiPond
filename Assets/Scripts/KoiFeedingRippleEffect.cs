@@ -3,8 +3,8 @@ using UnityEngine;
 namespace KoiPond
 {
     /// <summary>
-    /// Spawns natural, expanding and overlapping circular ripples and subtle bite disturbances
-    /// on the pond water surface synchronized with koi feeding behavior.
+    /// Spawns natural, expanding circular ripples and subtle bite disturbances
+    /// on the pond water surface synchronized with koi feeding bites.
     /// </summary>
     public class KoiFeedingRippleEffect : MonoBehaviour
     {
@@ -16,36 +16,39 @@ namespace KoiPond
         [SerializeField] private ParticleSystem splashParticles;
 
         [Header("Ripple Settings")]
-        [Tooltip("Minimum time between ripple wave emissions during feeding")]
-        [SerializeField] private float rippleInterval = 0.32f;
-
         [Tooltip("Lifetime of each expanding ripple ring in seconds")]
-        [SerializeField] private float rippleLifetime = 2.0f;
+        [SerializeField] private float rippleLifetime = 2.2f;
 
         [Tooltip("Starting size of the ripple ring in meters")]
-        [SerializeField] private float rippleStartSize = 0.20f;
+        [SerializeField] private float rippleStartSize = 0.18f;
 
         [Tooltip("Maximum expanded size of ripple ring in meters")]
-        [SerializeField] private float rippleMaxSize = 1.25f;
+        [SerializeField] private float rippleMaxSize = 1.15f;
 
         [Tooltip("Maximum alpha opacity for ripple rings")]
         [Range(0.1f, 1f)]
-        [SerializeField] private float rippleOpacity = 0.55f;
+        [SerializeField] private float rippleOpacity = 0.65f;
 
-        [Header("Materials (Optional Fallbacks)")]
+        [Header("Materials")]
         [SerializeField] private Material rippleMaterial;
         [SerializeField] private Material splashMaterial;
-
-        private float rippleTimer;
-        private bool isFeeding;
-        private Vector3 currentMouthPosition;
-        private float waterSurfaceY = 0f;
-
-        public bool IsFeeding => isFeeding;
 
         private void Awake()
         {
             EnsureParticleSystems();
+        }
+
+        private void Start()
+        {
+            // Ensure particle systems are playing so Emit() works reliably
+            if (rippleParticles != null && !rippleParticles.isPlaying)
+            {
+                rippleParticles.Play();
+            }
+            if (splashParticles != null && !splashParticles.isPlaying)
+            {
+                splashParticles.Play();
+            }
         }
 
         private void OnValidate()
@@ -99,30 +102,28 @@ namespace KoiPond
             if (ps == null) return;
 
             var main = ps.main;
-            main.loop = false;
-            main.playOnAwake = false;
+            main.loop = true;
+            main.playOnAwake = true;
             main.startLifetime = rippleLifetime;
             main.startSpeed = 0f;
             main.startSize = rippleStartSize;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
             main.maxParticles = 100;
-            main.startColor = new Color(0.9f, 0.98f, 1f, rippleOpacity);
+            main.startColor = new Color(0.92f, 0.98f, 1f, rippleOpacity);
 
             var emission = ps.emission;
             emission.enabled = false;
             emission.rateOverTime = 0f;
 
             var shape = ps.shape;
-            shape.enabled = true;
-            shape.shapeType = ParticleSystemShapeType.Sphere;
-            shape.radius = 0.02f;
+            shape.enabled = false;
 
             // Size over lifetime: expands smoothly from start size to max size
             var sol = ps.sizeOverLifetime;
             sol.enabled = true;
             AnimationCurve sizeCurve = new AnimationCurve();
-            sizeCurve.AddKey(new Keyframe(0f, 1f, 1.8f, 1.8f));
-            sizeCurve.AddKey(new Keyframe(1f, rippleMaxSize / Mathf.Max(0.01f, rippleStartSize), 0.2f, 0f));
+            sizeCurve.AddKey(new Keyframe(0f, 1f, 1.6f, 1.6f));
+            sizeCurve.AddKey(new Keyframe(1f, rippleMaxSize / Mathf.Max(0.01f, rippleStartSize), 0.15f, 0f));
             sol.size = new ParticleSystem.MinMaxCurve(1f, sizeCurve);
 
             // Color over lifetime: soft fade out
@@ -132,13 +133,13 @@ namespace KoiPond
             grad.SetKeys(
                 new GradientColorKey[] {
                     new GradientColorKey(new Color(0.95f, 0.98f, 1f), 0f),
-                    new GradientColorKey(new Color(0.85f, 0.95f, 0.98f), 0.6f),
-                    new GradientColorKey(new Color(0.75f, 0.92f, 0.95f), 1f)
+                    new GradientColorKey(new Color(0.85f, 0.95f, 0.98f), 0.5f),
+                    new GradientColorKey(new Color(0.80f, 0.92f, 0.95f), 1f)
                 },
                 new GradientAlphaKey[] {
                     new GradientAlphaKey(0f, 0f),
-                    new GradientAlphaKey(rippleOpacity, 0.15f),
-                    new GradientAlphaKey(rippleOpacity * 0.7f, 0.55f),
+                    new GradientAlphaKey(rippleOpacity, 0.12f),
+                    new GradientAlphaKey(rippleOpacity * 0.75f, 0.45f),
                     new GradientAlphaKey(0f, 1f)
                 }
             );
@@ -148,10 +149,17 @@ namespace KoiPond
             if (rend != null)
             {
                 rend.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
-                rend.alignment = ParticleSystemRenderSpace.World;
+                rend.alignment = ParticleSystemRenderSpace.View;
+                rend.sortingFudge = -50;
                 rend.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 rend.receiveShadows = false;
 
+#if UNITY_EDITOR
+                if (rippleMaterial == null)
+                {
+                    rippleMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/KoiFeedingRipple_MAT.mat");
+                }
+#endif
                 if (rippleMaterial != null)
                 {
                     rend.sharedMaterial = rippleMaterial;
@@ -164,8 +172,8 @@ namespace KoiPond
             if (ps == null) return;
 
             var main = ps.main;
-            main.loop = false;
-            main.playOnAwake = false;
+            main.loop = true;
+            main.playOnAwake = true;
             main.startLifetime = 0.38f;
             main.startSpeed = new ParticleSystem.MinMaxCurve(0.2f, 0.45f);
             main.startSize = new ParticleSystem.MinMaxCurve(0.02f, 0.045f);
@@ -203,9 +211,16 @@ namespace KoiPond
             if (rend != null)
             {
                 rend.renderMode = ParticleSystemRenderMode.Billboard;
+                rend.sortingFudge = -50;
                 rend.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 rend.receiveShadows = false;
 
+#if UNITY_EDITOR
+                if (splashMaterial == null)
+                {
+                    splashMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/KoiFeedingSplash_MAT.mat");
+                }
+#endif
                 if (splashMaterial != null)
                 {
                     rend.sharedMaterial = splashMaterial;
@@ -213,94 +228,58 @@ namespace KoiPond
             }
         }
 
-        private void Update()
+        /// <summary>
+        /// Spawns a bite ripple at the exact point where the fish mouth touches the surface.
+        /// Can include a subtle initial splash disturbance.
+        /// </summary>
+        public void SpawnBiteRipple(Vector3 mouthPos, float waterY, bool includeSplash = false)
         {
-            if (isFeeding)
+            if (rippleParticles != null)
             {
-                rippleTimer -= Time.deltaTime;
-                if (rippleTimer <= 0f)
+                var rend = rippleParticles.GetComponent<ParticleSystemRenderer>();
+                if (rend != null && rend.sharedMaterial == null && rippleMaterial != null)
                 {
-                    rippleTimer = rippleInterval;
-                    EmitCircularRipple(currentMouthPosition);
+                    rend.sharedMaterial = rippleMaterial;
                 }
+
+                if (!rippleParticles.isPlaying) rippleParticles.Play();
+
+                Vector3 surfacePos = new Vector3(mouthPos.x, waterY + 0.005f, mouthPos.z);
+                ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
+                {
+                    position = surfacePos,
+                    startLifetime = rippleLifetime,
+                    startSize = rippleStartSize + Random.Range(-0.02f, 0.02f),
+                    startColor = new Color(0.92f, 0.98f, 1f, rippleOpacity + Random.Range(-0.05f, 0.05f)),
+                    applyShapeToPosition = false
+                };
+                rippleParticles.Emit(emitParams, 1);
             }
-        }
 
-        /// <summary>
-        /// Begins surface feeding ripple sequence: fires an initial small disturbance
-        /// and starts rhythmic concentric ripple generation at the mouth water-contact point.
-        /// </summary>
-        public void StartFeeding(Vector3 mouthPos, float waterY)
-        {
-            waterSurfaceY = waterY;
-            isFeeding = true;
-            currentMouthPosition = new Vector3(mouthPos.x, waterSurfaceY + 0.003f, mouthPos.z);
-            rippleTimer = 0f; // Emit first ripple immediately
-
-            // Small subtle splash/disturbance at initial surface touch
-            SpawnInitialDisturbance(currentMouthPosition);
-        }
-
-        /// <summary>
-        /// Updates the current feeding water contact position as the koi moves slightly.
-        /// </summary>
-        public void UpdateFeedingPosition(Vector3 mouthPos)
-        {
-            currentMouthPosition = new Vector3(mouthPos.x, waterSurfaceY + 0.003f, mouthPos.z);
-        }
-
-        /// <summary>
-        /// Stops spawning new feeding ripples when the fish completes feeding.
-        /// Existing ripples continue their natural expansion and fading.
-        /// </summary>
-        public void StopFeeding()
-        {
-            isFeeding = false;
-        }
-
-        /// <summary>
-        /// Emits an individual expanding circular ripple at the given surface point.
-        /// </summary>
-        public void EmitCircularRipple(Vector3 surfacePos)
-        {
-            if (rippleParticles == null) return;
-
-            ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
+            if (includeSplash && splashParticles != null)
             {
-                position = new Vector3(surfacePos.x, waterSurfaceY + 0.003f, surfacePos.z),
-                startLifetime = rippleLifetime,
-                startSize = rippleStartSize + Random.Range(-0.02f, 0.02f),
-                startColor = new Color(0.92f, 0.98f, 1f, rippleOpacity + Random.Range(-0.05f, 0.05f)),
-                applyShapeToPosition = false
-            };
+                var rend = splashParticles.GetComponent<ParticleSystemRenderer>();
+                if (rend != null && rend.sharedMaterial == null && splashMaterial != null)
+                {
+                    rend.sharedMaterial = splashMaterial;
+                }
 
-            rippleParticles.Emit(emitParams, 1);
-        }
+                if (!splashParticles.isPlaying) splashParticles.Play();
 
-        /// <summary>
-        /// Subtle initial bite disturbance: a small expanding ring and 4-6 micro droplets.
-        /// </summary>
-        private void SpawnInitialDisturbance(Vector3 surfacePos)
-        {
-            // Initial distinct ripple ring
-            EmitCircularRipple(surfacePos);
-
-            // Small, subtle droplet burst
-            if (splashParticles != null)
-            {
+                Vector3 surfacePos = new Vector3(mouthPos.x, waterY + 0.006f, mouthPos.z);
                 int dropletCount = Random.Range(4, 7);
                 for (int i = 0; i < dropletCount; i++)
                 {
-                    Vector2 randDir = Random.insideUnitCircle.normalized * Random.Range(0.15f, 0.35f);
-                    Vector3 velocity = new Vector3(randDir.x, Random.Range(0.35f, 0.65f), randDir.y);
+                    Vector2 randDir = Random.insideUnitCircle.normalized * Random.Range(0.12f, 0.28f);
+                    Vector3 velocity = new Vector3(randDir.x, Random.Range(0.25f, 0.50f), randDir.y);
 
                     ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
                     {
-                        position = surfacePos + new Vector3(Random.Range(-0.02f, 0.02f), 0.01f, Random.Range(-0.02f, 0.02f)),
+                        position = surfacePos + new Vector3(Random.Range(-0.015f, 0.015f), 0.005f, Random.Range(-0.015f, 0.015f)),
                         velocity = velocity,
-                        startLifetime = Random.Range(0.28f, 0.42f),
-                        startSize = Random.Range(0.02f, 0.038f),
-                        startColor = new Color(0.95f, 1f, 1f, 0.75f),
+                        startLifetime = Random.Range(0.25f, 0.38f),
+                        startSize = Random.Range(0.018f, 0.032f),
+                        startColor = new Color(0.95f, 1f, 1f, 0.70f),
                         applyShapeToPosition = false
                     };
 
@@ -310,3 +289,4 @@ namespace KoiPond
         }
     }
 }
+
