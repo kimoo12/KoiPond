@@ -32,7 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 7f85e5cf7ad2e0d46bfb88ca81b665e9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3cd4ceabe37f6b944b19917c56bee390, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: ad60ecc41f448994185a0c26583740ee, type: 3}
+        m_Texture: {fileID: 2800000, guid: 98c85d51a31deb34f8c7b8dc7e549727, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -100,7 +100,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _GlossMapScale: 0
+    - _GlossMapScale: 0.85
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
@@ -110,7 +110,7 @@ Material:
     - _ReceiveShadows: 1
     - _ScreenSpaceReflections: 1
     - _ScreenSpaceReflectionsContributeTransparent: 1
-    - _Smoothness: 0.45
+    - _Smoothness: 0.85
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
