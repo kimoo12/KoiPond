@@ -1,0 +1,59 @@
+{
+    "asset": "f22ad56f3fc3f3347b29df9ffdf087c6",
+    "fileName": "01a18a53-5014-7f4f-8c49-7bb5dce51f40.png",
+    "prompt": "Create a NEW flat orthographic TOP dorsal color projection texture of the EXACT koi in supplied Meshy screenshots. Reference image 1 is exact top view target, 2 side and 3 angle clarify colors. Head DOWN, tail UP, exactly straight centered vertical body axis, no perspective, fish fully visible with 5 percent margin, pure flat WHITE background. Match precisely the reference top-view vermilion red-orange forehead cap, scalloped ivory band behind cap, broad red-orange shoulders both sides of tall ivory dorsal fin, intervening white band and small rear red saddle, ivory tail base and soft peach ivory tail. Large natural overlapping scales on body but smooth unscaled rounded face. Ivory pectoral fins with blush peach fin rays, ivory dorsal fin with peach rays. Flat diffuse albedo texture projection for an existing unchanged mesh, no lighting or cast shadows or ambient occlusion, no black backdrop, no text, no generic reinterpretation. Exact Meshy screenshot markings, preserve exact proportions and color boundaries. Pure ivory belly unseen, saturated vermilion red patches, not pink patches.",
+    "negativePrompt": "",
+    "model": "gemini-3.0-pro",
+    "modelName": "Gemini 3.0 Pro",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 1",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "156a4e94983fef048854c98f2397506d",
+                "unlabeledIndex": 0
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 2",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "659eb09af3f9b934ba197b1cf3f6dfa0",
+                "unlabeledIndex": 1
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 3",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "cf30d955a675a644e9a1b14d71b5a3c4",
+                "unlabeledIndex": 2
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 2048,
+        "height": 2048
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

@@ -1,0 +1,68 @@
+{
+    "asset": "b7f66ce27be43d8488a1b710b6498f27",
+    "fileName": "01a18a55-3f9b-7dac-839e-c09a7719302a.png",
+    "prompt": "Image 1 is a neutral render of the EXISTING mesh and is the EXACT registration template. Repaint only its surface colors to match the Meshy koi in images 2 side, 3 angle, 4 top. ABSOLUTELY preserve image 1 fish silhouette, eye center/size, mouth, each fin and tail, pose, framing, pixel positions and proportions. Do NOT move resize rotate or reshape any part. Image 1 1024 square framing must stay exactly unchanged. Texture projection for same mesh. Replace gray surface with creamy ivory, saturated vermilion red-orange smooth forehead cap ending in scalloped edge ABOVE EYE, generous ivory band behind head cap, broad red shoulder saddle on upper flank under dorsal fin, descending scalloped red boundary to midflank, ivory intervening band, smaller red rear saddle toward tail, ivory tail base. Exactly Match reference images 2-4 placement. Eye in image 1 at its exact location becomes glossy nearly black central pupil surrounded by ivory eye ring, no added extra eyes. Fins and tail creamy ivory with gentle peach-pink fin rays, no red fins. Keep natural sculpted scales already in image 1, don't draw duplicate scales or add scales on face. Neutral diffuse albedo painting, remove cast shadows and strong lighting but preserve subtle fin ray accents. Keep DARK GRAY background of image 1 uniform unchanged. Head RIGHT tail LEFT exact image 1. No text. This image will be projected at its exact image 1 coordinates onto the existing model, so every pixel registration matters more than creativity.",
+    "negativePrompt": "",
+    "model": "gemini-3.0-pro",
+    "modelName": "Gemini 3.0 Pro",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 1",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "17245a46c1d360c4b9d85e0b16e3d6f6",
+                "unlabeledIndex": 0
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 2",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "659eb09af3f9b934ba197b1cf3f6dfa0",
+                "unlabeledIndex": 1
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 3",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "cf30d955a675a644e9a1b14d71b5a3c4",
+                "unlabeledIndex": 2
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 4",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "156a4e94983fef048854c98f2397506d",
+                "unlabeledIndex": 3
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}
