@@ -1,0 +1,50 @@
+{
+    "asset": "d494643cd2b119448acbda27326d9ced",
+    "fileName": "01a18fe2-91b4-72eb-be88-377ab8e8da8c.png",
+    "prompt": "Create a NEW flat diffuse color painting for texturing the existing koi mesh. Primary source appearance is reference 1 Meshy Tancho top screenshot; reference 2 shows THE EXACT TARGET MESH in 3 panels. Output ONLY a square 1024x1024 image reproducing the MIDDLE panel of reference 2 at EXACTLY its framing and silhouette: fish HEAD UP and TAIL DOWN (opposite orientation to reference 1), whole fish centered, bounding box about x 0.29 to 0.71 and y 0.06 to 0.94. Use the unchanged middle panel mesh proportions, sculpted scale positions, fins and barbels. Paint appearance matching reference 1: warm porcelain ivory white head and body, delicate pale grey lilac scale edge detail, creamy white dorsal and tail fins with subtly lavender grey rib grooves and white raised ridges. IMPORTANT: NO RED MARKING ANYWHERE: crown must be PURE IVORY WHITE because mathematically circular red mark will be applied separately in 3D. Treat this as an UNLIT orthographic top COLOR projection: uniform diffuse illumination, no directional shadows, no contrasty dark side or cast shadows. Dark charcoal solid background. No text, no grid, no multiple panels, no water or embellishments. Keep THE EXACT mesh silhouette, scale locations, anatomy and framing from the MIDDLE panel of reference 2. Do not copy screenshot pixels; repaint from scratch.",
+    "negativePrompt": "",
+    "model": "gemini-3.0-pro",
+    "modelName": "Gemini 3.0 Pro",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 1",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "e94b1e0f87f900549bd1e2bc664fb9a8",
+                "unlabeledIndex": 0
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 2",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "b0ea49a34c6588e448c5d30a692c3da7",
+                "unlabeledIndex": 1
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}
