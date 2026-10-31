@@ -19596,7 +19596,7 @@ PrefabInstance:
     - target: {fileID: 1224429048046177762, guid: a8674be4eb77e8b41a1016d74c0adf59, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b611304cdd35ef741bf42cdd079620b5, type: 2}
+      objectReference: {fileID: 2100000, guid: 999f8a05b5621fb479fb9acb04f3c046, type: 2}
     - target: {fileID: 1594268228765379702, guid: a8674be4eb77e8b41a1016d74c0adf59, type: 3}
       propertyPath: m_Name
       value: Koi_Tancho
