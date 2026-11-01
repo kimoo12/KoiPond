@@ -1,0 +1,41 @@
+{
+    "asset": "559185d1ce5f8724592b9b148c12df36",
+    "fileName": "01a194a9-742a-7521-addb-a1cfcc603126.jpg",
+    "prompt": "One Chagoi koi fish in orthographic side view, tail to left and head to right, isolated on uniform caramel brown background. Match the supplied Meshy screenshot exactly: smooth sculpted 3D cartoon fish, warm caramel brown, soft subtle tonal variation, rounded overlapping scales with delicate lighter brown highlights, smooth face, pale ivory silver eye surrounding dark glossy pupil, warm lighter brown fins with brown ray grooves. Natural uniformly brown Chagoi with no red or contrasting body markings. SMOOTH HIGH RESOLUTION 3D RENDER, absolutely NOT pixel art, NOT voxel art, NOT mosaic, NOT low-resolution, NOT blocky, no jagged edges. Use soft flat ambient lighting, minimal shadows suitable for a diffuse projection painting. Fish fills most of the square image width, centered both vertically and horizontally, full tail and all fins visible. Square canvas. No text or environment.",
+    "negativePrompt": "",
+    "model": "seedream-4-5",
+    "modelName": "Seedream 4.5",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 7,
+                "doodle": [],
+                "label": "Image",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "55a18590b1c33764696c2a66279850b0",
+                "unlabeledIndex": -1
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

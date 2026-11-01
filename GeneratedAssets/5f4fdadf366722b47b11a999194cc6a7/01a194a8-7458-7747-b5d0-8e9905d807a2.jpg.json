@@ -1,0 +1,59 @@
+{
+    "asset": "5f4fdadf366722b47b11a999194cc6a7",
+    "fileName": "01a194a8-7458-7747-b5d0-8e9905d807a2.jpg",
+    "prompt": "Create a flat diffuse/albedo color painting for projection onto the existing Chagoi koi mesh. References 1 and 2 are the source of truth for color and details; reference 3 shows the immutable mesh silhouette. One fish, orthographic RIGHT SIDE view, tail LEFT, head RIGHT, no perspective. Match reference 3's slimmer silhouette, not the plumper screenshot silhouette. Square 1024 canvas. Register fish at these exact pixel positions: leftmost tail x=70, rightmost snout x=954, dorsal fin highest point y=247, lowest pelvic fin y=777, body center y=520. Solid warm brown background RGB 154,103,64. Match the Meshy screenshots' stylized sculptural appearance: uniform warm caramel-brown body, subtle bronze tone variation, softly defined overlapping scalloped scales with lighter caramel faces, smooth caramel head and understated forehead highlights, muted warm taupe-brown underside, pale caramel fins and tail with darker brown fin-ray grooves. Match the pale ivory/silver oval eyes and glossy very dark pupils; preserve facial details. No red markings, no white or black body patches, no contrasting koi patterns. Flat ambient illumination suitable for diffuse texture projection, no directional shadows, no floor, no environment, no text or outlines. Keep scale shapes and fins in reference 3 locations. Do not redesign the fish.",
+    "negativePrompt": "",
+    "model": "seedream-4-5",
+    "modelName": "Seedream 4.5",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 1",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "55a18590b1c33764696c2a66279850b0",
+                "unlabeledIndex": 0
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 2",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "957ea0b9a2048a44b9bf199f7163f85d",
+                "unlabeledIndex": 1
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 3",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "7216bf26c6caa594eb396d4af1121062",
+                "unlabeledIndex": 2
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}
