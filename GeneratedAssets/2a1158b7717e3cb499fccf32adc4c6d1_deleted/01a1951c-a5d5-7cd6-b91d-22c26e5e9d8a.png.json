@@ -1,0 +1,77 @@
+{
+    "asset": "2a1158b7717e3cb499fccf32adc4c6d1",
+    "fileName": "01a1951c-a5d5-7cd6-b91d-22c26e5e9d8a.png",
+    "prompt": "Create a precise texture-projection registration sheet, 3 equally sized horizontal panels in one wide image, 3072x1024. Reference 1 is the TARGET MESH registration template: first panel grayscale SIDE silhouette with fish nose right; second panel grayscale TOP silhouette with nose right; third panel scrambled old texture which MUST BE IGNORED and replaced with opposite SIDE silhouette identical to first panel. Keep the exact target silhouette, eye centers, scale geometry and fin shapes, positions, camera views, margins and pixel registration of reference 1. References 2,3,4 are PRIMARY Meshy Shiro Utsuri views (side, top, angled); reference 5 concept is SECONDARY. Paint target first and third panel with EXACT reference 2 side body markings: white muzzle, black eyebrow/head band enclosing the eye with black curved cheek/gill tendrils; white island on crown; black shoulder marking; broad white middle band; large black posterior midbody band; white narrow gap; smaller black caudal peduncle saddle; white tail root. Register black shapes and curves to anatomically corresponding longitudinal proportions, not random spots. Panel 2 map exact top reference 3, rotated with nose right: white nose and crown island, broad black shoulder band, white middle separation, black mid-rear saddle, white gap, black narrow tail saddle and white tail root. All panels describe the SAME black bands wrapping continuously around the SAME fish. The grayscale target has a more elongated body; preserve its geometry rather than making the round reference body. Eyes correctly on target center: pale white/silver iris ring, black round pupil with tiny white glint. No brown or yellow eyes. Fins remain same geometry, black appearance and existing molded fin rays, pale tail base matching Meshy. Strict grayscale BLACK AND WHITE ONLY, no red orange blue cream purple brown; white skin with subtle neutral scale definition and black sumi areas. NO baked light shadows reflections gradients on body; use flat albedo values with tiny grayscale scale detail; black and white skin; no gray random spots. No captions no borders no text. Dark uniform neutral gray background as template. Do not redesign or add markings. The first and second panels must be pixel-registered to template so they can project onto an existing mesh.",
+    "negativePrompt": "",
+    "model": "gemini-3.0-pro",
+    "modelName": "Gemini 3.0 Pro",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 1",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "3a0a7d092407a3a4289d6820b7588dc1",
+                "unlabeledIndex": 0
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 2",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "b97bdeadb40a16d4b82f6d48196a6e8d",
+                "unlabeledIndex": 1
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 3",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "03ef04d6de87cd14d941b35ba7c18ce8",
+                "unlabeledIndex": 2
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 4",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "86a01c74b0ed07c4a8f3327af4746662",
+                "unlabeledIndex": 3
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 5",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "24c17a41c8b3aa44faa320f7c1410482",
+                "unlabeledIndex": 4
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 2048,
+        "height": 1152
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}
