@@ -1,0 +1,23 @@
+{
+    "asset": "57f190db909153d4da81b2d9d3536dda",
+    "fileName": "01a199f9-ff37-762e-aa32-847cd0907e56.glb",
+    "prompt": "Purachina platinum white koi, matching supplied Meshy screenshot closely. Consistent bright neutral platinum WHITE on entire head body top belly fins tail barbels. Smooth clean polished skin with soft metallic silver sheen. Delicate evenly spaced naturally overlapping scalloped scales with subtle light silver-gray edges on torso and top, smooth head. White fins and tail with soft silver-gray fin ray shading. Glossy black eyes with white silver rims, only eyes dark. No gray cream yellow blue body; no colored markings spots patches mottling cracks roughness damage gritty noise. Predominantly bright white albedo, no strong baked shadows. Restrained low-relief normal maps and moderate metallic sheen, not dark chrome. Cover original model seamlessly, preserve geometry and proportions. Match reference white polished finish and subtle scales especially from above.",
+    "negativePrompt": "",
+    "model": "model3d-tripo3-texturing",
+    "modelName": "Tripo 3.0 Texturing",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Texturing",
+    "promptImageReferenceGuid": "5cf27a5b1695d924c915289e90996531",
+    "modelReferenceGuid": "57f190db909153d4da81b2d9d3536dda",
+    "multiviewFrontGuid": "",
+    "multiviewBackGuid": "",
+    "multiviewLeftGuid": "",
+    "multiviewRightGuid": "",
+    "multiviewTopGuid": "",
+    "multiviewBottomGuid": "",
+    "multiviewLeftFrontGuid": "",
+    "multiviewRightFrontGuid": "",
+    "faceLimit": -1
+}
