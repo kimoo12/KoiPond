@@ -1,0 +1,68 @@
+{
+    "asset": "24d95b9bbf3639d4cba10670805c8f50",
+    "fileName": "01a19f06-984d-7066-bd97-e6a79546e521.png",
+    "prompt": "Create a NEW texture-painting projection image for a 3D Showa Sanshoku koi, 1024 square. Reference image 1 is the EXACT target mesh viewed orthographically from its RIGHT side: KEEP ITS SILHOUETTE, pixel coordinates, proportions, scale locations, eyes and ALL anatomy precisely fixed. Paint ONLY the colors on reference 1. Reference images 2 and 3 are PRIMARY Meshy color-pattern truth; image 4 is secondary concept. Do NOT adopt the chubbier reference 2/3 body shape. Head is at RIGHT, tail at LEFT. Same charcoal dark black fish with scarlet red Hi and ivory white Shiroji as Meshy: red forehead crown atop black face; charcoal lips and mouth rim, ABSOLUTELY NO RED LIPS. White circular eye surrounding a glossy black pupil, white catchlight. Strong BLACK oblique shoulder sash behind head running from upper shoulder down front midflank, a thin irregular white crest patch immediately behind sash on top. A large RED saddle on midbody dropping in scalloped fingers toward belly, irregular narrow WHITE accents bordering lower/front ends of red saddle. Then black intervening band with small low white flank flecks. A second smaller RED upper hindbody saddle near tail with irregular WHITE fringe beneath and white patch crossing upper back between red saddles. Belly, gill skin, ALL fins, dorsal fin, tail, fin rays black/charcoal. Match reference markings' shapes, locations and coverage rather than invent random spots. Painterly stylized color, bright flat scarlet, ivory and charcoal; subtle scale outlines only, no directional illumination, no new scales or geometry. Precisely preserve original mesh image 1 silhouette and charcoal background. Output ONLY recolored reference 1 image, no words, labels, borders, collage, extra fish or scenery.",
+    "negativePrompt": "",
+    "model": "gpt-image-1-5",
+    "modelName": "GPT Image 1.5",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 1",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "9d1e426056dd8f742860cac92ad2af04",
+                "unlabeledIndex": 0
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 2",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "782aef85264cbb54cbbdc08a9c834095",
+                "unlabeledIndex": 1
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 3",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "ad1fc33566bf9864a83c76fcef175d14",
+                "unlabeledIndex": 2
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 4",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "ef4156a1a3bcad645a942762a41bbb5e",
+                "unlabeledIndex": 3
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

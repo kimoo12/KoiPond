@@ -1,0 +1,68 @@
+{
+    "asset": "3664b4b5afb132f4daa4515eb5d21496",
+    "fileName": "01a19f06-720d-70d2-96f1-3075f6c21960.png",
+    "prompt": "Create a NEW texture-painting projection image for a 3D Showa Sanshoku koi, 1024 square. Reference image 1 is EXACT target mesh viewed orthographically TOP DOWN, nose BOTTOM tail TOP. KEEP image 1 silhouette, coordinates, proportions, scale locations, fins and ALL anatomy precisely fixed. Paint ONLY colors onto image 1. Reference 2 is PRIMARY Meshy TOP pattern truth; 3 and 4 are additional PRIMARY Meshy side/angle pattern truth. Do NOT use the chubbier reference anatomy. Match the Meshy top markings: black charcoal face perimeter and BLACK LIPS no red lips, large vivid SCARLET crown on forehead narrowing toward nose but nose rim stays black; thick irregular BLACK transverse shoulder sash just behind red crown with dark V-like lower edge. Narrow scalloped WHITE transverse crest just behind that black sash (at front of dorsal base). Large RED middle body dorsal saddle across both sides of charcoal dorsal fin; irregular WHITE transverse band roughly two-thirds along body splitting mid red saddle and hind red saddle. RED smaller upper hindbody saddle ending before BLACK tail root. Eye rings WHITE surrounding glossy black pupils. ALL fins including central dorsal fin, pectoral fins and full tail are BLACK charcoal with subtle fin rays. Black lower side margins where visible. Keep bilateral pattern continuity. Stylized painterly, saturated scarlet, neutral warm ivory and charcoal like Meshy. Make colors clear and mostly flat (albedo projection), no directional light, shadows, new scales or new mesh geometry. Preserve EXACT mesh silhouette and alignment of input 1 on its same charcoal background. Output ONLY recolored reference 1, no words, labels, grid, extra fish or scene.",
+    "negativePrompt": "",
+    "model": "gpt-image-1-5",
+    "modelName": "GPT Image 1.5",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 1",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "e277a07288cb9dd44adce333c801c838",
+                "unlabeledIndex": 0
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 2",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "5a838d0b2309c8744894b7c79b03d843",
+                "unlabeledIndex": 1
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 3",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "782aef85264cbb54cbbdc08a9c834095",
+                "unlabeledIndex": 2
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 4",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "ad1fc33566bf9864a83c76fcef175d14",
+                "unlabeledIndex": 3
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}
