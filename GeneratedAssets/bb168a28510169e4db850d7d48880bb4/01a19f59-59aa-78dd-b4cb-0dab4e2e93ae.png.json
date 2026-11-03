@@ -1,0 +1,68 @@
+{
+    "asset": "bb168a28510169e4db850d7d48880bb4",
+    "fileName": "01a19f59-59aa-78dd-b4cb-0dab4e2e93ae.png",
+    "prompt": "Create an entirely NEW Shiro Utsuri koi BASE COLOR PROJECTION image from scratch. Image 1 is an UNTEXTURED GEOMETRY ALIGNMENT GUIDE only: keep its fish silhouette, camera, size, exact eye location, fins and body proportions pixel-perfect, tail left, nose right, same 1024 square canvas and gray background. Images 2 and 3 are PRIMARY Meshy appearance references, image 4 concept is secondary. Paint the fish from image 1 to reproduce precisely the black and white pattern from the Meshy side and angle references, adapting no geometry. Broad connected black head mask surrounding eye, irregular white forehead patch within black cap, thick FULLY CONNECTED curved black band above nostrils (NOT thin and NOT interrupted), white muzzle and underside, slim downward black gill streaks beside mouth. Main black shoulder saddle scalloped and tapering down flank, broad white body gap, irregular broad transverse black middle band, white gap then black caudal patch, white tail base. Black charcoal fins with restrained longitudinal rays as in screenshots. Ivory pale warm beige eye ring and very dark circular pupil with a natural tiny catchlight; eye centered exactly over guide eye. ALL colors must be flat diffuse albedo: white is warm ivory, black nearly black but not crushed. NO lighting, NO shadows or shiny highlights except eye tiny glint. Skin smooth with only very subtle scale texture, NO deep etched lines, NO cracked skin, NO stone, NO baked ambient occlusion. Preserve silhouette EXACTLY, not a new fish design. No captions.",
+    "negativePrompt": "",
+    "model": "gemini-3.0-pro",
+    "modelName": "Gemini 3.0 Pro",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 1",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "c21bbcb427989514bab659dc46df5c26",
+                "unlabeledIndex": 0
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 2",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "b97bdeadb40a16d4b82f6d48196a6e8d",
+                "unlabeledIndex": 1
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 3",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "86a01c74b0ed07c4a8f3327af4746662",
+                "unlabeledIndex": 2
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 4",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "24c17a41c8b3aa44faa320f7c1410482",
+                "unlabeledIndex": 3
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

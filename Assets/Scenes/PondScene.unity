@@ -17510,7 +17510,7 @@ PrefabInstance:
     - target: {fileID: 1224429048046177762, guid: a8674be4eb77e8b41a1016d74c0adf59, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 91ccd50814e9a774683f3fb610e2fa63, type: 2}
+      objectReference: {fileID: 2100000, guid: 2812375f22d10f74d886d5830b5c992b, type: 2}
     - target: {fileID: 1594268228765379702, guid: a8674be4eb77e8b41a1016d74c0adf59, type: 3}
       propertyPath: m_Name
       value: Koi_Shiro_Utsuri

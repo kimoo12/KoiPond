@@ -1,0 +1,68 @@
+{
+    "asset": "737a52f619bd20948b6aa2e14475c7b4",
+    "fileName": "01a19f59-ac8b-7134-a78f-5545450bbfa3.png",
+    "prompt": "Create an entirely NEW Shiro Utsuri koi BASE COLOR PROJECTION image from scratch. Image 1 is UNTEXTURED GEOMETRY ALIGNMENT GUIDE: preserve its silhouette pixel-perfect, fish tail at TOP and nose at BOTTOM, narrow top view, same camera scale and gray background, fins unchanged. Image 2 PRIMARY Meshy TOP appearance reference determines EXACT black-white patch curves shapes placement and proportions. Image 3 Meshy angle primary and image 4 concept secondary. Paint image 1 with exact corresponding pattern from image 2. Crucial head pattern: thick continuous transverse curved black band wraps from left eye around above nostrils to right eye, a large irregular white forehead island in front of the main black shoulder saddle, white snout below band. Broad shoulder black wrap that curves round white forehead, broad white back under forward dorsal fin section, scalloped black transverse middle back band, narrow white gap then black tail peduncle saddle, white caudal fin base. Dark charcoal dorsal tail and pectoral fins with very subtle dark longitudinal fin rays. Both sides coherent as in reference. Flat diffuse albedo ONLY: clean warm white ivory skin and dense soft-black markings; NO shading, NO cast shadows, NO gradients simulating lighting, NO highlights except small eye details; NO deep scale lines, NO cracks, NO stone. Only very subtle natural scale color detail. EXACT image 1 silhouette and alignment, not a redesigned fish. No text.",
+    "negativePrompt": "",
+    "model": "gemini-3.0-pro",
+    "modelName": "Gemini 3.0 Pro",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 1",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "06d26fe5b3d96b442a5cf1146d25717d",
+                "unlabeledIndex": 0
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 2",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "03ef04d6de87cd14d941b35ba7c18ce8",
+                "unlabeledIndex": 1
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 3",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "86a01c74b0ed07c4a8f3327af4746662",
+                "unlabeledIndex": 2
+            },
+            {
+                "doodleReferenceType": 0,
+                "doodle": [],
+                "label": "Image 4",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "24c17a41c8b3aa44faa320f7c1410482",
+                "unlabeledIndex": 3
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}
