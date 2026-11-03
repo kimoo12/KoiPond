@@ -1,0 +1,212 @@
+using System;
+using System.IO;
+using UnityEditor;
+using UnityEngine;
+
+namespace KoiPond.Editor
+{
+    public static class YamabukiUvBaker
+    {
+        private const string Folder = "Assets/Models/Koi/Yamabuki_New";
+        private const string MeshPath = "Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset";
+        private const int Size = 2048;
+
+        [MenuItem("Tools/Koi/Bake Yamabuki UV Textures")]
+        public static void Bake()
+        {
+            var mesh = AssetDatabase.LoadAssetAtPath<UnityEngine.Mesh>(MeshPath);
+            if (mesh == null || mesh.uv.Length != mesh.vertexCount)
+                throw new InvalidOperationException("Original koi mesh must have valid UVs.");
+            var positions = mesh.vertices;
+            var uv = mesh.uv;
+            var triangles = mesh.triangles;
+            var albedo = new Color32[Size * Size];
+            var packed = new Color32[albedo.Length];
+            var covered = new bool[albedo.Length];
+            var gold = new Color32(244, 193, 79, 255);
+            for (int i = 0; i < albedo.Length; i++)
+            {
+                albedo[i] = gold;
+                packed[i] = new Color32(46, 0, 0, 255);
+            }
+            for (int t = 0; t < triangles.Length; t += 3)
+            {
+                int ia = triangles[t], ib = triangles[t + 1], ic = triangles[t + 2];
+                Vector2 a = uv[ia] * Size, b = uv[ib] * Size, c = uv[ic] * Size;
+                float denominator = (b.y - c.y) * (a.x - c.x) + (c.x - b.x) * (a.y - c.y);
+                if (Mathf.Abs(denominator) < 0.000001f) continue;
+                int x0 = Mathf.Clamp(Mathf.FloorToInt(Mathf.Min(a.x, Mathf.Min(b.x, c.x))), 0, Size - 1);
+                int x1 = Mathf.Clamp(Mathf.CeilToInt(Mathf.Max(a.x, Mathf.Max(b.x, c.x))), 0, Size - 1);
+                int y0 = Mathf.Clamp(Mathf.FloorToInt(Mathf.Min(a.y, Mathf.Min(b.y, c.y))), 0, Size - 1);
+                int y1 = Mathf.Clamp(Mathf.CeilToInt(Mathf.Max(a.y, Mathf.Max(b.y, c.y))), 0, Size - 1);
+                for (int y = y0; y <= y1; y++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    float px = x + 0.5f, py = y + 0.5f;
+                    float wa = ((b.y - c.y) * (px - c.x) + (c.x - b.x) * (py - c.y)) / denominator;
+                    float wb = ((c.y - a.y) * (px - c.x) + (a.x - c.x) * (py - c.y)) / denominator;
+                    float wc = 1f - wa - wb;
+                    if (wa < -0.00001f || wb < -0.00001f || wc < -0.00001f) continue;
+                    Vector3 p = positions[ia] * wa + positions[ib] * wb + positions[ic] * wc;
+                    Evaluate(p, out Color color, out float metal, out float smoothness);
+                    int index = y * Size + x;
+                    albedo[index] = color;
+                    packed[index] = new Color32((byte)Mathf.RoundToInt(metal * 255), 0, 0, (byte)Mathf.RoundToInt(smoothness * 255));
+                    covered[index] = true;
+                }
+            }
+            // Extend colors across UV margins without borrowing pixels from other textures.
+            for (int pass = 0; pass < 8; pass++)
+            {
+                var next = (bool[])covered.Clone();
+                for (int y = 1; y < Size - 1; y++)
+                for (int x = 1; x < Size - 1; x++)
+                {
+                    int i = y * Size + x;
+                    if (covered[i]) continue;
+                    int source = covered[i - 1] ? i - 1 : covered[i + 1] ? i + 1 : covered[i - Size] ? i - Size : covered[i + Size] ? i + Size : -1;
+                    if (source < 0) continue;
+                    albedo[i] = albedo[source];
+                    packed[i] = packed[source];
+                    next[i] = true;
+                }
+                covered = next;
+            }
+            WriteTexture("Yamabuki_UV_Albedo", albedo, true, false);
+            WriteTexture("Yamabuki_UV_MetallicSmoothness", packed, false, false);
+            var metallic = new Color32[albedo.Length];
+            var roughness = new Color32[albedo.Length];
+            var normal = new Color32[albedo.Length];
+            for (int i = 0; i < metallic.Length; i++)
+            {
+                byte m = packed[i].r;
+                byte r = (byte)(255 - packed[i].a);
+                metallic[i] = new Color32(m, m, m, 255);
+                roughness[i] = new Color32(r, r, r, 255);
+                normal[i] = new Color32(128, 128, 255, 255);
+            }
+            WriteTexture("Yamabuki_UV_Metallic", metallic, false, false);
+            WriteTexture("Yamabuki_UV_Roughness", roughness, false, false);
+            WriteTexture("Yamabuki_UV_Normal", normal, false, true);
+            const string materialPath = Folder + "/Yamabuki_UV_Gold.mat";
+            var material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+            if (material == null)
+            {
+                material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                material.name = "Yamabuki_UV_Gold";
+                AssetDatabase.CreateAsset(material, materialPath);
+            }
+            Undo.RecordObject(material, "Configure Yamabuki-only material");
+            material.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(Folder + "/Yamabuki_UV_Albedo.png"));
+            material.SetColor("_BaseColor", Color.white);
+            material.SetTexture("_MetallicGlossMap", AssetDatabase.LoadAssetAtPath<Texture2D>(Folder + "/Yamabuki_UV_MetallicSmoothness.png"));
+            material.SetTexture("_BumpMap", AssetDatabase.LoadAssetAtPath<Texture2D>(Folder + "/Yamabuki_UV_Normal.png"));
+            material.SetFloat("_Smoothness", 1f);
+            material.SetFloat("_Metallic", 1f);
+            material.SetFloat("_BumpScale", 1f);
+            material.SetFloat("_SmoothnessTextureChannel", 0f);
+            material.EnableKeyword("_METALLICSPECGLOSSMAP");
+            material.EnableKeyword("_NORMALMAP");
+            EditorUtility.SetDirty(material);
+            AssetDatabase.SaveAssets();
+        }
+
+        public static void Evaluate(Vector3 point, out Color color, out float metallic, out float smoothness)
+        {
+            // Very gentle continuous pigmentation, never island-dependent shading.
+            float top = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(-0.14f, 0.10f, point.y));
+            color = Color.Lerp(new Color32(240, 185, 72, 255), new Color32(248, 201, 91, 255), top);
+            metallic = 0.18f;
+            smoothness = 1f;
+            Vector3 p = point;
+            p.x = Mathf.Abs(p.x);
+            var axis = new Vector3(0.92f, 0.08f, 0.38f).normalized;
+            var horizontal = Vector3.Cross(Vector3.up, axis).normalized;
+            var vertical = Vector3.Cross(axis, horizontal).normalized;
+            var center = new Vector3(0.0746f, -0.0012f, 0.2279f);
+            Vector3 delta = p - center;
+            float ex = Vector3.Dot(delta, horizontal) / 0.0242f;
+            float ey = Vector3.Dot(delta, vertical) / 0.0245f;
+            float radius = Mathf.Sqrt(ex * ex + ey * ey);
+            float depth = Vector3.Dot(delta, axis);
+            if (radius < 1.07f && depth > -0.012f && depth < 0.018f)
+            {
+                Color rim = new Color32(222, 219, 218, 255);
+                float pale = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.99f, 1.06f, radius));
+                color = Color.Lerp(color, rim, pale);
+                float pupilRadius = Mathf.Sqrt(Mathf.Pow((ex - 0.03f) * 0.0242f, 2f) + Mathf.Pow(ey * 0.0245f, 2f)) / 0.0149f;
+                float pupil = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.94f, 1.04f, pupilRadius));
+                color = Color.Lerp(color, new Color32(24, 22, 27, 255), pupil);
+                float glintRadius = Mathf.Sqrt((ex + 0.13f) * (ex + 0.13f) + (ey - 0.31f) * (ey - 0.31f));
+                float glint = (1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.085f, 0.14f, glintRadius))) * pupil;
+                color = Color.Lerp(color, new Color32(255, 249, 228, 255), glint);
+                metallic = Mathf.Lerp(metallic, 0f, pale);
+                smoothness = Mathf.Lerp(1f, 1.95f, pale);
+            }
+            var nostril = new Vector3(0.0309f, -0.0028f, 0.2706f);
+            float nostrilDistance = Vector3.Distance(p, nostril);
+            float nostrilMask = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.0020f, 0.0038f, nostrilDistance));
+            color = Color.Lerp(color, new Color32(164, 120, 44, 255), nostrilMask);
+            // Convert the procedural sheen to physical smoothness (skin 0.4, eyes 0.78).
+            smoothness = Mathf.Clamp01(smoothness * 0.4f);
+        }
+
+        private static void WriteTexture(string name, Color32[] pixels, bool srgb, bool isNormal)
+        {
+            string path = Folder + "/" + name + ".png";
+            var texture = new Texture2D(Size, Size, TextureFormat.RGBA32, false, !srgb);
+            texture.SetPixels32(pixels);
+            texture.Apply();
+            File.WriteAllBytes(path, texture.EncodeToPNG());
+            UnityEngine.Object.DestroyImmediate(texture);
+            AssetDatabase.ImportAsset(path);
+            var importer = (TextureImporter)AssetImporter.GetAtPath(path);
+            importer.textureType = isNormal ? TextureImporterType.NormalMap : TextureImporterType.Default;
+            importer.sRGBTexture = srgb;
+            importer.maxTextureSize = Size;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.filterMode = FilterMode.Trilinear;
+            importer.mipmapEnabled = true;
+            importer.alphaSource = TextureImporterAlphaSource.FromInput;
+            importer.SaveAndReimport();
+        }
+
+        public static void RenderComparison()
+        {
+            var mesh = AssetDatabase.LoadAssetAtPath<UnityEngine.Mesh>(MeshPath);
+            var material = AssetDatabase.LoadAssetAtPath<Material>(Folder + "/Yamabuki_UV_Gold.mat");
+            var grid = new Texture2D(1536, 1536, TextureFormat.RGBA32, false);
+            var directions = new[] { new Vector3(0, 0, 1), new Vector3(1, 0, 0), new Vector3(1, 0.35f, 1), new Vector3(0, 1, 0) };
+            for (int i = 0; i < directions.Length; i++)
+            {
+                var preview = new PreviewRenderUtility();
+                preview.camera.orthographic = true;
+                preview.camera.orthographicSize = 0.34f;
+                preview.camera.nearClipPlane = 0.01f;
+                preview.camera.farClipPlane = 10;
+                preview.camera.backgroundColor = new Color(0.12f, 0.13f, 0.14f);
+                preview.camera.clearFlags = CameraClearFlags.SolidColor;
+                preview.camera.transform.position = directions[i].normalized;
+                preview.camera.transform.rotation = Quaternion.LookRotation(-directions[i], i == 3 ? Vector3.back : Vector3.up);
+                preview.lights[0].intensity = 1.6f;
+                preview.lights[0].transform.rotation = Quaternion.LookRotation(-new Vector3(1, 1.5f, 1));
+                preview.lights[1].intensity = 0.75f;
+                preview.lights[1].transform.rotation = Quaternion.LookRotation(-new Vector3(-1, 0.3f, 1));
+                preview.ambientColor = new Color(0.4f, 0.4f, 0.4f);
+                preview.BeginStaticPreview(new Rect(0, 0, 768, 768));
+                preview.DrawMesh(mesh, Matrix4x4.identity, material, 0);
+                preview.Render(true);
+                var image = preview.EndStaticPreview();
+                grid.SetPixels((i % 2) * 768, i < 2 ? 768 : 0, 768, 768, image.GetPixels());
+                UnityEngine.Object.DestroyImmediate(image);
+                preview.Cleanup();
+            }
+            grid.Apply();
+            string path = Folder + "/Yamabuki_Front_Side_ThreeQuarter_Top.png";
+            File.WriteAllBytes(path, grid.EncodeToPNG());
+            UnityEngine.Object.DestroyImmediate(grid);
+            AssetDatabase.ImportAsset(path);
+        }
+    }
+}
