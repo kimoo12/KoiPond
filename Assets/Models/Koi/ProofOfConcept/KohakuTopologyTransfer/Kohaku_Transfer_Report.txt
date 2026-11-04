@@ -1,0 +1,37 @@
+Kohaku topology-guided UV transfer proof of concept
+Source model: Assets/Models/Koi/Materials/kohaku koi texture/Meshy_AI_kohaku_koi_textured_1025023033_texture.fbx
+Source base-color: Assets/Models/Koi/Materials/kohaku koi texture/kohaku koi_texture.png (decoded original PNG 4096x4096)
+Destination mesh: Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset
+Taisho bridge: Assets/Models/Koi/Materials/taisho sanke koi texture/Meshy_AI_Koi_Fish_20261021_image-to-3d-texture.fbx
+Texture: Assets/Models/Koi/ProofOfConcept/KohakuTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_BaseColor.png
+Material: Assets/Models/Koi/ProofOfConcept/KohakuTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_Test.mat
+Resolution: 4096x4096
+Rigged/Taisho triangle indices AND UV arrays identical: true
+One-to-one paired triangles and ordered corners: 417156/417156
+Kohaku vertex registration RMS: 5.14680426E-09; max: 1.19471846E-08 (Taisho model units)
+Degenerate target UV triangles: 0
+Triangles with no pixel centers at this resolution: 17246 (subpixel footprints, NOT missing correspondence)
+UV summed area: 0.668663539; covered interior texels: 11218432; outside-only padding: 2441116
+Overlapping sample events: 1; incompatible events (>2/255): 0; distinct conflicting texels: 0
+Overlap maximum RGB-channel disagreement: 0; average: 0
+Coverage legend: white=sampled triangle interior; gray=outside-only bleed; black=unused UV space; magenta=incompatible overlapping samples.
+Method: bounds-normalize Kohaku geometry to Taisho; spatially match original positions, weld geometry-only duplicates for triangle lookup, verify unique face bijection, recover original UV per corner, rasterize rigged UV triangles and barycentrically sample the original Meshy base-color. No nearest-surface projection, repainting or AI generation.
+Finite-resolution bilinear resampling cannot be mathematically lossless. Original triangle-boundary UV discontinuities are retained, not smoothed. Tiny triangles can be subpixel; original markings are not redesigned.
+Test material uses only transferred base-color; source normal/roughness/metallic maps were deliberately NOT assigned because their UVs have not been transferred.
+Protected source asset SHA256 unchanged: True
+No mesh, UV, rig, skin weight, animation, existing material, prefab or scene modified. No material reassigned.
+Status: numerical correspondence complete; inspect overlap statistics and side/top/front/back preview before visual acceptance.
+
+Post-bake checks
+Source hashes still unchanged: True
+Imported texture 4096, sRGB, uncompressed, no mipmaps; neutral base-color material, no original-UV normal map: True
+PondScene references new test material/texture: False
+Preview: Assets/Models/Koi/ProofOfConcept/KohakuTopologyTransfer/Kohaku_Source_vs_Transfer_6Views.png
+Left column=original Kohaku; right=rigged transfer; rows top-to-bottom=right side,left side,top,bottom,front,rear. Both columns normalized independently for framing; geometry differences are expected because the rigged mesh is not altered.
+right side: original nonbackground pixels=64332, transfer=63052
+left side: original nonbackground pixels=64332, transfer=63052
+top: original nonbackground pixels=38735, transfer=37667
+bottom: original nonbackground pixels=38735, transfer=37667
+front: original nonbackground pixels=23726, transfer=23089
+rear: original nonbackground pixels=23726, transfer=23090
+Visual inspection has NOT been completed: preview image retrieval is unavailable with this editor's entity-ID interface. Numerical correspondence and rendering checks pass, but visual marking-boundary/seam acceptance remains pending.
