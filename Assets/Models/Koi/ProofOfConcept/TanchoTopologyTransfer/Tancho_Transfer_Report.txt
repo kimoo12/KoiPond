@@ -1,0 +1,48 @@
+Tancho topology-guided UV-to-UV original base-color transfer
+Source model: Assets/Models/Koi/Materials/tancho koi texture/Meshy_AI_tancho_koi_round_spot_1025022631_texture.fbx
+Source base-color: Assets/Models/Koi/Materials/tancho koi texture/tancho koi_texture.png (original PNG 4096x4096)
+Destination: Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset
+Taisho bridge: Assets/Models/Koi/Materials/taisho sanke koi texture/Meshy_AI_Koi_Fish_20261021_image-to-3d-texture.fbx
+Texture: Assets/Models/Koi/ProofOfConcept/TanchoTopologyTransfer/Tancho_OriginalMeshy_ToRigged_BaseColor.png
+Material: Assets/Models/Koi/ProofOfConcept/TanchoTopologyTransfer/Tancho_OriginalMeshy_ToRigged_Test.mat
+Resolution: 4096x4096
+Rigged/Taisho vertex counts, triangle indices AND UV arrays identical: True
+Unique triangle bijection: 417156/417156; verified uniquely ordered corners: 1251468/1251468; reversed winding: 0
+Vertex registration RMS: 5.14680123E-09; max: 1.19471846E-08 (Taisho units)
+All source/destination UVs finite and within [0,1]: True
+Degenerate target UV triangles: 0
+Triangles with no pixel centers: 17246 (subpixel footprints, NOT missing correspondence)
+Summed target UV area: 0.668663539; interior texels: 11218432 (66.867065% atlas); outside-only padding texels: 2441116
+Overlapping sample events: 1; incompatible RGB events (>2/255): 0; incompatible UV mapping events (>0.01 source texel): 0; distinct conflict texels: 0
+Overlap RGB max/average disagreement: 0/0; max mapping disagreement: 0 source texels
+Coverage legend: white=sampled interior; gray=outside-only bleed; black=unused atlas; magenta=incompatible color or mapping overlap.
+Method: same bounds normalization, 1e-7 spatial buckets, geometry-only duplicate welding, unique Taisho face lookup and original source corner UV recovery as Kohaku; rasterize unchanged rigged UVs and barycentrically bilinear-sample original sRGB PNG bytes. No projection, repainting, generation, simplification, tint or marking edits.
+Finite-resolution resampling is not mathematically lossless. Source seam UV discontinuities are retained. Subpixel triangle footprints are explicitly reported. Eight texels of edge bleed are outside rasterized interiors only, as in Kohaku.
+Test material: transferred base-color only; white tint; metallic=0; smoothness=0. Source-UV normal/metallic/roughness NOT assigned.
+Six-view comparison: Assets/Models/Koi/ProofOfConcept/TanchoTopologyTransfer/Tancho_Source_vs_Transfer_6Views.png
+Left=original Tancho Meshy; right=rigged transfer. Rows: right side, left side, top, bottom, front, rear. Identical neutral unlit base-color rendering; meshes independently bounds-normalized only for framing. Geometry differences are expected.
+right side original nonbackground pixels: 25573
+right side transfer nonbackground pixels: 25066
+left side original nonbackground pixels: 25573
+left side transfer nonbackground pixels: 25066
+top original nonbackground pixels: 15380
+top transfer nonbackground pixels: 14964
+bottom original nonbackground pixels: 15380
+bottom transfer nonbackground pixels: 14963
+front original nonbackground pixels: 9431
+front transfer nonbackground pixels: 9151
+rear original nonbackground pixels: 9430
+rear transfer nonbackground pixels: 9151
+Protected pre-existing asset and metadata SHA256 unchanged: True (536 files)
+Destination in-memory UV/indices/vertices unchanged: True
+Status: correspondence, winding, UV validity, raster coverage and conflict gates PASS; six-view rendering completed. Visual acceptance requires inspection of the comparison.
+
+Post-bake verification
+Imported transfer texture: 4096x4096, sRGB, uncompressed, no mipmaps; neutral white base-color material verified; no source-UV normal map assigned.
+Coverage diagnostic imported at native 4096x4096; comparison imported at native 1280x1920. Both uncompressed, no mipmaps and no non-power-of-two resizing.
+Rechecked all 536 protected pre-existing asset/metadata hashes: unchanged.
+No scene or prefab references the new texture or material GUID. Active PondScene remains clean; editor is not in Play Mode.
+Compilation and editor execution completed; Unity Console contains no errors.
+Visual inspection NOT completed: the image-retrieval interface cannot resolve this editor's EntityId through its legacy integer asset-ID input. All 12 comparison panels rendered nonempty, but marking-boundary and seam visual acceptance remains pending. Open Tancho_Source_vs_Transfer_6Views.png for inspection.
+Final status: numerical bake accepted; visual acceptance pending. No repainting, AI generation, simplification, surface filling, color tinting or marking redesign occurred. Finite-resolution bilinear resampling and outside-only eight-texel edge bleed match the Kohaku method.
+
