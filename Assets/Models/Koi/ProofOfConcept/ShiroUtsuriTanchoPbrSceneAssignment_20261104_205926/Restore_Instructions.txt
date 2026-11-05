@@ -1,0 +1,17 @@
+Restore only the two koi material assignments (recommended)
+
+1. Exit Play Mode and open Assets/Scenes/PondScene.unity.
+2. Select each hierarchy target below. In Skinned Mesh Renderer > Materials > Element 0, assign its previous material. Do not change mesh, bones, root bone or other properties.
+3. Save PondScene. Do NOT apply these instance overrides to the shared prefab.
+
+Koi_School/Koi_Shiro_Utsuri/FishMesh
+Previous material: Assets/Models/Koi/ShiroUtsuri_New/Shiro_Meshy_New.mat
+
+Koi_School/Koi_Tancho/FishMesh
+Previous material: Assets/Models/Koi/Tancho_New/EyePreview/Tancho_Eyes.mat
+
+Material_Assignment_Backup.tsv retains exact paths, GUIDs and local file IDs for both original slots. All material assets remain untouched. Immediate Edit > Undo is available before later edits.
+
+Full-scene fallback (reverts ALL later scene changes): close PondScene without saving, copy PondScene_BeforeAssignment.unity.bak over Assets/Scenes/PondScene.unity, then reopen it. Keep the existing scene .meta/GUID; the .meta.bak is retained only for recovery. Prefer restoring the two slots to preserve subsequent edits.
+
+PBR test materials retain known normal fidelity limitations. Assignment is not production visual approval.

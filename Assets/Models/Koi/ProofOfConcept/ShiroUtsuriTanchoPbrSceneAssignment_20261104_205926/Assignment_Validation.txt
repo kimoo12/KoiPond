@@ -1,0 +1,8 @@
+Shiro Utsuri + Tancho PBR scene assignment verification
+Scene	Hierarchy	Slot	PreviousMaterialPath	PreviousGUID	PreviousLocalFileID	NewMaterialPath	NewGUID
+Assets/Scenes/PondScene.unity	Koi_School/Koi_Shiro_Utsuri/FishMesh	0	Assets/Models/Koi/ShiroUtsuri_New/Shiro_Meshy_New.mat	91ccd50814e9a774683f3fb610e2fa63	2100000	Assets/Models/Koi/ProofOfConcept/ShiroUtsuriTopologyTransfer/ShiroUtsuri_OriginalMeshy_ToRigged_PBR_Test.mat	9f827ae9d77ecea4fa775cdc3cac33bc
+Assets/Scenes/PondScene.unity	Koi_School/Koi_Tancho/FishMesh	0	Assets/Models/Koi/Tancho_New/EyePreview/Tancho_Eyes.mat	999f8a05b5621fb479fb9acb04f3c046	2100000	Assets/Models/Koi/ProofOfConcept/TanchoTopologyTransfer/Tancho_OriginalMeshy_ToRigged_PBR_Test.mat	09b5af9f00f04f94d9628d60be4f9dfd
+Saved scene equals original with ONLY two material GUID replacements: True
+Non-material component changes: 0
+Protected existing asset/metadata hash mismatches: 0 (726 files)
+Both meshes, bones, root bones and non-material renderer settings preserved. Other scene objects unchanged. Shared prefab not modified. Existing PBR assets use approved base-color and new Normal/MetallicSmoothness maps. Backup retained before either assignment. Editor remains in Edit Mode. Shader support/references validated; runtime/visual appearance not yet verified.

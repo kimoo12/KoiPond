@@ -1,0 +1,13 @@
+Independent Tancho PBR post-bake validation
+Approved BaseMap reference, tint and texture scale/offset preserved. URP Lit metallic workflow, normal and metallic-map keywords, smoothness source metallic alpha, Smoothness=1, BumpScale=1: PASS.
+Normal.png: 4096x4096 linear, uncompressed RGBA32, bilinear/clamp, no mipmaps, importer PASS.
+Roughness.png: 4096x4096 linear, uncompressed RGB24, bilinear/clamp, no mipmaps, importer PASS.
+Metallic.png: 4096x4096 linear, uncompressed RGB24, bilinear/clamp, no mipmaps, importer PASS.
+MetallicSmoothness.png: 4096x4096 linear, uncompressed RGBA32, bilinear/clamp, no mipmaps, importer PASS.
+Independent exhaustive decoded-PNG packing mismatches=0 across 16777216 texels; R=metallic, G=B=0, A=255-roughness. Scalar maps grayscale PASS.
+GPU packed linear R/A versus exact texel-centered CPU bilinear sampling: 262144 samples; maximum byte-unit error=0.00194549561 PASS.
+Actual GPU URP UnpackNormalScale versus CPU XY/positive-Z: 262144 bilinear samples; mean vector error=5.45669869E-06; maximum=2.7611366E-05 PASS.
+Protected pre-existing SHA256 mismatches after both bakes/import=0; protected file count=791
+Loaded-scene material assignments=0; all serialized scenes reference none of the new PBR assets. Editor not in Play Mode.
+Data/import checks PASS, NOT production normal-fidelity approval. Existing mixed-handedness destination tangents cause exceptional reconstruction errors; see transfer report, NormalDecodeError.png and Normal_Exceptions.csv. No mesh/tangent repairs, normal-strength reduction or repainting. Meshy +Y convention follows existing importer, not independently certified authoring metadata. Lit visuals, distance/seam sampling and animated skinning remain unverified. Finite-resolution/8-bit resampling, 17246 subpixel triangles, 8px outside-only padding and disabled mipmaps remain PoC limitations.
+Verification sampling note: an initial GetPixelBilinear reference used Unity's CPU coordinate convention and produced a false GPU discrepancy. Corrected to exact GPU texel-centered bilinear sampling; no asset modification was needed.
