@@ -1,0 +1,7 @@
+Restore ONLY the saved Kohaku assignment:
+Open Assets/Scenes/PondScene.unity.
+Select Koi_School/Koi_Kohaku/FishMesh.
+Set SkinnedMeshRenderer > Materials > Element 0 to Assets/Models/Koi/Kohaku_New/Kohaku_Meshy_New.mat.
+Save the scene. No texture/material editing is required.
+Assignment_Backup.json contains the stable renderer GlobalObjectId and prior material GUID.
+PondScene_Before_Kohaku_PBR.unity.bak is the exact original scene file for emergency recovery, not an imported duplicate scene.

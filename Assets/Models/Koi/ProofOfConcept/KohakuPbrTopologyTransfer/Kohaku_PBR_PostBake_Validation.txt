@@ -1,0 +1,27 @@
+Independent Kohaku PBR post-bake validation
+
+Approved base-map reference, base tint and texture scale/offset preserved: true.
+URP Lit metallic workflow, normal and metallic-map keywords, smoothness source=metallic alpha, _Smoothness=1 and _BumpScale=1: validated.
+Normal map: NormalMap import, linear, no green flip, no height conversion, 4096x4096 uncompressed RGBA32.
+Roughness and metallic: linear, 4096x4096 uncompressed RGB24.
+MetallicSmoothness: linear, 4096x4096 uncompressed RGBA32, alpha retained, no transparency dilation.
+All maps bilinear/clamp, no mipmaps.
+Exhaustive independent decoded-PNG packing mismatches across 16777216 texels: 0.
+Packing: R=metallic; G=B=0; A=255-roughness byte (smoothness=1-roughness).
+Imported GPU linear packed R/A versus original output PNG maximum byte error: 0.
+Actual GPU URP normal unpacking versus CPU positive-Z reconstruction: 262144 bilinearly filtered samples; mean vector error=6.48310641e-06; maximum=2.41792914e-05.
+Protected pre-existing file SHA256 mismatches after import and verification: 0 (661 protected files).
+PondScene serialized references to new PoC assets: false.
+Loaded-scene renderer assignments of new test material: 0.
+Editor is not in Play Mode.
+
+IMPORTANT: imported-data correctness does NOT mean normal fidelity passed.
+The existing destination mesh contains 34063 triangles with mixed vertex tangent handedness. Interpolated URP TBN frames become ill-conditioned in small regions.
+Measured normal texel-center decode/reconstruction error: mean 0.14264167 degrees; maximum 159.132383 degrees; 381 interior texels exceed 1 degree; 224 exceed 5 degrees.
+Two converted interior normals require negative tangent Z, which conventional Unity normal-map unpacking cannot represent because it reconstructs positive Z.
+Signed conversions and exceptional texel coordinates are recorded in Normal_Exceptions.csv. NormalDecodeError.png flags negative-Z samples in magenta and other error in red (saturated at 5 degrees).
+No mesh tangents were repaired, no normal strength was reduced, and no exceptional samples were repainted. The maps and material remain separate diagnostic test assets, not production-approved assets.
+The source +Y normal convention follows the existing original map importer (flipGreen=false); original Meshy authoring metadata was not independently available to certify this convention.
+Local tangent transport preserves source angular detail relative to the destination smooth surface, rather than physically deforming an absolute normal field by a global inverse-transpose transform.
+4096x4096 rasterization leaves 17246 subpixel triangles without texel centers. Eight-pixel outside-only padding and disabled mipmaps are PoC settings, not production sampling validation.
+Lit appearance, seams under different viewing distances, and animated skin deformation have not been visually approved or tested.

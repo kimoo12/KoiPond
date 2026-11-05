@@ -1,0 +1,5 @@
+Target: Koi_School/Koi_Kohaku/FishMesh
+Prior material: Assets/Models/Koi/Kohaku_New/Kohaku_Meshy_New.mat
+Applied: Assets/Models/Koi/ProofOfConcept/KohakuPbrTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_PBR_Test.mat
+Non-target component serialization changes: 0
+Scene YAML differs only by Kohaku material GUID: True

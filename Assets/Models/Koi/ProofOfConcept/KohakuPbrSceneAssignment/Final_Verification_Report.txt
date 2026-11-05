@@ -1,0 +1,40 @@
+Kohaku scene PBR assignment - final verification after reconnect
+
+Scene: Assets/Scenes/PondScene.unity
+Target renderer: Koi_School/Koi_Kohaku/FishMesh
+Applied existing material: Assets/Models/Koi/ProofOfConcept/KohakuPbrTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_PBR_Test.mat
+_BaseMap: Assets/Models/Koi/ProofOfConcept/KohakuTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_BaseColor.png
+_BumpMap: Assets/Models/Koi/ProofOfConcept/KohakuPbrTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_Normal.png
+_MetallicGlossMap: Assets/Models/Koi/ProofOfConcept/KohakuPbrTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_MetallicSmoothness.png
+
+Assignment backup: Assignment_Backup.json
+Prior material: Assets/Models/Koi/Kohaku_New/Kohaku_Meshy_New.mat
+Exact pre-assignment scene backup: PondScene_Before_Kohaku_PBR.unity.bak
+Restore_Instructions.txt explains how to restore ONLY the material slot.
+
+Final verification:
+- Current renderer has the requested test material in its single material slot.
+- Mesh remains Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset; bone count remains 10.
+- Saved PondScene differs from the original scene backup ONLY by the Kohaku material GUID. This covers unchanged transforms, UV/mesh references, rig/bones, animation references, all other koi assignments, and other scene settings.
+- 592 protected existing koi asset/source/importer files have zero SHA256 mismatches; no existing texture, mesh, animation or material assets were overwritten.
+- Scene is saved and not dirty; Editor is not in Play Mode.
+- Temporary Play Mode runner removed and its callbacks cancelled.
+
+Recovered completed Play Mode result (see PlayMode_Runtime_Report.txt):
+- Requested material remained assigned throughout the run.
+- Other renderer assignment changes: 0.
+- Fish position displacement: 2.55269361 world units.
+- Maximum bone local-angle change: 31.4690971 degrees.
+- Animator enabled, normalized time: 5.29503012.
+- Runtime world scale: (1,1,1).
+- Shader supported, renderer enabled and visible.
+- Captured runtime errors: 0.
+- Game View screenshot PNGs captured at approximately 2 and 6 seconds, each 1024x512:
+  Kohaku_PBR_PlayMode_2s.png
+  Kohaku_PBR_PlayMode_6s.png
+
+VISUAL REVIEW LIMITATION:
+The capture files exist, but their image content could not be retrieved for visual inspection through the available image interface: this Unity version exposes EntityId values while the image tool requires legacy integer instance IDs. No claim is made that texture seams, scale-detail quality, highlight/shading artifacts, or animated appearance are visually artifact-free. Screenshots remain available for manual review or attachment in chat.
+
+KNOWN NORMAL-FIDELITY RISKS FROM THE PBR TRANSFER PROOF:
+Existing destination mixed tangent handedness creates small ill-conditioned regions. Previously measured texel-center normal errors: mean 0.14264167 degrees, 224 texels above 5 degrees, maximum 159.132383 degrees; 2 converted normals require negative tangent Z that conventional Unity normal decoding cannot represent. These are numerical risks, not newly confirmed visible defects. No mesh repair, normal-strength reduction or texture repainting was performed.

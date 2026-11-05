@@ -1,0 +1,17 @@
+Target: Koi_School/Koi_Kohaku/FishMesh
+Mesh: Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset; bones=10
+Animator enabled=True; controller=Assets/Models/Koi/Animations/Koi_AnimatorController.controller
+Initial material=Assets/Models/Koi/ProofOfConcept/KohakuPbrTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_PBR_Test.mat|
+Game View capture: Assets/Models/Koi/ProofOfConcept/KohakuPbrSceneAssignment/Kohaku_PBR_PlayMode_2s.png
+Capture viewport center=(0.500738204, 0.510347128, 15.0693216); renderer.isVisible=True; world bounds=Center: (0.20, -0.35, -0.32), Extents: (0.29, 0.20, 0.36)
+Game View capture: Assets/Models/Koi/ProofOfConcept/KohakuPbrSceneAssignment/Kohaku_PBR_PlayMode_6s.png
+Capture viewport center=(0.428236783, 0.538265944, 15.4382143); renderer.isVisible=True; world bounds=Center: (0.07, -0.34, 1.52), Extents: (0.36, 0.21, 0.34)
+Test material remained assigned=True; other renderer assignment changes=0
+Position displacement=2.55269361; maximum bone local-angle change=31.4690971 degrees
+Shader supported=True; renderer enabled=True; visible=True
+_BaseMap=Assets/Models/Koi/ProofOfConcept/KohakuTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_BaseColor.png
+_BumpMap=Assets/Models/Koi/ProofOfConcept/KohakuPbrTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_Normal.png
+_MetallicGlossMap=Assets/Models/Koi/ProofOfConcept/KohakuPbrTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_MetallicSmoothness.png
+Runtime world scale=(1.00, 1.00, 1.00); animator normalized time=5.29503012
+Captured runtime errors=0
+Runtime assignment/configuration checks passed=True. Visual appearance is NOT asserted by these checks; screenshots require visual inspection.
