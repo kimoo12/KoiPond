@@ -1,0 +1,10 @@
+Chagoi PBR scene assignment final verification
+Exact scene delta: only Chagoi material GUID changed=True; saved scene unchanged during Play Mode=True; target assignment after scene reopen=True
+Protected asset/material/texture/mesh/animation/prefab/settings/other scene hash mismatches=0 / 685
+Play Mode PASS: target material and all renderer assignments remained stable; same shared mesh and bones; 10 valid bones; animator enabled and original controller retained; observed max bone rotation=51.28899 degrees; sampled baked vertex change=0.04961996; fish moved 2.609657 units; captured runtime errors=0. Editor exited Play Mode.
+Gameplay camera/settings were never changed. Runtime snapshots captured at 2s and 6s; all 8 target bounds corners inside gameplay viewport. Target body viewport footprint approximately 49x45 pixels at 2s and 50x42 pixels at 6s in original 1275x583 Game View.
+VISUAL REVIEW LIMITATION: screenshot files exist, but assistant image lookup returned Cannot find asset for both images. Unity 6000.6 entity IDs are incompatible with the image lookup's legacy integer-ID interface; legacy EntityId conversion is unimplemented. No package/API compatibility guards were altered. Actual visible appearance, seam/artifact severity and pixel-level shader review were NOT independently inspected. Do not interpret the runtime checks as visual approval or absence of visible defects.
+Known pre-existing transferred normal risk: mean error 0.1345 degrees, max159.10 degrees, 123 texels exceed5 degrees,1 negative-Z texel; mixed destination tangent handedness. Normal strength and textures/materials unchanged; no normal/tangent repair performed.
+Backup: Assignment_Backup.json and PondScene_Before_Chagoi_PBR.unity.bak. Restore only renderer Element0 to Assets/Models/Koi/ChagoiAppearance/Chagoi_Caramel.mat and save scene; see Restore_Instructions.txt. Prefer assignment-only restore over whole-scene snapshot to avoid discarding later edits.
+Retained captures: Chagoi_PBR_PlayMode_2s.png; Chagoi_PBR_PlayMode_6s.png. Runtime report: PlayMode_Runtime_Report.txt. No other koi changed.
+Editor isPlaying=False; scene dirty=False; compilationFailed=False

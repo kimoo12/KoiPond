@@ -1,0 +1,6 @@
+Only serialized scene change is the single Chagoi material GUID=True
+Protected asset/settings/other scene SHA256 mismatches=0 / 685
+Mesh/root/bones preserved=True
+Previous material=Assets/Models/Koi/ChagoiAppearance/Chagoi_Caramel.mat
+Applied material=Assets/Models/Koi/ProofOfConcept/ChagoiTopologyTransfer/Chagoi_OriginalMeshy_ToRigged_PBR_Test.mat
+Target=Koi_School/Koi_Chagoi/FishMesh; slot=0; no prefab asset application.

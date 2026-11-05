@@ -1,0 +1,13 @@
+Purachina corrected-target PBR assignment verification
+Target=Koi_School/Koi_Purachina/FishMesh; Materials Element0
+Previous material=Assets/Models/Koi/Purachina_New/Purachina_Platinum.mat
+Applied material=Assets/Models/Koi/ProofOfConcept/PurachinaTopologyTransfer/Purachina_OriginalMeshy_ToRigged_PBR_Test.mat
+Approved base-color and new PBR map references correct=True
+Only serialized scene change is the single Purachina material GUID=True
+Renderer properties unchanged apart from material=True
+Mesh/bones/root preserved=True; mesh UVs, skin weights and rigging protected by unchanged asset hash
+Every other renderer assignment unchanged=True
+Protected assets/metadata/settings/other scenes SHA256 mismatches=0 / 704
+No textures/materials/meshes/UVs/rigging/skin weights/animations/other scene settings changed. Chagoi retains its Chagoi PBR test material. No prefab asset changes.
+Edit Mode assignment/preservation verification only; no Play Mode or visual approval performed for this request. Existing Purachina normal-transfer fidelity limitations remain.
+Scene saved; dirty=False; editor playing=False

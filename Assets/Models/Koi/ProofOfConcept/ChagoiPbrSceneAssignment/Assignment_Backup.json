@@ -1,0 +1,10 @@
+{
+  "scene": "Assets/Scenes/PondScene.unity",
+  "target": "Koi_School/Koi_Chagoi/FishMesh",
+  "slot": 0,
+  "previousMaterialPath": "Assets/Models/Koi/ChagoiAppearance/Chagoi_Caramel.mat",
+  "previousMaterialGuid": "102e3ceaf257ff04bba61a3e8480a43f",
+  "previousMaterialLocalFileId": 2100000,
+  "testMaterialPath": "Assets/Models/Koi/ProofOfConcept/ChagoiTopologyTransfer/Chagoi_OriginalMeshy_ToRigged_PBR_Test.mat",
+  "testMaterialGuid": "980ffe92579d1b24b964cc8b46b76717"
+}

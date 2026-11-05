@@ -1,0 +1,10 @@
+{
+  "scene": "Assets/Scenes/PondScene.unity",
+  "target": "Koi_School/Koi_Purachina/FishMesh",
+  "slot": 0,
+  "previousMaterialPath": "Assets/Models/Koi/Purachina_New/Purachina_Platinum.mat",
+  "previousMaterialGuid": "8227666c5e8abcc47830ae02c69694a7",
+  "previousMaterialLocalFileId": 2100000,
+  "testMaterialPath": "Assets/Models/Koi/ProofOfConcept/PurachinaTopologyTransfer/Purachina_OriginalMeshy_ToRigged_PBR_Test.mat",
+  "testMaterialGuid": "1596168b67d9c854ba1a47cd730b98b6"
+}

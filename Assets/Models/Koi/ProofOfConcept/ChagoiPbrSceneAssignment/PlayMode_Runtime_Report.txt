@@ -1,0 +1,7 @@
+Chagoi PBR scene assignment Play Mode test
+Runtime checks PASS=True; error=
+Log: [Test] Runtime setup: all renderer assignments match saved snapshot; target bones=10; vertices=221941; animator enabled=True; controller=Assets/Models/Koi/Animations/Koi_AnimatorController.controller
+Log: [Test] 2s: material=Assets/Models/Koi/ProofOfConcept/ChagoiTopologyTransfer/Chagoi_OriginalMeshy_ToRigged_PBR_Test.mat; visible=True; viewport corners=8/8; viewport bounds=(0.43, 0.42, 14.18)..(0.47, 0.50, 15.01); Game View=1275x583; parent position=(-0.88, -0.47, 0.55)
+Log: [Test] 6s: material=Assets/Models/Koi/ProofOfConcept/ChagoiTopologyTransfer/Chagoi_OriginalMeshy_ToRigged_PBR_Test.mat; visible=True; viewport corners=8/8; viewport bounds=(0.38, 0.49, 14.75)..(0.42, 0.56, 15.60); Game View=1275x583; parent position=(-0.47, -0.29, 2.12)
+Log: [Test] PASS=True; assignment stable=True; all renderer assignments stable=True; mesh/bones stable=True; maximum bone rotation=51.28899; maximum sampled baked vertex change=0.04961996; swim displacement=2.609657; runtime errors=0; captures=2
+Game View captures at 2s and 6s; scene camera/settings unmodified. Visual review is separate from these runtime checks.

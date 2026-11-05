@@ -1,0 +1,14 @@
+Independent Chagoi final PBR validation
+Approved base-map/tint/ST preserved=True; URP metallic workflow/maps/keywords/strengths correct=True
+Normal importer PASS=True; format=RGBA32
+Roughness importer PASS=True; format=RGB24
+Metallic importer PASS=True; format=RGB24
+MetallicSmoothness importer PASS=True; format=RGBA32
+Exhaustive PNG packing mismatches=0 / 16777216; R=metallic,G=B=0,A=255-roughness.
+GPU packed linear R/A maximum byte error (full atlas)=0
+GPU actual URP UnpackNormalScale vs CPU texel-center bilinear reconstruction: 262144 samples; mean vector error=5.73030125E-06; max=2.32901675E-05
+Supersedes normal-GPU comparison in Chagoi_PBR_PostBake_Validation.txt: that first test used Texture2D.GetPixelBilinear CPU coordinates, which differ from GPU texel-center sampling. Corrected explicit uv*size-0.5 sampler matches verified Kohaku workflow. No asset changes were made to resolve this test-only mismatch.
+Protected pre-existing asset/metadata SHA256 mismatches=0 / 701; loaded scene test-material assignments=0; serialized PondScene new PBR references=False
+Final imported-data/material/protection validation=PASS; editor playing=False; active scene dirty=False; compilation failed=False
+NORMAL FIDELITY REMAINS LIMITED, NOT PRODUCTION-APPROVED. Existing 34063 mixed-handedness triangles produce ill-conditioned interpolated frames and localized quantization errors. Chagoi mean/max angular error=0.134504548/159.103117 degrees, 123 texels >5 degrees, 1 negative Z. Purachina=0.134516723/160.536062 degrees, 93 texels >5 degrees, 0 negative Z. Conventional URP unpack cannot represent negative Z. See per-koi transfer report, NormalDecodeError PNG and signed exception CSV.
+Source +Y inferred from existing original normal importer, Meshy authoring convention not independently certified. Raw original normal/roughness/metallic only; no AI-derived packed source used. 8-bit quantization, 4096 finite sampling, 17246 subpixel triangles, 8px outside-only padding and no mipmaps are PoC limitations. Lighting/seams/animated deformation remain visually unapproved. No mesh/UV/tangent/rig/animation/base-transfer/scene modifications or in-game material application.

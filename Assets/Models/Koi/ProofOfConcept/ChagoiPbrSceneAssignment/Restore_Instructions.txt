@@ -1,0 +1,3 @@
+Exit Play Mode. Open Assets/Scenes/PondScene.unity. Select Koi_School/Koi_Chagoi/FishMesh. On SkinnedMeshRenderer, replace Materials Element 0 with Assets/Models/Koi/ChagoiAppearance/Chagoi_Caramel.mat (GUID 102e3ceaf257ff04bba61a3e8480a43f). Save the scene. Do not edit material assets or apply prefab overrides. This restores ONLY the original assignment.
+Full scene fallback: PondScene_Before_Chagoi_PBR.unity.bak is a byte-for-byte pre-change scene snapshot. Only restore the entire scene if deliberately discarding ALL later scene edits; preserve a copy of current scene first. Do not replace its .meta.
+The PBR test material retains known localized tangent-normal fidelity limitations.

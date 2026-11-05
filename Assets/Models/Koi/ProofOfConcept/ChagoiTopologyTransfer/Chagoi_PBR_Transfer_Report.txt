@@ -1,0 +1,28 @@
+Chagoi original Meshy PBR topology transfer proof of concept
+Source mesh: Assets/Models/Koi/Materials/chagoi koi texture/Meshy_AI_chagoi_koi_textured_1025014319_texture.fbx
+Destination mesh: Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset
+Bridge: Assets/Models/Koi/Materials/taisho sanke koi texture/Meshy_AI_Koi_Fish_20261021_image-to-3d-texture.fbx
+Original normal: Assets/Models/Koi/Materials/chagoi koi texture/chagoi koi_texture_normal.png (raw 4096x4096)
+Original roughness: Assets/Models/Koi/Materials/chagoi koi texture/chagoi koi_texture_roughness.png (raw 2048x2048)
+Original metallic: Assets/Models/Koi/Materials/chagoi koi texture/chagoi koi_texture_metallic.png (raw 2048x2048)
+Unity AI-generated MetallicSmoothness source NOT used. Raw linear PNG bytes; existing importer settings ignored and untouched.
+Normal convention: RGB tangent XYZ, source importer flipGreen=False; output +Y, no importer flip. Meshy authoring convention not independently proven; consistent with existing normal importer.
+Same verified bounds/spatial welded triangle bijection and ordered source corner recovery as approved base-color baker.
+Paired triangles: 417156; registration RMS=5.14675395E-09; max=1.19471846E-08
+Normals: sample original RGB linearly; source interpolated shader TBN -> smooth-frame perturbation; transport source tangent direction by paired triangle differential to destination geometry; re-anchor to destination smooth normal, preserve handedness, invert actual destination interpolated URP TBN; normalize/encode RGB. No global-space bounds transform, no copied source-UV normals.
+Resolution: 4096x4096; covered=11218432; outside-only 8px padding=2441116; degenerateUV=0; subpixel triangles=17246
+Overlapping events=1; conflicting events (>2/255)=0; mixed tangent handedness triangles=34063
+Normal encode/reconstruct angular error (degrees): mean=0.134504548; max=159.103117; flat-normal transport max=6.14563495E-06; negative destination z=1; minimum z=-0.0607072525
+Sampled linear roughness range=0.152941182..0.733333349; metallic=0..0.31073454
+Packing: R=metallic; G=B=0 (unused by Lit); A=smoothness=1-roughness. Exhaustive pixel packing mismatches=0
+All new maps linear, 4096, uncompressed, bilinear clamp, no mipmaps; normal imported NormalMap, no height conversion; packed alpha retained, no transparency dilation.
+Test material cloned approved base-color test; same BaseMap/BaseColor/ST; URP Lit metallic workflow, _NORMALMAP/_METALLICSPECGLOSSMAP enabled; _Smoothness=1; _BumpScale=1; smoothness source metallic alpha, not base alpha.
+Outputs: Assets/Models/Koi/ProofOfConcept/ChagoiTopologyTransfer/Chagoi_OriginalMeshy_ToRigged_Normal.png
+Assets/Models/Koi/ProofOfConcept/ChagoiTopologyTransfer/Chagoi_OriginalMeshy_ToRigged_Roughness.png
+Assets/Models/Koi/ProofOfConcept/ChagoiTopologyTransfer/Chagoi_OriginalMeshy_ToRigged_Metallic.png
+Assets/Models/Koi/ProofOfConcept/ChagoiTopologyTransfer/Chagoi_OriginalMeshy_ToRigged_MetallicSmoothness.png
+Assets/Models/Koi/ProofOfConcept/ChagoiTopologyTransfer/Chagoi_OriginalMeshy_ToRigged_PBR_Test.mat
+Protected existing file SHA256 unchanged=True; protected files=701. No mesh/UV/rig/animation/existing material/prefab/scene modification or reassignment.
+Normal URP XY/positive-Z decode errors: >1 degree=215; >5 degrees=123. NormalDecodeError.png: red=error scaled to 5 degrees; magenta=negative tangent Z; black=unused/near-zero error. CSV lists >5-degree and negative-Z interior samples.
+NORMAL FIDELITY STATUS: LIMITED / strict fidelity FAILED: existing mixed-handedness tangent interpolation produces ill-conditioned frames; conventional URP normal maps reconstruct positive Z and cannot represent all converted normals. Outputs are diagnostic test assets, NOT production-approved. No tangents/mesh modified and no normal strength reduction or repainting used.
+Limitations: 8-bit quantization and finite resolution/bilinear resampling; subpixel triangles; padding/mipmaps require production tuning; local tangent transport preserves angular detail and anchors neutral normals to deformed destination surface, not physical inverse-transpose stretch of a global normal field. Source +Y convention inferred from current importer. Numerical validation is not visual approval; lighting/skin-deformation appearance remains unapproved.

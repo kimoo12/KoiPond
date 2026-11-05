@@ -1,0 +1,14 @@
+Independent Chagoi PBR post-bake validation
+Approved base-map/tint/scale/offset preserved=True; URP Lit PBR configuration correct=True
+Normal import=True; GPU format=RGBA32
+Roughness import=True; GPU format=RGB24
+Metallic import=True; GPU format=RGB24
+MetallicSmoothness import=True; GPU format=RGBA32
+Exhaustive decoded-PNG packing mismatches=0 / 16777216 texels; R=metallic, G=B=0, A=1-roughness.
+GPU imported linear packed R/A maximum byte error over full 4096 atlas=0
+Actual GPU URP normal unpack vs CPU positive-Z reconstruction: 262144 bilinear samples; mean vector error=0.00313552401; max=1.47926855
+Protected SHA256 mismatches=0 / 701 files. Loaded scene new material assignments=0; PondScene serialized new material/maps references=False
+Editor playing=False; active scene dirty=False; scriptCompilationFailed=False
+Imported-data correctness is NOT normal fidelity approval. Existing mixed-handedness tangent frames cause large localized reconstruction errors. See transfer report and signed exceptional samples CSV. Mesh/tangents unchanged; no strength reduction/repainting.
+Source +Y convention inferred from original importer, not independently certified Meshy metadata. Finite 8-bit/4096 resampling, 17246 subpixel triangles, 8px outside-only padding, no mipmaps; PoC sampling only. Lit appearance, seams at viewing distances and animated skin deformation not tested/visually approved. No in-game application.
+POST-BAKE DATA/PROTECTION STATUS=FAIL
