@@ -1,0 +1,47 @@
+Yamabuki Ogon topology-guided UV-to-UV original base-color transfer
+Source model: Assets/Models/Koi/Materials/yamabuki ogon koi texture/Meshy_AI_yamabuki_ogon_koi_tex_1025022841_texture.fbx
+Source base-color: Assets/Models/Koi/Materials/yamabuki ogon koi texture/yamabuki ogon koi_texture.png (original PNG 4096x4096)
+Destination: Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset
+Taisho bridge: Assets/Models/Koi/Materials/taisho sanke koi texture/Meshy_AI_Koi_Fish_20261021_image-to-3d-texture.fbx
+Texture: Assets/Models/Koi/ProofOfConcept/YamabukiOgonTopologyTransfer/YamabukiOgon_OriginalMeshy_ToRigged_BaseColor.png
+Material: Assets/Models/Koi/ProofOfConcept/YamabukiOgonTopologyTransfer/YamabukiOgon_OriginalMeshy_ToRigged_Test.mat
+Resolution: 4096x4096
+Rigged/Taisho vertex counts, triangle indices AND UV arrays identical: True
+Unique triangle bijection: 417156/417156; verified uniquely ordered corners: 1251468/1251468; reversed winding: 0
+Vertex registration RMS: 5.14680123E-09; max: 1.19471846E-08 (Taisho units)
+All source/destination UVs finite and within [0,1]: True
+Degenerate target UV triangles: 0
+Triangles with no pixel centers: 17246 (subpixel footprints, NOT missing correspondence)
+Summed target UV area: 0.668663539; interior texels: 11218432 (66.867065% atlas); outside-only padding texels: 2441116
+Overlapping sample events: 1; incompatible RGB events (>2/255): 0; incompatible UV mapping events (>0.01 source texel): 0; distinct conflict texels: 0
+Overlap RGB max/average disagreement: 0/0; max mapping disagreement: 0 source texels
+Coverage legend: white=sampled interior; gray=outside-only bleed; black=unused atlas; magenta=incompatible color or mapping overlap.
+Method: same bounds normalization, 1e-7 spatial buckets, geometry-only duplicate welding, unique Taisho face lookup and original source corner UV recovery as Kohaku; rasterize unchanged rigged UVs and barycentrically bilinear-sample original sRGB PNG bytes. No projection, repainting, generation, simplification, tint or marking edits.
+Finite-resolution resampling is not mathematically lossless. Source seam UV discontinuities are retained. Subpixel triangle footprints are explicitly reported. Eight texels of edge bleed are outside rasterized interiors only, as in Kohaku.
+Test material: transferred base-color only; white tint; metallic=0; smoothness=0. Source-UV normal/metallic/roughness NOT assigned.
+Six-view comparison: Assets/Models/Koi/ProofOfConcept/YamabukiOgonTopologyTransfer/YamabukiOgon_Source_vs_Transfer_6Views.png
+Left=original Yamabuki Meshy; right=rigged transfer. Rows: right side, left side, top, bottom, front, rear. Identical neutral unlit base-color rendering; independently bounds-normalized for framing only. Geometry differences are expected.
+right side original nonbackground pixels: 25573
+right side transfer nonbackground pixels: 25066
+left side original nonbackground pixels: 25573
+left side transfer nonbackground pixels: 25066
+top original nonbackground pixels: 15380
+top transfer nonbackground pixels: 14964
+bottom original nonbackground pixels: 15380
+bottom transfer nonbackground pixels: 14963
+front original nonbackground pixels: 9431
+front transfer nonbackground pixels: 9151
+rear original nonbackground pixels: 9430
+rear transfer nonbackground pixels: 9151
+Protected pre-existing asset and metadata SHA256 unchanged: True (1546 files)
+Destination in-memory UV/indices/vertices unchanged: True
+No existing texture/material/mesh/rig/animation/prefab/scene assignment changed. No other variation processed. Comparison is offscreen in an isolated preview scene.
+Status: correspondence, winding, UV validity, raster coverage and conflict gates PASS; six-view rendering completed. Visual acceptance requires inspection of the comparison.
+
+Post-bake verification:
+Independent SHA256 recheck: PASS, all 1546 pre-existing asset/metadata files unchanged.
+Imported base-color: 4096x4096, sRGB=True, uncompressed, mipmaps=False; correct test material base-map and white tint verified.
+Coverage diagnostic imported at native 4096x4096, uncompressed, no mipmaps.
+Six-view comparison imported at native 1280x1920, uncompressed, no mipmaps, no power-of-two rescaling.
+PondScene references test assets: False; active scene dirty: False; editor in Play Mode: False.
+Visual marking/seam inspection remains unverified: this Unity version exposes EntityId identifiers, while the available image retrieval interface requires obsolete integer instance IDs. All 12 rendered panels were numerically checked as nonempty; visual acceptance is not claimed.
