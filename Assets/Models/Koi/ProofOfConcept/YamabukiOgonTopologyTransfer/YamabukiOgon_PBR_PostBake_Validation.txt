@@ -1,0 +1,13 @@
+Independent YamabukiOgon PBR post-bake validation
+Approved base-map reference/tint/scale/offset preserved; URP Lit metallic workflow and full-strength normal/metallic-alpha smoothness configuration: PASS.
+Normal.png: 4096x4096 linear uncompressed RGBA32, bilinear/clamp, no mipmaps: PASS.
+Roughness.png: 4096x4096 linear uncompressed RGB24, bilinear/clamp, no mipmaps: PASS.
+Metallic.png: 4096x4096 linear uncompressed RGB24, bilinear/clamp, no mipmaps: PASS.
+MetallicSmoothness.png: 4096x4096 linear uncompressed RGBA32, bilinear/clamp, no mipmaps: PASS.
+Independent exhaustive decoded-PNG validation: 16777216 pixels, 0 scalar/packing mismatches. R=metallic; G=B=0; A=255-roughness (smoothness=1-roughness).
+Imported GPU packed R/A vs output PNG: maximum byte error=0 (PASS).
+Actual GPU URP normal unpacking vs manual texel-center bilinear CPU positive-Z reconstruction: 262144 samples; mean vector error=6.69080065E-06; max=2.31794638E-05 (PASS). CPU reference uses uv*4096-0.5, not Texture2D.GetPixelBilinear sampling.
+Independent SHA256 recheck: 1758 protected existing Assets/metadata files, 0 mismatches (PASS).
+Serialized scene/prefab test-material references=0; loaded-scene renderer assignments=0. Active scene clean, compilation successful, editor outside Play Mode. No in-game application.
+Normal-fidelity status: LIMITED / strict 5-degree fidelity failed. Existing mixed-handedness tangent interpolation is ill-conditioned in small regions. Transfer report records mean/max angular error and outlier counts; NormalDecodeError.png and Normal_Exceptions.csv record exceptional samples. Imported-data correctness does not certify visual fidelity.
+Limitations: Meshy +Y convention inferred from original importer, not certified by authoring metadata; finite 4096 resolution/8-bit quantization/bilinear resampling; 17246 subpixel triangles; 8px outside-only padding, no mipmaps. Local differential angular-detail transfer is not global inverse-transpose stretch. Lit appearance, seam behavior, arbitrary object transforms and animated skin deformation remain visually/runtime unverified. No mesh/tangent repairs, source importer changes, strength reductions or repainting performed.

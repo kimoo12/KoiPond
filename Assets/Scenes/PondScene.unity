@@ -10687,7 +10687,7 @@ PrefabInstance:
     - target: {fileID: 1224429048046177762, guid: a8674be4eb77e8b41a1016d74c0adf59, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 180d83c850d4eeb4ea733ddd77b8e609, type: 2}
+      objectReference: {fileID: 2100000, guid: d352c4df4fa09b84d829048973497aed, type: 2}
     - target: {fileID: 1594268228765379702, guid: a8674be4eb77e8b41a1016d74c0adf59, type: 3}
       propertyPath: m_Name
       value: Koi_Yamabuki
@@ -24491,7 +24491,7 @@ PrefabInstance:
     - target: {fileID: 1224429048046177762, guid: a8674be4eb77e8b41a1016d74c0adf59, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: abc92c5390b800c42a24d95c0748551a, type: 2}
+      objectReference: {fileID: 2100000, guid: 89f45658c9583014dbfdbdcaf63a825b, type: 2}
     - target: {fileID: 1594268228765379702, guid: a8674be4eb77e8b41a1016d74c0adf59, type: 3}
       propertyPath: m_Name
       value: Koi_Showa

@@ -1,0 +1,7 @@
+Showa Sanshoku / Yamabuki Ogon PBR scene assignment validation
+Protected pre-existing assets/metadata unchanged: 1779 checked, 0 mismatches.
+Complete in-memory scene component comparison: 918 components; only the two target renderer material GUIDs changed. Other renderers, transforms, skinning references, animation/controller and scene settings unchanged.
+Serialized scene diff: oldLines=26183, newLines=26183, changedLines=2, material-GUID-only diff=True
+Koi_School/Koi_Showa/FishMesh -> Assets/Models/Koi/ProofOfConcept/ShowaSanshokuTopologyTransfer/ShowaSanshoku_OriginalMeshy_ToRigged_PBR_Test.mat (scene instance override only)
+Koi_School/Koi_Yamabuki/FishMesh -> Assets/Models/Koi/ProofOfConcept/YamabukiOgonTopologyTransfer/YamabukiOgon_OriginalMeshy_ToRigged_PBR_Test.mat (scene instance override only)
+Original assignments, full scene backup, scene metadata backup, protected hashes and restore instructions retained. Active scene saved and clean; no prefab asset edits.

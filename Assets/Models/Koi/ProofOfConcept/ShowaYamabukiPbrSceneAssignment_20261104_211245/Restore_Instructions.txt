@@ -1,0 +1,11 @@
+Restore only the two material assignments (recommended):
+1. Exit Play Mode and open Assets/Scenes/PondScene.unity.
+2. On Koi_School/Koi_Showa/FishMesh, assign Assets/Models/Koi/ShowaSanshoku/ShowaSanshoku.mat to SkinnedMeshRenderer Materials Element 0.
+3. On Koi_School/Koi_Yamabuki/FishMesh, assign Assets/Models/Koi/Yamabuki_New/Yamabuki_UV_Gold.mat to SkinnedMeshRenderer Materials Element 0.
+4. Keep these changes as scene prefab-instance overrides; do NOT Apply to the prefab. Save PondScene.
+Material_Assignment_Backup.tsv records previous GUIDs/local file IDs and exact renderer GlobalObjectIds. No material or texture contents need restoring.
+
+Full-scene emergency restore:
+Close PondScene without saving, copy PondScene_BeforeAssignment.unity.bak over Assets/Scenes/PondScene.unity, refresh Unity and reopen it. The .meta backup is retained for reference; do not replace the existing .meta unless it is damaged. WARNING: full-scene restoration discards ALL subsequent scene edits. Prefer the two-slot restore above.
+
+These remain PBR test materials with previously documented isolated normal-fidelity outliers; no source textures/materials, mesh/UVs, weights, rigging or animation assets changed.
