@@ -6,7 +6,7 @@ public static class PurachinaFaceCorrection
 {
     public static void CreatePreview()
     {
-        const string folder = "Assets/Models/Koi/Purachina_New/";
+        const string folder = "Assets/Archive/Koi/Purachina_New/";
         var original = new Texture2D(2, 2);
         original.LoadImage(File.ReadAllBytes(folder + "Purachina_Albedo.png"));
         int size = original.width;
