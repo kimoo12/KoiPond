@@ -1,0 +1,47 @@
+ShowaSanshoku topology-guided UV-to-UV original base-color transfer
+Source model: Assets/Models/Koi/Materials/showa sanshoku koi texture/Meshy_AI_showa_koi_textured_1025022207_texture.fbx
+Source base-color: Assets/Models/Koi/Materials/showa sanshoku koi texture/showa sanshoku koi_texture.png (original PNG 4096x4096)
+Destination: Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset
+Taisho bridge: Assets/Models/Koi/Materials/taisho sanke koi texture/Meshy_AI_Koi_Fish_20261021_image-to-3d-texture.fbx
+Texture: Assets/Models/Koi/ProofOfConcept/ShowaSanshokuTopologyTransfer/ShowaSanshoku_OriginalMeshy_ToRigged_BaseColor.png
+Material: Assets/Models/Koi/ProofOfConcept/ShowaSanshokuTopologyTransfer/ShowaSanshoku_OriginalMeshy_ToRigged_Test.mat
+Resolution: 4096x4096
+Rigged/Taisho vertex counts, triangle indices AND UV arrays identical: True
+Unique triangle bijection: 417156/417156; verified uniquely ordered corners: 1251468/1251468; reversed winding: 0
+Vertex registration RMS: 5.14680273E-09; max: 1.19471846E-08 (Taisho units)
+All source/destination UVs finite and within [0,1]: True
+Degenerate target UV triangles: 0
+Triangles with no pixel centers: 17246 (subpixel footprints, NOT missing correspondence)
+Summed target UV area: 0.668663539; interior texels: 11218432 (66.867065% atlas); outside-only padding texels: 2441116
+Overlapping sample events: 1; incompatible RGB events (>2/255): 0; incompatible UV mapping events (>0.01 source texel): 0; distinct conflict texels: 0
+Overlap RGB max/average disagreement: 0/0; max mapping disagreement: 0 source texels
+Coverage legend: white=sampled interior; gray=outside-only bleed; black=unused atlas; magenta=incompatible color or mapping overlap.
+Method: same bounds normalization, 1e-7 spatial buckets, geometry-only duplicate welding, unique Taisho face lookup and original source corner UV recovery as Kohaku; rasterize unchanged rigged UVs and barycentrically bilinear-sample original sRGB PNG bytes. No projection, repainting, generation, simplification, tint or marking edits.
+Finite-resolution resampling is not mathematically lossless. Source seam UV discontinuities are retained. Subpixel triangle footprints are explicitly reported. Eight texels of edge bleed are outside rasterized interiors only, as in Kohaku.
+Test material: transferred base-color only; white tint; metallic=0; smoothness=0. Source-UV normal/metallic/roughness NOT assigned.
+Six-view comparison: Assets/Models/Koi/ProofOfConcept/ShowaSanshokuTopologyTransfer/ShowaSanshoku_Source_vs_Transfer_6Views.png
+Left=original ShowaSanshoku Meshy; right=rigged transfer. Rows: right side, left side, top, bottom, front, rear. Identical neutral unlit base-color rendering; meshes independently bounds-normalized only for framing. Geometry differences are expected.
+right side original nonbackground pixels: 22479
+right side transfer nonbackground pixels: 22124
+left side original nonbackground pixels: 22345
+left side transfer nonbackground pixels: 21962
+top original nonbackground pixels: 14067
+top transfer nonbackground pixels: 13742
+bottom original nonbackground pixels: 14446
+bottom transfer nonbackground pixels: 14088
+front original nonbackground pixels: 7768
+front transfer nonbackground pixels: 7530
+rear original nonbackground pixels: 8894
+rear transfer nonbackground pixels: 8601
+Protected pre-existing asset and metadata SHA256 unchanged: True (549 files)
+Destination in-memory UV/indices/vertices unchanged: True
+No existing texture/material/mesh/rig/animation/prefab/scene assignment changed. No other variation processed. Comparison is offscreen in an isolated preview scene.
+Status: correspondence, winding, UV validity, raster coverage and conflict gates PASS; six-view rendering completed. Visual acceptance requires inspection of the comparison.
+
+Post-bake verification
+All 549 protected file SHA256 hashes rechecked unchanged after baking: PASS.
+Transferred texture imported at 4096x4096, sRGB, uncompressed, no mipmaps; neutral white material references only the transferred base-color: PASS.
+Comparison imported at its native 1280x1920 dimensions; coverage imported at native 4096x4096 dimensions. Both diagnostics uncompressed, no mipmaps, no NPOT rescaling.
+No scene or prefab references the new test material: PASS. Editor remains outside Play Mode.
+Visual image inspection remains UNVERIFIED: this editor exposes EntityId identifiers, while the available image retrieval interface accepts legacy integer instance IDs. No visual marking-boundary or seam approval is claimed.
+Numerical acceptance: PASS. Final visual acceptance: PENDING manual inspection of the six-view comparison.
