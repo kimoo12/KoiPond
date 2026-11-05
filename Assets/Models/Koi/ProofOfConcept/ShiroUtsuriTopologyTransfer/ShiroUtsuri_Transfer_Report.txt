@@ -1,0 +1,47 @@
+ShiroUtsuri topology-guided UV-to-UV original base-color transfer
+Source model: Assets/Models/Koi/Materials/shiro utsuri koi texture/Meshy_AI_shiro_utsuri_koi_text_1025015934_texture.fbx
+Source base-color: Assets/Models/Koi/Materials/shiro utsuri koi texture/shiro utsuri koi_texture.png (original PNG 4096x4096)
+Destination: Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset
+Taisho bridge: Assets/Models/Koi/Materials/taisho sanke koi texture/Meshy_AI_Koi_Fish_20261021_image-to-3d-texture.fbx
+Texture: Assets/Models/Koi/ProofOfConcept/ShiroUtsuriTopologyTransfer/ShiroUtsuri_OriginalMeshy_ToRigged_BaseColor.png
+Material: Assets/Models/Koi/ProofOfConcept/ShiroUtsuriTopologyTransfer/ShiroUtsuri_OriginalMeshy_ToRigged_Test.mat
+Resolution: 4096x4096
+Rigged/Taisho vertex counts, triangle indices AND UV arrays identical: True
+Unique triangle bijection: 417156/417156; verified uniquely ordered corners: 1251468/1251468; reversed winding: 0
+Vertex registration RMS: 5.14679266E-09; max: 1.19471846E-08 (Taisho units)
+All source/destination UVs finite and within [0,1]: True
+Degenerate target UV triangles: 0
+Triangles with no pixel centers: 17246 (subpixel footprints, NOT missing correspondence)
+Summed target UV area: 0.668663539; interior texels: 11218432 (66.867065% atlas); outside-only padding texels: 2441116
+Overlapping sample events: 1; incompatible RGB events (>2/255): 0; incompatible UV mapping events (>0.01 source texel): 0; distinct conflict texels: 0
+Overlap RGB max/average disagreement: 0/0; max mapping disagreement: 0 source texels
+Coverage legend: white=sampled interior; gray=outside-only bleed; black=unused atlas; magenta=incompatible color or mapping overlap.
+Method: same bounds normalization, 1e-7 spatial buckets, geometry-only duplicate welding, unique Taisho face lookup and original source corner UV recovery as Kohaku; rasterize unchanged rigged UVs and barycentrically bilinear-sample original sRGB PNG bytes. No projection, repainting, generation, simplification, tint or marking edits.
+Finite-resolution resampling is not mathematically lossless. Source seam UV discontinuities are retained. Subpixel triangle footprints are explicitly reported. Eight texels of edge bleed are outside rasterized interiors only, as in Kohaku.
+Test material: transferred base-color only; white tint; metallic=0; smoothness=0. Source-UV normal/metallic/roughness NOT assigned.
+Six-view comparison: Assets/Models/Koi/ProofOfConcept/ShiroUtsuriTopologyTransfer/ShiroUtsuri_Source_vs_Transfer_6Views.png
+Left=original ShiroUtsuri Meshy; right=rigged transfer. Rows: right side, left side, top, bottom, front, rear. Identical neutral unlit base-color rendering; meshes independently bounds-normalized only for framing. Geometry differences are expected.
+right side original nonbackground pixels: 25466
+right side transfer nonbackground pixels: 24960
+left side original nonbackground pixels: 25327
+left side transfer nonbackground pixels: 24839
+top original nonbackground pixels: 15291
+top transfer nonbackground pixels: 14877
+bottom original nonbackground pixels: 15280
+bottom transfer nonbackground pixels: 14872
+front original nonbackground pixels: 9326
+front transfer nonbackground pixels: 9038
+rear original nonbackground pixels: 9391
+rear transfer nonbackground pixels: 9097
+Protected pre-existing asset and metadata SHA256 unchanged: True (523 files)
+Destination in-memory UV/indices/vertices unchanged: True
+No existing texture/material/mesh/rig/animation/prefab/scene assignment changed. No other variation processed. Comparison is offscreen in an isolated preview scene.
+Status: correspondence, winding, UV validity, raster coverage and conflict gates PASS; six-view rendering completed. Visual acceptance requires inspection of the comparison.
+
+Post-bake checks
+Imported base-color: 4096x4096, sRGB, uncompressed, no mipmaps; neutral base-color-only test material: PASS.
+Coverage diagnostic imported at full 4096x4096; six-view comparison at native 1280x1920; no compression, mipmaps or NPOT rescaling.
+Post-import protected SHA256 unchanged: True (523 files).
+No scene references the new texture/material. PondScene remains clean and unchanged. Editor is not in Play Mode.
+Visual inspection remains PENDING: this Unity version exposes EntityId while image retrieval requires the obsolete integer instance-ID interface. No visual acceptance claimed. Open the six-view PNG for marking-boundary and seam inspection.
+Final status: numerical transfer and isolation validation PASS; all 12 comparison panels rendered nonempty; visual acceptance PENDING. Finite-resolution resampling and 17246 subpixel triangles remain documented limitations, not missing triangle mappings.
