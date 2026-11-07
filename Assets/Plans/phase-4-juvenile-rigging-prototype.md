@@ -133,3 +133,109 @@ Only report files actually created, including .meta files and derivatives, in fi
 - Run editor structural/preservation checks and isolated runtime animation playback where available; explicitly label unperformed tests. No runtime tests in production scene.
 - Compare final protected hashes and scene state to baseline. Enumerate every new asset and derivative; do not claim successful deformation until visual playback/captures have actually been reviewed.
 - Fry rigging is expressly out of scope and requires user approval after the juvenile report.
+
+# Revision — Juvenile Rig: Match Adult Behavior
+This revision continues the existing isolated prototype rather than creating a new project or rebuilding production assets. It supersedes earlier instructions to create a new prototype folder, retain adult-comparable display size, or treat the adult reference as static. Historical results remain a baseline, not evidence that this revision passed.
+
+## Project Overview (revision)
+- Game Title: KoiPond.
+- High-Level Concept: Refine the juvenile fish to follow the working adult rig's natural Swim, Idle and Eat behavior, with juvenile-proportioned joints, stable skinning and natural mouth opening/closure. Establish original Meshy appearance through assignment/UV/provenance diagnosis rather than repainting.
+- Players: Asset-validation prototype only; no production gameplay change.
+- Inspiration / Reference Games: Existing KoiFish_RiggedMesh and adult rig/clips; juvenile Meshy export and juvenile_side/top/angle screenshots.
+- Tone / Art Direction: Original Meshy juvenile appearance, including markings and dark pupils where present in the correct source pairing.
+- Target Platform: StandaloneWindows64, Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Desktop landscape; full comparison captures plus mouth/eye close-ups. No project resolution changes.
+- Render Pipeline: Existing URP PC_RPAsset; no global pipeline/post-processing edits.
+
+## Game Mechanics (revision)
+### Core Gameplay Loop
+Diagnostic loop: compare original rest appearance → animate adult and juvenile at synchronized clip times → inspect regional motion and mouth → refine only juvenile → rerun preservation and playback checks. No pond movement, feeding integration, fry work or production controller changes.
+### Controls and Input Methods
+Use a prototype-only comparison harness for play/pause, reset, source/adapted mode, and Swim/Idle/Eat selection. Existing New Input System remains unchanged; preferably use serialized harness settings/editor controls, with no new player input mappings. Loop Swim/Idle continuously, play Eat to completion and return to Idle/Swim; also provide a repeat-Eat diagnostic mode with an explicit reset between cycles.
+
+## UI (revision)
+No production menu/HUD changes. Diagnostic layout (editor controls or inspector, not a new game UI):
+```
+Adult reference             Juvenile — 60% body length
+[synchronized Swim / Idle / Eat, shared clock]
+[Source baseline / Juvenile adapted] [Play/Pause] [Reset]
+View: side / top / front / three-quarter / mouth-eye close-up
+Status: clip, loop count, timing, bindings, warnings
+```
+Use identical lighting and fixed camera scale for size comparison; separate detail captures may enlarge both fish equally or clearly label magnification. Preserve the original unrigged juvenile as a rest/appearance control, using a distinct material baseline so a shared incorrect material cannot masquerade as source-appearance verification.
+
+## Key Asset & Context (revision)
+### Inspected facts
+- Existing outputs are present at Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/; refine these, with baseline backups/reports inside this folder.
+- Loaded scene is Scenes/Juvenile_RiggingPrototype_Test.unity, not PondScene. Recheck and preserve current scene setup/unsaved state before editing.
+- Adult and juvenile both have the same ten named bones and FishMesh path. Juvenile FishMesh currently has import rotation and uniform scale 31.57; display length is approximately 0.601 units, effectively adult-sized.
+- Editor/JuvenileRiggingPrototypeBuilder.cs uses DisplayScale=0.3157, region-constrained surface transfer and landmark pivots. Keep the selected transfer foundation; do not replace it with a fresh global transfer or auto-rig.
+- Editor/JuvenileRiggingPrototypeRefinement.cs performs 96 additional global adjacency smoothing passes after 24 earlier passes, diffusing both weights and mouth deltas. Replace repeated global smoothing with protected, regional refinements; ensure rebuild/refine is deterministic and cannot silently accumulate repeated edits.
+- Existing report records fin/lip edge ratios around 4–5 after refinement, approximate correspondence with opposing-normal matches, and a provisional muzzle/lip MouthOpen rather than convincing opening. These are unresolved baseline warnings.
+- Runtime/JuvenilePrototypePlayback.cs animates only the juvenile, sequences three Swim loops, three Idle loops, Eat once, Idle for 0.5 seconds, then stops. It has no synchronized animated adult comparison.
+- Editor/JuvenileRiggingPrototypeValidation.cs assumes exactly one playback component and hides all other renderers for captures. Refactor those assumptions for two explicitly identified animated targets, preservation of activation state, and paired captures.
+- Adult source clips bind rotations, Root translation and FishMesh/blendShape.MouthOpen; Swim 1.15 s, Idle 3.2 s, Eat 2.5 s. Idle omits Mouth rotation; Eat omits intermediate tail rotations. Reset unkeyed channels deliberately rather than inheriting old poses.
+- Adult KoiFishController.cs adds modest procedural fin paddling/spine motion after animation and changes animation speed by state. The mesh alone does not supply those dynamics. Inspect these read-only; distinguish source-clip fidelity from any prototype-only reproduction of these secondary offsets. Never attach production pond-control logic to this comparison scene.
+- Prototype material currently uses juvenile texture.png as _BaseMap/_MainTex, a normal import copy, and a packed DERIVED metallic/smoothness map, white tint, smoothness/metallic scalar 1, and double-sided rendering. Albedo importer is sRGB, compressed, max size 2048. These are audit observations, not a proven cause of pale patches.
+- Both source juvenile FBXs currently expose embedded URP/Lit materials with empty texture slots. Their existing imported material state therefore cannot independently prove the Meshy export appearance.
+- Original base-color, normal, metallic and roughness maps are authoritative. Packed _MetallicSmoothness maps are derivatives, not original Meshy maps; verify the particular prototype map's recorded deterministic packing separately from other AI-generated packed assets.
+- Dependency inspection using AssetDatabase.GetDependencies and reverse asset references found the prototype mesh/material/prefab used by the isolated scene, while production adult prefab is referenced by PondScene. Recheck impact immediately before edits; do not modify original references.
+
+### Allowed modifications / outputs
+Only files within Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/ may be modified or added for implementation, plus this planning document. Relevant existing files: Editor/JuvenileRiggingPrototypeBuilder.cs, Editor/JuvenileRiggingPrototypeRefinement.cs, Editor/JuvenileRiggingPrototypeValidation.cs, Runtime/JuvenilePrototypePlayback.cs, Meshes/Juvenile_RiggedMesh.asset, Prefabs/Juvenile_RiggingPrototype.prefab, Materials/Juvenile_Prototype_MAT.mat, Scenes/Juvenile_RiggingPrototype_Test.unity, and Reports/. Any necessary prototype texture-import copies, appearance diagnostic material/shader, comparison tooling or juvenile-adjusted clip copies must also remain here. Preserve old result evidence via baseline/versioned reports rather than relabeling old captures as new.
+Read-only: all original juvenile FBXs/maps/screenshots, adult mesh/prefab/material/controller/clips/scripts, production scenes, other prototypes, project/package settings and all source metadata. No fry asset investigation or rigging.
+
+### User-selected approach
+- Targeted refinement of the existing adult-derived transfer (selected over a fresh constrained transfer). Advantage: least disruptive and preserves prior approved architecture. Limitation: cannot overcome missing mouth interior/topology by weighting alone.
+- Juvenile body length: 60% of adult (selected over 50% or 70%). Use a uniform outer prototype scale, initially 0.6 if measured rest lengths match, outside the keyed animation root. Do not shrink mesh vertices, change FBX import settings, or scale only FishMesh. Preserve juvenile internal bone/renderer/bindpose correspondence.
+- First correct anatomy and weights while retaining exact adult clips. If excessive motion remains, allow narrowly scoped juvenile-only motion attenuation without changing clip timing/phase or globally slowing Swim. Keep an exact-source comparison mode and report adaptation values. Prefer normalized quaternion interpolation from rest for regional angular attenuation, not scaling quaternion components. Root translations need deliberate juvenile-length scaling so normalized bob/feeding lean remains adult-like.
+
+## Implementation Steps (revision)
+1. Protect sources and establish paired baselines.
+   - Dependencies: approval of this revised plan.
+   - Recheck dependencies/dependents for every intended edit. Hash original/source/production files and metadata against both a fresh baseline and the existing SourceProtection.tsv where applicable. Capture current scene setup and dirty state; never discard unsaved work or save production scenes.
+   - Record adult/juvenile rest body lengths, bone ordering, coordinate frames, regional weights, MouthOpen frame localization and curve extremes. Save previous prototype evidence under Reports/Baseline/ or a versioned equivalent.
+2. Diagnose original appearance BEFORE changing appearance or rig behavior.
+   - Dependencies: Step 1.
+   - Recompare FBX geometry, all UV channels, vertex/index/submesh layout and prototype equivalence. Inspect mouth and both eye surfaces: do their UVs address dark pupil areas in the correct source albedo? Check multi-material/submesh assignments, material remaps, slot semantics, UV scale/offset and export texture identity/version.
+   - Compare original PNG bytes/source dimensions with imported resolution/compression and color-space behavior. Validate a prototype-only unlit base-color view against URP/Lit with normals/metallic temporarily disabled, then reintroduce validated maps individually. Use isolated importer copies only if needed; retain unchanged source bytes and metadata.
+   - Check normal decoding/Y convention, metallic/roughness channels and deterministic packing. Do not repaint, generate albedo, borrow adult/fry textures, bake screenshot colors, change source UVs or apply a cosmetic tint to hide a wrong pairing.
+   - Repair proven assignment/import/shader issues only in the prototype. If correct UV/texture export pairing is unavailable or ambiguous, report exact evidence and ask for the matching original Meshy export; do not claim screenshot equivalence or block independently authorized rig work silently.
+3. Refine juvenile pivots and regional skin weights.
+   - Dependencies: Step 1; Step 2 audit completed.
+   - Update Builder/Refinement and juvenile mesh/prefab together. Keep hierarchy paths/order/rotation frames compatible with the adult; fit head/mouth, pectoral attachments and tail chain independently to juvenile landmarks.
+   - Use current adult-transferred weights as the baseline. Revisit localized poor correspondences only where evidence supports it. Protect the head/eyes, maintain smooth increasing tail propulsion, restrict each fin to its own side with a controlled attachment falloff, and prevent mouth influence leaking into eyes/body.
+   - Replace unconstrained repeated smoothing with masked, bounded adjacency corrections and deterministic baseline input. Preserve seam consistency without welding. Normalize influences and recompute bindposes whenever rest pivots change; retain original rest vertices/UVs/normals/tangents/indices.
+   - Test exact source clips and record before/after normalized head sway, body/tail excursions and regional stretch. If excessive wiggling persists, implement narrowly scoped prototype-only angular/translation attenuation in the harness or isolated clip copies; keep the adult timing, phase relationships and diagnostic source mode unchanged. Do not add independent high-amplitude procedural wiggle.
+4. Refine MouthOpen to adult-like opening/closure.
+   - Dependencies: Step 3, plus adult mouth analysis from Step 1.
+   - Inspect adult lip displacement direction, jaw/Mouth-bone contribution, shape weight timing, closure and opening ratio relative to head width. Inspect actual juvenile lip topology/interior before defining deltas.
+   - Replace diffuse muzzle expansion with localized upper/lower lip motion informed by juvenile anatomy, coordinated with Mouth-bone rotation. Protect cheeks, eyes and fin/body vertices; preserve base geometry and shape binding name. Verify shape weight 0 restores the exact rest surface.
+   - Preserve adult breathing versus Eat timing/ranges unless a documented juvenile-only amplitude adjustment is needed. Verify continuous closure after Eat, not merely an endpoint key value.
+   - Missing cavity or inseparable lip topology is a hard visual limitation: do not invent geometry, tear the mesh or paint a cavity. Report and request separate approval for topology/interior work if necessary.
+5. Apply prototype size and build synchronized comparison playback.
+   - Dependencies: Steps 2–4.
+   - Measure and set the outer juvenile scale so rest body length/adult rest body length = 0.60; update static juvenile control consistently. Keep adult display scale unchanged. Record renderer-space and scaled-world-space validation mappings explicitly.
+   - Extend Runtime/JuvenilePrototypePlayback.cs and scene assembly for explicit adult/juvenile references, a shared clock and playback stage control. Animate a reconstructed read-only adult reference hierarchy using the original mesh/material/clips; modify only the prototype scene, not adult assets.
+   - Support uninterrupted Swim/Idle, finite Eat with return, and repeat-Eat diagnostics. Reset all rest position/rotation/scale and shape channels between independent runs; correctly dispose/recreate Playables on disable/re-enable. Resolve shape index by name, not hard-coded index zero.
+   - Run first at source speed 1.0 for both. If matching production secondary dynamics, reproduce only the inspected modest motion offsets in prototype tooling under an explicit separate mode, derived from the freshly evaluated pose each frame with no cumulative rotation drift. Do not import wandering/water constraints, gameplay controls or feeding effects. Label source-only versus behavior-adapted evidence.
+6. Verify side-by-side deformation, appearance and real continuous playback.
+   - Dependencies: Step 5.
+   - Refactor Validation to handle both targets explicitly rather than Single(playback), and compare at common times with consistent scaling. Capture paired adult/juvenile side/top/front/three-quarter views and mouth/eye close-ups; preserve exact original active states and camera values during capture cleanup.
+   - Independently sample >=33 times per clip plus exact extremes; run continuous Play Mode comparison for >=3 Swim loops and >=3 Idle loops, full Eat and Eat-to-Idle/Swim returns. Record actual loop progression, displayed deformation, culling, reset and transition behavior. Add repeated sequence/disable-re-enable checks.
+   - Previous automated playback failed to enter Play Mode. Use supported test tooling if available, otherwise perform a manual isolated playback check. If execution is unavailable, mark it NOT RUN and request the user's manual check; do not substitute static samples or extend failed polling indefinitely.
+7. Report and stop at juvenile review.
+   - Dependencies: Step 6.
+   - Save versioned BehaviorMatchResults.md, structural/appearance/runtime results and paired captures under Reports/. Enumerate actual created/modified files, exact derivative provenance, scale ratio, adaptation parameters and clip-by-region pass/warning/fail results.
+   - Verify protected hashes and metadata unchanged, no production or other prototype edits, and no fry work. Clearly report incomplete appearance pairing, fin-root/mouth limitations and any unavailable runtime verification; do not claim production readiness.
+
+## Verification & Testing (revision)
+- Preservation: source/production files and metadata unchanged; juvenile rest vertices/all UV channels/normals/tangents/indices/submeshes exactly match original. Only prototype skinning/bindposes/approved shape deltas, bounds and outer display scaling change.
+- Structure: exact adult hierarchy paths/order; all clip bindings and properties resolve on both targets; finite bindposes and valid nonnegative bone weights summing to 1 within 1e-5. Test index validity and every vertex assigned, not only aggregate sums.
+- Rest pose: BakeMesh space mapping is measured, not assumed. World-space rest error <=1e-5 of juvenile body length; body-length ratio 0.60 within measurement tolerance (target <=0.01 absolute ratio error).
+- Regional motion: compare normalized excursions and head stability against adult and saved baseline. Fin roots should materially improve rather than merely redistribute distortion; no new seam openings, contralateral leakage, tail folding or head/eye wobble. Document thresholds/measurements and visually inspect; numerical validity is not an aesthetic pass.
+- Mouth: independently test weights 0/25/50/90/100 plus actual authored curves and Mouth-bone rotations; exact closure, localized lip motion, eyes/cheeks protected, no tears/inversions. Adult-like opening is a visual acceptance criterion; lack of interior is reported rather than hidden.
+- Appearance: isolate albedo-only versus Lit results, inspect each eye UV-to-pupil mapping and source image identity, compare rest original/rigged surfaces under matching light. Restore all source maps with verified semantics; no repainting or unverified texture substitution.
+- Continuous animation: >=3 loops Swim/Idle and complete Eat, return to Idle and Swim, repeated Eat, pose reset, disable/re-enable, pause/resume, frame-time variation and offscreen/onscreen culling. No leaked graphs, cumulative secondary motion, stale unkeyed channels or lingering MouthOpen.
+- Captures/results: label adult/juvenile, clip/time, size ratio, source/adapted motion and any magnification. Separate sampled Edit Mode evidence from actual runtime tests. Console must have no new compile/binding/test errors; report pre-existing errors separately.
+- Final isolation: compare hashes and scene state to baseline, enumerate changed prototype assets and derivatives, preserve earlier evidence, report remaining limitations and stop. No fry rigging or production integration.

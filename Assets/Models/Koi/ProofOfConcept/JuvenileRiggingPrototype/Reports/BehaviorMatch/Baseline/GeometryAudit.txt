@@ -1,0 +1,4 @@
+vertices/indices/normals/tangents source=textured: True
+prototype rest=source: True
+all UVs equal True
+submeshes 1

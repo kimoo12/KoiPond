@@ -1,0 +1,43 @@
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Scenes/Juvenile_RiggingPrototype_Test.unity clean; no production scenes loaded.
+Juvenile_Animated_Test:UnityEngine.Transform
+Juvenile_Animated_Test:UnityEngine.Animator
+Juvenile_Animated_Test:JuvenilePrototypePlayback
+Armature:UnityEngine.Transform
+Root:UnityEngine.Transform
+Spine_Front:UnityEngine.Transform
+Head:UnityEngine.Transform
+Mouth:UnityEngine.Transform
+PectoralFin_L:UnityEngine.Transform
+PectoralFin_R:UnityEngine.Transform
+Spine_Back:UnityEngine.Transform
+Spine_Tail1:UnityEngine.Transform
+Spine_Tail2:UnityEngine.Transform
+TailFin:UnityEngine.Transform
+FishMesh:UnityEngine.Transform
+FishMesh:UnityEngine.SkinnedMeshRenderer
+Juvenile_Original_Rest_Reference:UnityEngine.Transform
+OriginalFishMesh:UnityEngine.Transform
+OriginalFishMesh:UnityEngine.MeshFilter
+OriginalFishMesh:UnityEngine.MeshRenderer
+Adult_Rig_ReadOnly_Reference:UnityEngine.Transform
+Armature:UnityEngine.Transform
+Root:UnityEngine.Transform
+Spine_Front:UnityEngine.Transform
+Head:UnityEngine.Transform
+Mouth:UnityEngine.Transform
+PectoralFin_L:UnityEngine.Transform
+PectoralFin_R:UnityEngine.Transform
+Spine_Back:UnityEngine.Transform
+Spine_Tail1:UnityEngine.Transform
+Spine_Tail2:UnityEngine.Transform
+TailFin:UnityEngine.Transform
+FishMesh:UnityEngine.Transform
+FishMesh:UnityEngine.SkinnedMeshRenderer
+Prototype Camera:UnityEngine.Transform
+Prototype Camera:UnityEngine.Camera
+Neutral Key:UnityEngine.Transform
+Neutral Key:UnityEngine.Light
+Neutral Key:UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+Neutral Fill:UnityEngine.Transform
+Neutral Fill:UnityEngine.Light
+Neutral Fill:UnityEngine.Rendering.Universal.UniversalAdditionalLightData
