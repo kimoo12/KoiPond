@@ -1,0 +1,8 @@
+Protected existing Assets files including metas: 1802
+Changed: 0
+
+Valid bone indices: True
+Max bindpose error: 0
+Sampled vertices outside culling bounds: 0
+Sampled Eat-end to Idle-start: zero residual rotation and MouthOpen=0.
+Runtime: three provisioning attempts remained WaitingForCompile; no Play Mode entry, no continuous test result; bootstrap removed and callbacks cleared.

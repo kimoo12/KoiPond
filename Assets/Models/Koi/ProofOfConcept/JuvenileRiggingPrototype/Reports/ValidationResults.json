@@ -1,0 +1,88 @@
+{
+    "geometryPreserved": true,
+    "allUVsPreserved": true,
+    "weightsValid": true,
+    "seamsConsistent": true,
+    "restMaxError": 1.51974035134117e-7,
+    "maxWeightSumError": 8.954884833656251e-8,
+    "vertices": 87391,
+    "triangles": 159982,
+    "mouthVertices": 2272,
+    "clips": [
+        {
+            "name": "Swim",
+            "length": 1.149999976158142,
+            "maxDisplacement": 0.062202852219343185,
+            "maxEdgeRatio": 5.1852192878723145,
+            "maxMouthWeight": 29.99222755432129,
+            "loopSeamError": 6.29098408921891e-8,
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfiniteVertices": 0,
+            "stretchedEdges": 15760,
+            "collapsedEdges": 254,
+            "regionDisplacement": [
+                0.032380349934101105,
+                0.039639394730329514,
+                0.02718253806233406,
+                0.062202852219343185,
+                0.015792256221175194
+            ],
+            "warnings": [
+                "Surface correspondence is approximate across different anatomy; inspect fin-root and mouth stretch visually.",
+                "Mouth topology is unchanged: no new inner-mouth cavity or lip topology is supplied.",
+                "Edge distortion counts are accumulated triangle-edge samples, not unique vertices."
+            ]
+        },
+        {
+            "name": "Idle",
+            "length": 3.200000047683716,
+            "maxDisplacement": 0.053852472454309464,
+            "maxEdgeRatio": 4.380640506744385,
+            "maxMouthWeight": 25.0,
+            "loopSeamError": 5.982844442087298e-8,
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfiniteVertices": 0,
+            "stretchedEdges": 7428,
+            "collapsedEdges": 68,
+            "regionDisplacement": [
+                0.02045064978301525,
+                0.027053767815232277,
+                0.03124910593032837,
+                0.053852472454309464,
+                0.019085176289081573
+            ],
+            "warnings": [
+                "Surface correspondence is approximate across different anatomy; inspect fin-root and mouth stretch visually.",
+                "Mouth topology is unchanged: no new inner-mouth cavity or lip topology is supplied.",
+                "Edge distortion counts are accumulated triangle-edge samples, not unique vertices."
+            ]
+        },
+        {
+            "name": "Eat",
+            "length": 2.5,
+            "maxDisplacement": 0.1740492880344391,
+            "maxEdgeRatio": 4.304558277130127,
+            "maxMouthWeight": 89.82551574707031,
+            "loopSeamError": 0.0,
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfiniteVertices": 0,
+            "stretchedEdges": 5188,
+            "collapsedEdges": 296,
+            "regionDisplacement": [
+                0.1669681817293167,
+                0.12719102203845978,
+                0.12867911159992218,
+                0.08728126436471939,
+                0.1740492880344391
+            ],
+            "warnings": [
+                "Surface correspondence is approximate across different anatomy; inspect fin-root and mouth stretch visually.",
+                "Mouth topology is unchanged: no new inner-mouth cavity or lip topology is supplied.",
+                "Edge distortion counts are accumulated triangle-edge samples, not unique vertices."
+            ]
+        }
+    ]
+}
