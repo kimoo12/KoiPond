@@ -20,6 +20,23 @@ namespace KoiPond
         private static readonly KoiAllele[] MetallicAlleles = { KoiAllele.NonMetallic, KoiAllele.Metallic };
         private static readonly KoiAllele[] FinAlleles = { KoiAllele.StandardFin, KoiAllele.HirenagaFin };
 
+        /// <summary>Read-only valid alleles for a locus; mutation cannot alter these domains.</summary>
+        internal static System.Collections.Generic.IReadOnlyList<KoiAllele> GetAlleleDomain(KoiGeneticTrait trait)
+        {
+            KoiAllele[] domain;
+            switch (trait)
+            {
+                case KoiGeneticTrait.BasePigmentation: domain = BaseAlleles; break;
+                case KoiGeneticTrait.Red: domain = RedAlleles; break;
+                case KoiGeneticTrait.Black: domain = BlackAlleles; break;
+                case KoiGeneticTrait.Pattern: domain = PatternAlleles; break;
+                case KoiGeneticTrait.Metallic: domain = MetallicAlleles; break;
+                case KoiGeneticTrait.Fin: domain = FinAlleles; break;
+                default: throw new ArgumentOutOfRangeException(nameof(trait));
+            }
+            return Array.AsReadOnly(domain);
+        }
+
         /// <summary>
         /// Rejects corrupt, cross-locus, or unsupported schema data rather than guessing.
         /// Extend the allele domains and introduce explicit schema migration when needed.

@@ -4,16 +4,25 @@ using UnityEngine;
 namespace KoiPond
 {
     /// <summary>
-    /// Reserved configuration only. Mutation behavior is not implemented in Phase 3 Step 2.
-    /// Enabling mutations is rejected rather than silently ignored.
+    /// Opt-in mutation probabilities per inherited allele, in [0, 1]. Use small values
+    /// (for example 0.001) for rare mutations; zero disables mutation at that locus.
+    /// The original constructor/serialized fields retain uniform-rate compatibility.
     /// </summary>
     [Serializable]
     public sealed class KoiMutationSettings
     {
         [SerializeField] private bool enabled;
         [SerializeField] private float probabilityPerAllele;
+        [SerializeField] private bool usePerTraitRates;
+        [SerializeField] private float basePigmentationProbability;
+        [SerializeField] private float redProbability;
+        [SerializeField] private float blackProbability;
+        [SerializeField] private float patternProbability;
+        [SerializeField] private float metallicProbability;
+        [SerializeField] private float finProbability;
 
         public bool Enabled => enabled;
+        // Uniform fallback only; use GetProbability for the effective per-trait rate.
         public float ProbabilityPerAllele => probabilityPerAllele;
 
         public KoiMutationSettings(bool enabled = false, float probabilityPerAllele = 0f)
@@ -23,20 +32,62 @@ namespace KoiPond
             Validate();
         }
 
+        public KoiMutationSettings(bool enabled, float basePigmentationProbability,
+            float redProbability, float blackProbability, float patternProbability,
+            float metallicProbability, float finProbability)
+        {
+            this.enabled = enabled;
+            usePerTraitRates = true;
+            this.basePigmentationProbability = basePigmentationProbability;
+            this.redProbability = redProbability;
+            this.blackProbability = blackProbability;
+            this.patternProbability = patternProbability;
+            this.metallicProbability = metallicProbability;
+            this.finProbability = finProbability;
+            Validate();
+        }
+
+        public float GetProbability(KoiGeneticTrait trait)
+        {
+            float rate;
+            switch (trait)
+            {
+                case KoiGeneticTrait.BasePigmentation: rate = basePigmentationProbability; break;
+                case KoiGeneticTrait.Red: rate = redProbability; break;
+                case KoiGeneticTrait.Black: rate = blackProbability; break;
+                case KoiGeneticTrait.Pattern: rate = patternProbability; break;
+                case KoiGeneticTrait.Metallic: rate = metallicProbability; break;
+                case KoiGeneticTrait.Fin: rate = finProbability; break;
+                default: throw new ArgumentOutOfRangeException(nameof(trait));
+            }
+            return usePerTraitRates ? rate : probabilityPerAllele;
+        }
+
         internal void Validate()
         {
-            if (float.IsNaN(probabilityPerAllele) || float.IsInfinity(probabilityPerAllele)
-                || probabilityPerAllele < 0f || probabilityPerAllele > 1f)
-                throw new ArgumentOutOfRangeException(nameof(probabilityPerAllele),
+            ValidateRate(probabilityPerAllele, nameof(probabilityPerAllele));
+            ValidateRate(basePigmentationProbability, nameof(basePigmentationProbability));
+            ValidateRate(redProbability, nameof(redProbability));
+            ValidateRate(blackProbability, nameof(blackProbability));
+            ValidateRate(patternProbability, nameof(patternProbability));
+            ValidateRate(metallicProbability, nameof(metallicProbability));
+            ValidateRate(finProbability, nameof(finProbability));
+        }
+
+        private static void ValidateRate(float rate, string name)
+        {
+            if (float.IsNaN(rate) || float.IsInfinity(rate) || rate < 0f || rate > 1f)
+                throw new ArgumentOutOfRangeException(name,
                     "Mutation probability must be finite and between zero and one.");
         }
     }
 
     /// <summary>
     /// Serializable genetic birth record, with no growth state or visual references.
-    /// Genome inheritance is seed-reproducible; identity deliberately is not seed-derived,
-    /// so repeating a breeding request produces a distinct individual with the same genome.
-    /// Parent IDs correspond to the first and second alleles in every inherited pair.
+    /// Genome inheritance and mutation are reproducible for the same seed and settings;
+    /// identity deliberately is not seed-derived, so replay creates a distinct individual.
+    /// Parent IDs correspond to the first and second inherited allele slots; a mutation
+    /// may subsequently replace an allele in either slot without changing lineage.
     /// </summary>
     [Serializable]
     public sealed class KoiOffspringRecord
@@ -91,11 +142,7 @@ namespace KoiPond
             KoiGeneticsRules.Validate(firstParent);
             KoiGeneticsRules.Validate(secondParent);
             if (mutationSettings != null)
-            {
                 mutationSettings.Validate();
-                if (mutationSettings.Enabled)
-                    throw new NotSupportedException("Mutation behavior is not implemented. Keep mutations disabled.");
-            }
 
             var random = new System.Random(seed);
             var genome = new KoiGenome(
@@ -106,6 +153,7 @@ namespace KoiPond
                 Inherit(firstParent.Metallic, secondParent.Metallic, random),
                 Inherit(firstParent.Fin, secondParent.Fin, random));
 
+            genome = KoiMutationRules.Apply(genome, mutationSettings, random);
             KoiGeneticsRules.Validate(genome);
             return new KoiOffspringRecord(firstParentId, secondParentId, seed, genome);
         }

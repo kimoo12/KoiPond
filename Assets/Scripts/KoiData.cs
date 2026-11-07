@@ -24,6 +24,12 @@ namespace KoiPond
         HirenagaFin = 601
     }
 
+    // Loci are independent, including fin form. These IDs do not change allele serialization.
+    public enum KoiGeneticTrait
+    {
+        BasePigmentation = 0, Red = 1, Black = 2, Pattern = 3, Metallic = 4, Fin = 5
+    }
+
     public enum KoiBasePigmentation { White = 0, Yellow = 1, Brown = 2, Black = 3 }
     public enum KoiPatternType { Solid = 0, HeadSpot = 1, Distributed = 2 }
     public enum KoiFinType { Standard = 0, Hirenaga = 1 }

@@ -262,8 +262,10 @@ namespace KoiPond.EditorTests
             var configured = KoiBreedingService.Breed(a, "a", b, "b", 26, new KoiMutationSettings(false, 1f));
             Check(JsonUtility.ToJson(baseline.Genome) == JsonUtility.ToJson(configured.Genome),
                 "Disabled mutation configuration affected inheritance");
-            Reject<NotSupportedException>(() => KoiBreedingService.Breed(a, "a", b, "b", 26,
-                new KoiMutationSettings(true, 0.01f)));
+            var enabledZero = KoiBreedingService.Breed(a, "a", b, "b", 26,
+                new KoiMutationSettings(true, 0f));
+            Check(JsonUtility.ToJson(baseline.Genome) == JsonUtility.ToJson(enabledZero.Genome),
+                "Enabled zero-rate mutation affected inheritance");
             Reject<ArgumentOutOfRangeException>(() => new KoiMutationSettings(false, -0.1f));
             Reject<ArgumentOutOfRangeException>(() => new KoiMutationSettings(false, 1.1f));
             Reject<ArgumentOutOfRangeException>(() => new KoiMutationSettings(false, float.NaN));
