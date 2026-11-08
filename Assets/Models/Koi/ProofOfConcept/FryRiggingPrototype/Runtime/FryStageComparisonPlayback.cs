@@ -63,7 +63,37 @@ public sealed class FryStageComparisonPlayback : MonoBehaviour
     }
     public void RestoreRest()
     {
-        Initialize();for(int s=0;s<3;s++){for(int i=0;i<_transforms[s].Length;i++){var t=_transforms[s][i];t.localPosition=_restPositions[s][i];t.localRotation=_restRotations[s][i];t.localScale=_restScales[s][i];}for(int b=0;b<_skins[s].sharedMesh.blendShapeCount;b++)_skins[s].SetBlendShapeWeight(b,0);}
+        Initialize();RestoreCachedRest();
+    }
+    private void RestoreCachedRest()
+    {
+        if(_transforms==null)return;
+        for(int s=0;s<_transforms.Length;s++)
+        {
+            if(_transforms[s]!=null)
+                for(int i=0;i<_transforms[s].Length;i++)
+                {
+                    var t=_transforms[s][i];if(t==null)continue;
+                    t.localPosition=_restPositions[s][i];t.localRotation=_restRotations[s][i];t.localScale=_restScales[s][i];
+                }
+            var skin=_skins[s];if(skin==null||skin.sharedMesh==null)continue;
+            for(int b=0;b<skin.sharedMesh.blendShapeCount;b++)skin.SetBlendShapeWeight(b,0);
+        }
+    }
+    private void DestroyPlayback()
+    {
+        if(_graph.IsValid())_graph.Destroy();
+        _graph=default;_playables=null;_clipIndex=-1;
+    }
+    private bool HasLivePlaybackReferences()
+    {
+        for(int s=0;s<3;s++)
+        {
+            if(_targets[s]==null||_skins[s]==null||_skins[s].sharedMesh==null||_animators[s]==null)return false;
+            var bones=_skins[s].bones;if(bones.Length!=10)return false;
+            for(int b=0;b<bones.Length;b++)if(bones[b]==null)return false;
+        }
+        return true;
     }
     public void ApplyAdaptation(int clip)
     {
@@ -91,7 +121,7 @@ public sealed class FryStageComparisonPlayback : MonoBehaviour
     public void ConfigureTest(bool repeat){_mode=PlaybackMode.ComparisonSequence;_repeatSequence=repeat;_paused=false;ResetComparison();}
     private void Begin(int clip)
     {
-        if(_graph.IsValid())_graph.Destroy();RestoreRest();_clipIndex=clip;_elapsed=0;
+        DestroyPlayback();RestoreRest();_clipIndex=clip;_elapsed=0;
         _graph=PlayableGraph.Create("Adult Juvenile Fry Shared Clock");_graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);_playables=new AnimationClipPlayable[3];
         for(int s=0;s<3;s++){var p=AnimationClipPlayable.Create(_graph,_clips[clip]);p.SetApplyFootIK(false);p.SetApplyPlayableIK(false);p.SetSpeed(0);var o=AnimationPlayableOutput.Create(_graph,_targets[s].name,_animators[s]);o.SetSourcePlayable(p);_playables[s]=p;}
         _graph.Play();EvaluatePose(0);
@@ -103,6 +133,7 @@ public sealed class FryStageComparisonPlayback : MonoBehaviour
     }
     private void Update()
     {
+        if(_transforms==null||!HasLivePlaybackReferences()){enabled=false;return;}
         if(_mode!=_runningMode)ResetComparison();if(_paused||Finished)return;
         double before=_elapsed;_elapsed+=Time.deltaTime;
         if(_mode==PlaybackMode.ContinuousSwim||_mode==PlaybackMode.ContinuousIdle){CompletedLoops+=(int)(_elapsed/_clips[_clipIndex].length)-(int)(before/_clips[_clipIndex].length);EvaluatePose(_elapsed);return;}
@@ -114,5 +145,16 @@ public sealed class FryStageComparisonPlayback : MonoBehaviour
         if(_stage<4){_stage++;Begin(_stage==1?1:_stage==2?2:_stage==3?1:0);}
         else if(_repeatSequence){_stage=0;Begin(0);}else{Finished=true;_graph.Stop();}
     }
-    private void OnDisable(){if(_graph.IsValid())_graph.Destroy();if(_transforms!=null)RestoreRest();}
+    private void CleanupPlayback()
+    {
+        DestroyPlayback();
+        try {RestoreCachedRest();}
+        finally
+        {
+            _animators=null;_transforms=null;_restPositions=null;_restScales=null;
+            _restRotations=null;_boneRotations=null;_rootPositions=null;_mouthIndices=null;
+        }
+    }
+    private void OnDisable(){CleanupPlayback();}
+    private void OnDestroy(){CleanupPlayback();}
 }
