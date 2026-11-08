@@ -1,0 +1,5 @@
+Restored=Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Scenes/Juvenile_RiggingPrototype_Test.unity
+Dirty=False
+Playing=False
+RuntimeState=cleared
+RunnerPresent=False

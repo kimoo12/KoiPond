@@ -1,0 +1,3 @@
+Detected discontinuity seeds=1557
+Expanded unique-vertex correction mask=21949 / 74545
+24 bounded .4 neighbor relaxation passes, four adjacency rings; head z>=.57 and mouth protected; no geometry smoothing; no wholesale weight-method fallback. Input regenerated from original adult surface transfer, cannot accumulate on repeated calls.

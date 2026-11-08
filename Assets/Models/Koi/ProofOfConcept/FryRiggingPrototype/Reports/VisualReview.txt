@@ -1,0 +1,7 @@
+Original albedo-only source multi-angle view: pale peach/orange markings and both dark pupils visible.
+Final fry sampled Swim (.2875s), Idle (.8s), Eat (1.033333s): multi-angle renders reviewed. Body/tail silhouette coherent, pectorals visibly attached at these poses, pupils remain dark and registered. Lit surface reads faceted; source normals/tangents unchanged, exact original normal convention and photometric match not certified.
+Eat mouth remains shallow lip/muzzle motion, not convincing adult-like open aperture; missing/usable cavity not established. Fail mouth visual acceptance.
+Local edge strain remains numerically high despite two bounded corrections. Captures alone do not negate this warning; no full deformation or temporal acceptance.
+Three targets were visible together in initial full-scene rest overview, at decreasing scales; saved camera contact sheets are available for detailed manual comparison. Direct image-tool readback of PNGs failed (legacy IDs unresolved); attempt to view a temporary board also produced empty tool view and was removed. No claim of detailed visual review of every saved sheet.
+Continuous Play Mode NOT RUN successfully: one bootstrap attempt stayed WaitingForCompile / NOT_READY with compiling=false. Stopped retries, cleared state, removed runner.
+No production-ready acceptance; request manual continuous review and authorization before further rig/topology changes.

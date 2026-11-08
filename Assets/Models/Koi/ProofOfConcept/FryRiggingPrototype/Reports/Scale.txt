@@ -1,0 +1,6 @@
+JuvenileLength=0.3606059
+FryLength=0.1803029
+Ratio=0.5
+InternalScale=0.3157
+OuterScale=0.3001853
+Convention=full fin-inclusive Z extent; body-only length not independently segmented

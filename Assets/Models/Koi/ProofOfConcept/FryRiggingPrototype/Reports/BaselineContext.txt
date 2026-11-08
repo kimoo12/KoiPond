@@ -1,0 +1,5 @@
+Unity=6000.6.6f1
+Scene=Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Scenes/Juvenile_RiggingPrototype_Test.unity
+Dirty=False
+Pipeline=PC_RPAsset (UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset)
+ProtectedFiles=2140

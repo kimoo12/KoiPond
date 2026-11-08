@@ -1,0 +1,12 @@
+Method=adult region/orientation-constrained triangle barycentric transfer; fry-specific protected head, sided fin attachment, localized jaw
+UniqueMatches=74545
+OpposingNormalMatches=0
+FallbackAssignments=0
+DistanceMeanAdultUnits=0.01437992
+DistanceP95=0.03702879
+DistanceMax=0.08295365
+DistanceOver.04=2777
+Regions=53921,2040,2769,20744,1943
+HeadCorrections=23322
+FinCorrections=4488
+BoneCoverage=24814,35564,32689,299,2024,2748,18386,16761,17986,8457

@@ -1,0 +1,14 @@
+BoneCount=10
+Bindposes=10
+InvalidBindposes=0
+FinalBoneCoverage=27167,38121,33985,299,3112,4004,25009,18955,22221,9249
+Armature/Root
+Armature/Root/Spine_Front
+Armature/Root/Spine_Front/Head
+Armature/Root/Spine_Front/Head/Mouth
+Armature/Root/Spine_Front/PectoralFin_L
+Armature/Root/Spine_Front/PectoralFin_R
+Armature/Root/Spine_Back
+Armature/Root/Spine_Back/Spine_Tail1
+Armature/Root/Spine_Back/Spine_Tail1/Spine_Tail2
+Armature/Root/Spine_Back/Spine_Tail1/Spine_Tail2/TailFin

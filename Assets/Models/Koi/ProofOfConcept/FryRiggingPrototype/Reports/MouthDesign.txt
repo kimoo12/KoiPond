@@ -1,0 +1,4 @@
+AffectedVertices=388
+FullImportUpperY=.006; LowerY=-.012; lowerZ=.0015
+Localized bounded shallow lip movement, source timing retained. No new interior/topology. Convincing aperture is a visual acceptance requirement and not assumed.
+Protected eyes/cheeks lie outside x<.145/z>.895 lip mask.

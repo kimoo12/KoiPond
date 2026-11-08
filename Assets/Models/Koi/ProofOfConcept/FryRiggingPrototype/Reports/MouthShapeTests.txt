@@ -1,0 +1,7 @@
+MouthShape=0 maxLocalDelta=0 finite=True
+MouthShape=25 maxLocalDelta=2.994646E-05 finite=True
+MouthShape=50 maxLocalDelta=5.989292E-05 finite=True
+MouthShape=90 maxLocalDelta=0.0001078073 finite=True
+MouthShape=100 maxLocalDelta=0.000119786 finite=True
+MouthShape=0 maxLocalDelta=0 finite=True
+Closure final exact=True

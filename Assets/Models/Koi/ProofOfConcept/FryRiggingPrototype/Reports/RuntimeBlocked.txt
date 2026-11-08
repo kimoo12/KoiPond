@@ -1,0 +1,1 @@
+One bounded supported bootstrap attempt: state=WaitingForCompile result=NOT_READY compiling=False. No completed continuous runtime evidence. Do not retry or alter persistent settings; manual Play required. Editor returned to Edit Mode.

@@ -1,0 +1,16 @@
+Central lip z=0.820 y=0.17939..0.17939 count=1
+Central lip z=0.840 y=-0.35900..0.16505 count=18
+Central lip z=0.860 y=-0.33337..-0.33337 count=1
+Central lip z=0.880 y=-0.32680..0.10129 count=31
+Central lip z=0.900 y=-0.30453..0.05039 count=113
+Central lip z=0.920 y=-0.26182..0.00626 count=25
+Central lip z=0.940 y=-0.18570..-0.03287 count=27
+Central lip z=0.960 y=-0.11698..-0.11368 count=5
+Ventral fin section z=0.100 x=-0.48149..0.48149 yMin=-0.59541
+Ventral fin section z=0.200 x=-0.47562..0.47576 yMin=-0.60333
+Ventral fin section z=0.300 x=-0.44283..0.44296 yMin=-0.55035
+Ventral fin section z=0.400 x=-0.45431..0.45369 yMin=-0.51190
+Ventral fin section z=0.500 x=-0.45110..0.45029 yMin=-0.50050
+Ventral fin section z=0.600 x=-0.41701..0.41254 yMin=-0.48644
+Visual original albedo review: both dark pupils visible, pale peach/orange markings, broad spherical anterior profile, compact ventrolateral pectoral fins, tall dorsal fin, narrow posterior tail. Texture viewed unlit without source edits. Source image tool bridge could not resolve legacy IDs; scene render review used instead.
+Mouth reads as shallow anterior crease; existing cavity is NOT established. Prototype must limit lip motion and report any inability to produce adult-like aperture.

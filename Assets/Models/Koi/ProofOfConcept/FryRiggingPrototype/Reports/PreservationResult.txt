@@ -1,0 +1,6 @@
+Protected files checked=2140
+Changed/missing=2
+MISSING Assets/AI Toolkit/Temp/AssistantImageReferences/c6acff887cf1e702a59508fdaf498434cd0406ef.png
+MISSING Assets/AI Toolkit/Temp/AssistantImageReferences/c6acff887cf1e702a59508fdaf498434cd0406ef.png.meta
+Original normal and roughness copy bytes identical. No texture generation/packing/repainting.
+Editor isPlaying=False

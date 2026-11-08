@@ -1,0 +1,2 @@
+Columns: Adult | Juvenile | Fry; rows: side, top, front, three-quarter.
+Time=1.033333; MouthOpen=89.82552; same orthographic size .36 for all columns; ratio 1:.60:.30; Edit Mode sampled NOT runtime.

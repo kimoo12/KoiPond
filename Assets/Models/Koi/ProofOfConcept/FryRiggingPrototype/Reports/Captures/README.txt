@@ -1,0 +1,1 @@
+All Clip_ and Rest images are diagnostic Edit Mode camera renders, not runtime footage. Stage columns adult/juvenile/fry; rows side/top/front/three-quarter. Closeup sheet uses independently magnified head region: adult .13, juvenile .09, fry .055 orthographic size; NOT size comparison. No capture is a replacement texture.
