@@ -1,0 +1,12 @@
+Fresh verification: original FBX, stage FBX and rig have equal vertex positions, triangles, UV0, normals, tangents; 87391 vertices and 159982 triangles.
+Existing packed R/A mismatch count=0
+Original normal/copy bytes equal=True
+Raw albedo pixels=4194304, dark RGB<51=72841 (1.73666477203369%), red dominant R>100 R>1.5G/B=0 (0%). Threshold statistics are not exact pupil segmentation.
+UV channel 0: exact=True, count=87391
+UV channel 1: exact=True, count=0
+UV channel 2: exact=True, count=0
+UV channel 3: exact=True, count=0
+UV channel 4: exact=True, count=0
+UV channel 5: exact=True, count=0
+UV channel 6: exact=True, count=0
+UV channel 7: exact=True, count=0

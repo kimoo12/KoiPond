@@ -1,0 +1,1 @@
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Materials/Juvenile_Prototype_MAT.mat

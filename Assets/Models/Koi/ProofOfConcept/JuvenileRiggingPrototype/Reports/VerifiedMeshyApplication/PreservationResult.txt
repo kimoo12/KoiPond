@@ -1,0 +1,6 @@
+Pre-existing files checked=569, allowed material changes=1, unexpected changed/missing=0
+ALLOWED material-only change: Assets/Models/Koi\ProofOfConcept\JuvenileRiggingPrototype\Materials\Juvenile_Prototype_MAT.mat
+Material YAML differs only in texture GUID references=True
+New normal copy matches original bytes=True; packed derivative matches verified packing bytes=True
+Live juvenile/adult world length ratio=0.6
+Original isolated scene restored; isPlaying=False; background=False; temporary runtime script exists=False

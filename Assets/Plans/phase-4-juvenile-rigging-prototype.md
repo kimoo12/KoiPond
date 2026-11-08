@@ -239,3 +239,134 @@ Read-only: all original juvenile FBXs/maps/screenshots, adult mesh/prefab/materi
 - Continuous animation: >=3 loops Swim/Idle and complete Eat, return to Idle and Swim, repeated Eat, pose reset, disable/re-enable, pause/resume, frame-time variation and offscreen/onscreen culling. No leaked graphs, cumulative secondary motion, stale unkeyed channels or lingering MouthOpen.
 - Captures/results: label adult/juvenile, clip/time, size ratio, source/adapted motion and any magnification. Separate sampled Edit Mode evidence from actual runtime tests. Console must have no new compile/binding/test errors; report pre-existing errors separately.
 - Final isolation: compare hashes and scene state to baseline, enumerate changed prototype assets and derivatives, preserve earlier evidence, report remaining limitations and stop. No fry rigging or production integration.
+
+# Revision — Phase 4: Fry Rigging Prototype
+This revision adds the user-requested fry phase to the existing plan. Earlier juvenile-only stop boundaries remain historical and are superseded ONLY for the isolated fry work below after approval. All original assets and existing adult/juvenile outputs remain read-only. This is not approval to refine juvenile further, integrate production gameplay, or repair topology.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Build an isolated fry feasibility prototype from the original Meshy fry export, using the adult ten-bone rig and completed juvenile prototype as references. Validate original appearance and natural Swim, Idle and Eat behavior in a synchronized three-stage comparison, with explicit limitations rather than assumed acceptance.
+- Players: Asset-validation prototype; no player model or gameplay changes.
+- Inspiration / Reference Games: Original fry Meshy FBX/maps and fry_side/top/angle screenshots; existing adult rig/source clips and current juvenile prototype.
+- Tone / Art Direction: Preserve original stylized fry proportions, textures and dark eyes; no generated or repainted textures, recoloring, texture transfer or new model generation.
+- Target Platform: StandaloneWindows64, Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Desktop landscape; fixed-scale three-stage captures and separately labeled detail close-ups. Do not change production resolution settings.
+- Render Pipeline: Existing URP PC_RPAsset; no pipeline, package, lighting-project or post-processing changes.
+
+# Game Mechanics
+## Core Gameplay Loop
+Diagnostic loop: inspect original rest anatomy/appearance -> sample synchronized adult/juvenile/fry poses -> inspect continuous Swim/Idle/Eat and regional deformation -> refine fry-only weights, pivots and mouth deltas -> repeat checks -> report. No pond locomotion, feeding integration or gameplay controller changes.
+## Controls and Input Methods
+The project uses New Input System; no new player controls or input assets. Use a fry-folder-only Inspector/editor harness for clip selection, pause/resume, reset, source/adapted comparison, continuous Swim/Idle, finite Eat with return, and reset-separated repeated Eat.
+
+# UI
+No production UI changes. Diagnostic Inspector/editor layout:
+```
+Adult — 100%       Juvenile — 60%       Fry — 30% of adult
+                 Shared clip clock
+[Swim] [Idle] [Eat -> Idle/Swim] [Repeat Eat]
+[Play/Pause] [Reset] [Exact source / Stage-adapted]
+View: Side / Top / Front / Three-quarter / Eyes / Mouth / Fins
+Status: clip, time, loop count, target bindings, regional warnings
+```
+Shared-scale views establish size progression; magnified close-ups are labeled and not used as size evidence. Keep a static original fry appearance/rest control with independently validated material settings.
+
+# Key Asset & Context
+## Read-only source findings
+- Preferred fry source: `Assets/Models/Koi/Materials/fry texture/Meshy_AI_stylized_cute_fish_20261024_image-to-3d-texture.fbx`, paired with the four maps in that directory. The source model is non-humanoid and unrigged: MeshRenderer/MeshFilter, 81,417 vertices, 149,086 triangles, one submesh, no bindposes or blendshapes. No Humanoid Avatar or generic auto-rig service is needed.
+- `Assets/Models/Koi/Meshes/Koi_Stage2_Fry.fbx` is a second, read-only source reference. Imported vertices, normals, tangents, triangle indices and all eight UV channel arrays match the Meshy-folder FBX exactly. UV0 contains 81,417 entries in [0,1]; UV1–7 are empty. FBX file hashes differ despite matching imported attributes. Do not rename assets to correct the counterintuitive Stage1_Juvenile/Stage2_Fry naming.
+- Fry vertex SHA256: `287BAEC8DEAB710DF85605C6AEE91FA14AA926C6C44A392A49F99E2A5AB9C60B`; UV0 SHA256: `2AD39ACA30146BDCBD0DEC76A28B665C12832717BAC3BA4062AB2718DDDD1F06`; index SHA256: `5DDBB67FA286DFA3871BD23317A93807C047902941ACFC9D45EFBE86E0A9A285`. Recompute baselines during implementation.
+- Imported fry coordinates have X rotation 270 degrees and scale 100. Full-import extent is (0.963870, 1.208080, 1.902562); width/length=.5066, height/length=.6350. Corresponding juvenile extent is (0.770876, 1.007501, 1.903176); width/length=.4050, height/length=.5294. Fry is about 25% wider and 20% taller at near-equal full-import length; total bounds include fins and are not segmented body/head measurements.
+- Longitudinal fry bounds indicate a broad anterior profile and narrower posterior region. Actual eye centers, lips, fin attachments and tail peduncle still need multi-angle visual landmark validation. No degenerate triangles were detected at squared cross-product threshold 1e-20 in full-import space; this is not a manifold, mouth-cavity or topology-quality pass.
+- Original fry maps: `Meshy_AI_stylized_cute_fish_20261024_image-to-3d-texture.png`, `_normal.png`, `_metallic.png`, `_roughness.png`. All raw/imported dimensions are 2048x2048; current importers are Default, sRGB=true, compressed, not CPU-readable. Embedded URP/Lit materials have empty base/normal/metallic slots. Correct only disposable prototype copies/imports/materials, never source settings.
+- Read-only raw PNG decoding: base-color has 72,841 dark pixels (1.737%, each RGB channel <.2). Broad lateral front eye-candidate UV samples found left 505/6,979 and right 508/7,364 dark values with original UVs. These are deliberately broad masks, NOT pupil segmentation or visual proof of correct dark eyes. Raw metallic is all zero; roughness range 54–158/255, mean 121.75/255. Verify visual eye registration and shader semantics before claiming appearance success.
+- Initial raw-decoder tooling required a transient compilation correction; subsequent read-only decoding succeeded. No decoder asset or texture was saved.
+- Adult reference: `Assets/Prefabs/Koi_Stage3_Adult.prefab`, `Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset` (221,941 vertices, ten bones, one MouthOpen), original material/controller and `Assets/Scripts/KoiFishController.cs`. Adult prefab is used by PondScene; do not edit either.
+- Juvenile reference: `Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Prefabs/Juvenile_RiggingPrototype.prefab`, its mesh/material/runtime/editor scripts, scene and reports. Current mesh has 87,391 vertices, ten bones and MouthOpen. Current material uses the verified `Assets/Models/Koi/New Juvenile/new_juvenile_texture.png`, not the old mismatched juvenile albedo.
+- Latest juvenile evidence: `Reports/VerifiedMeshyApplication/ApplicationResults.md` supersedes the earlier appearance failure: sampled markings and dark pupils were reviewed successfully. Mouth aperture and fin-root issues were not redesigned or recertified. Continuous playback remains unverified; earlier BehaviorMatch report explicitly records unsuccessful convincing mouth aperture, residual local strain and runtime-tool limitations. Preserve these distinctions.
+- Original Meshy maps are authoritative. Existing koi `_MetallicSmoothness` maps include Unity AI-generated derivatives; the juvenile NewMeshy packed derivative has separately verified deterministic provenance. None is a fry texture source. No new packed texture is allowed by this fry plan.
+- Current clean loaded scene: `Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Scenes/Juvenile_RiggingPrototype_Test.unity`. Adult rest length=.601010, juvenile=.360606, ratio=.60. Preserve scene setup and any subsequent unsaved changes.
+- Dependency/dependent inspection using AssetDatabase.GetDependencies and reverse-reference queries found no current scene/prefab dependents for the two fry FBXs. Juvenile output is referenced by its isolated scene and saved sampled evidence; adult mesh also by PondScene. Dedicated dependency tooling is unavailable; use the same read-only API fallback and recheck before any edit.
+
+## Skeleton and animation compatibility
+Preserve exact paths and bone ordering:
+```
+Armature/Root [0]
+  Spine_Front [1]
+    Head [2]
+      Mouth [3]
+    PectoralFin_L [4]
+    PectoralFin_R [5]
+  Spine_Back [6]
+    Spine_Tail1 [7]
+      Spine_Tail2 [8]
+        TailFin [9]
+FishMesh / blendShape.MouthOpen
+```
+Original clips remain read-only: Swim=1.15s looping, Idle=3.2s looping, Eat=2.5s nonlooping. MouthOpen keyed peaks approximately 29.99223/25/89.82552. Idle lacks Mouth rotation; Eat omits intermediate tail rotations. Reset all rest transforms and shape channels for independent sampling and transitions. Different vertex counts prohibit direct adult/juvenile weight or shape copying by index.
+
+## User-selected approach and scale
+- Selected: adult anatomically constrained surface-weight transfer followed by fry-specific regional refinement. Juvenile provides motion/anatomy methodology and comparison, not blindly copied weights or mouth deltas. Advantages: continuity with adult hierarchy and existing architecture; risks: poor thin-fin/head correspondence and inherited local strain. Refit region maps to fry rather than reusing juvenile hard-coded landmark constants.
+- Alternative considered: fry-specific anatomy-based regional weights with the same hierarchy; offers local control and avoids inherited transfer defects but requires more independent tuning. Do not silently switch the whole weighting method if correspondence fails; report evidence and seek approval for substantial fallback work. Small bounded regional corrections are part of the selected method.
+- Selected size: fry rest length / juvenile rest length = **.50**. With juvenile/adult=.60, adult:juvenile:fry lengths are **1:.60:.30**, target fry length approximately **.180303** at current display scale. This is a stylized stage-readability choice, not a biological measurement. Alternatives .40 or .60 of juvenile trade stronger progression contrast against eye/fin/mouth readability (MDA aesthetics).
+- Apply uniform scale outside the keyed rig root using measured final rest length. Never alter rest vertices, source importer scale or only the renderer scale. Do not assume a literal outer .5 scale unless pre-scaled internal reference lengths justify it. Root translation must scale once consistently with display length, not twice.
+
+## Isolated outputs
+Root: `Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/`. If unexpectedly present, inspect and choose a unique versioned folder; never overwrite unrelated work.
+- `Editor/FryRiggingPrototypeBuilder.cs`: protection, copy validation, fry anatomy masks, constrained adult surface transfer, deterministic localized corrections, copied skeleton/bindposes and prefab creation. Adapt methodology by creating independent uniquely named code; do not edit or run the juvenile builder/refinement against its completed outputs.
+- `Editor/FryRiggingPrototypeValidation.cs`: exact preservation, bindings, seam/region weights, rest and sampled deformation, raw texture audit, labeled capture/report generation.
+- `Runtime/FryStageComparisonPlayback.cs`: three explicit targets, shared time, source/adapted modes, rest reset, loop/transition lifecycle and optional modest secondary motion. Must not modify or attach a second writer to completed juvenile playback; reconstructed test reference instances are controlled only by this new harness.
+- `Meshes/Fry_RiggedMesh.asset`: original mesh attributes unchanged, new ten-bone weights/bindposes and localized MouthOpen only.
+- `Prefabs/Fry_RiggingPrototype.prefab`: compatible skeleton/renderer and measured outer scale, no production pond behavior.
+- `Sources/Fry_SourceCopy.fbx` only if needed for disposable read access; new GUID, copied geometry-affecting importer values, readability changed only on copy. Edit-mode source mesh reads currently work despite isReadable=false; avoid copying if unnecessary.
+- `Materials/Fry_Prototype_MAT.mat`, independent albedo-only diagnostic material, and `Shaders/FryOriginalMaps.shader` only if needed: original albedo and separately sampled original roughness/metallic, normal-map support and smoothness=1-roughness at shader evaluation. Metallic is confirmed zero; disable metallic contribution without discarding roughness variation. No rendered/packed/generated texture output.
+- Byte-identical normal/roughness/metallic PNG import copies under `Materials/OriginalMapImportCopies/` ONLY if necessary for correct NormalMap/linear decoding. No PNG creation from pixels, repainting, recompression of source files or source importer changes. Original base color used directly unless a byte-identical diagnostic import copy is necessary.
+- `Scenes/Fry_RiggingPrototype_Test.unity`: new neutral comparison scene, adult/juvenile/fry synchronized references, static original fry rest control, views/cameras and labels. Read-only adult/juvenile mesh/material references or separate baseline material copies where needed; do not save changes into completed prefab assets.
+- `Reports/SourceProtection.tsv`, anatomy/appearance/rig audits, validation metrics, `Fry_Results.md`, actual created-file inventory and labeled `Captures/`. Capture images are diagnostic render evidence, not texture assets or appearance replacements.
+- No original clip edits. Only isolated fry clip copies if strongly justified, with source mode retained and every change reported; prefer runtime rest-relative angular attenuation over asset duplication.
+
+# Implementation Steps
+1. **Protect and re-establish actual context.** Dependencies: approval of this revision.
+   - Recheck all source/reference/output dependency impact; inventory every original and completed adult/juvenile asset and metadata, source images/models/clips/scripts/materials, scenes, project/package settings. Hash protected files before writes; allow implementation writes only beneath the unique fry folder.
+   - Record scene setup/dirty states and current reference length/material/playback configuration. Do not save or discard user changes. Source inspection and reports above are planning findings, not completed implementation tests.
+2. **Validate fry anatomy, topology and original appearance.** Dependencies: Step 1.
+   - Inspect original fry and screenshots from side/top/front/three-quarter and close-up; identify exact eye surfaces/UVs, lip crease, upper/lower lip connectivity, existing cavity, both pectoral roots, dorsal/other fins and tail peduncle. Document reference-space coordinates and labeled landmarks; do not infer a usable mouth cavity from bounds or counts.
+   - Audit material slot semantics, identity UV transform, original texture pairing, normal convention and linear roughness sampling. Compare albedo-only versus Lit with maps introduced individually under neutral light. Correct only proven prototype assignment/import/shader issues. Stop appearance certification and request the matching original export if pupil/marking pairing is ambiguous; never tint/repaint/generate a replacement.
+3. **Prepare exact mesh copy and fry-fitted skeleton.** Dependencies: Steps 1–2.
+   - Duplicate mesh data without changing source importer; if source read access fails, use the disposable copied FBX and verify exact rest attributes. Preserve vertex order, all UV channels, indices/submeshes, normals and tangents. No retopology, welding, smoothing geometry, re-unwrapping or new cavity geometry.
+   - Copy adult hierarchy/order/rotational frames to the new fry prefab. Fit root/body/head/mouth/tail joints and both pectoral pivots independently to verified fry landmarks, not a bounding-box-scaled juvenile. Account explicitly for import rotation/scale and Root zero-based translation keys.
+4. **Transfer and locally refine fry skinning.** Dependencies: Step 3.
+   - Use accelerated closest-triangle barycentric transfer from adult weights in piecewise fry-to-adult anatomical space. Separate body, tail, left/right fin and mouth regions with normal/distance/side constraints; transform normals correctly in correspondence space. Reject opposing-side or unrelated thin-surface matches rather than merely hiding them with unrestricted smoothing.
+   - Use deterministic source baselines, masked bounded regional corrections, protected head/eyes, localized lower lip/Mouth influence and graded tail motion. Fin joints rotate their own fins with controlled attachment falloff; dorsal/other unboned fins follow nearby body/tail without inventing extra bones.
+   - Normalize valid weights, preserve coincident seam consistency without welding, recompute bindposes. Report match distances, ambiguous/rejected matches, region counts, bone coverage and all fallback assignments. Request approval before wholesale alternative weighting if selected transfer cannot be made reliable.
+5. **Create localized fry MouthOpen and appearance assets.** Dependencies: Steps 2–4.
+   - Analyze adult mouth aperture, shape deltas and Mouth-bone contribution; use juvenile as a warning/reference, not a deltas template. Derive upper/lower lip motion in fry local anatomy while protecting eyes, cheeks, fins and body. Resolve shape by name and preserve exact rest at weight zero.
+   - Inspect shape-only weights 0/25/50/90/100 and combined source Mouth rotation/shape peaks. Do not add missing cavity geometry or paint darkness. If original topology cannot plausibly open, report FAIL/LIMITED mouth acceptance and seek separate topology authorization instead of forcing tearing or diffuse muzzle expansion.
+   - Build prototype material/shader using original maps or byte-identical import copies; no texture packing, texture generation or repainting. Record source-copy equality and normal/roughness semantics.
+6. **Build measured-scale synchronized three-stage preview.** Dependencies: Steps 3–5.
+   - Measure final fry rest length and set outer scale for .50 juvenile length; retain adult/juvenile display sizes unchanged. Use reconstructed test reference rigs or fresh test instances with existing mesh/material references; no edits to completed assets or inherited gameplay behavior. Add independently verified unrigged fry appearance/rest control.
+   - Implement the new three-target harness: original source clips first at speed 1.0, shared clip times, continuous Swim/Idle, full Eat -> Idle/Swim, reset-separated repeated Eat, pause/resume/reset and safe disable/re-enable/graph disposal.
+   - In stage-adapted mode reproduce only the documented juvenile existing rest-relative body .70/tail .85/fin .70 and Eat .85 skeletal/translation behavior on its test instance, mouth source-driven. Do not modify juvenile assets. Keep source-only mode for all stages. Tune fry angular/feeding amplitudes ONLY after anatomy tests demonstrate a need; preserve adult clip timing/phase. Apply proportional root translation once. Optional inspected modest adult secondary offsets stay separately labeled and OFF for source comparisons.
+7. **Verify preservation, appearance and temporal quality.** Dependencies: Step 6.
+   - Run the detailed tests below, inspect captures visually and actual continuous playback. Refine only fry pivots/weights/shape/harness/material as justified; rerun preservation/rest/binding checks after each iteration.
+   - Prior editor-bridge runtime tests have stalled/unfocused or failed readiness. Use one bounded supported attempt with runtime progress evidence; if unavailable, stop retries and mark continuous verification NOT RUN, with manual fry-scene Play instructions. Never substitute static samples for a runtime pass or change persistent background/Player Settings to conceal the limitation.
+8. **Report and stop.** Dependencies: Step 7.
+   - Write Fry_Results.md: source identity/provenance, anatomy, chosen ratio and measured lengths, exact outputs, clip-by-region pass/warning/fail, mouth/eye/fin findings, adaptations, numerical metrics, labeled three-stage captures, actual runtime status and remaining blockers.
+   - Recheck all protected hashes/importers/completed assets and restore original scene setup without saving protected scenes or discarding user work. Enumerate every created file/.meta/import copy/shader; distinguish new renders from texture assets. Stop at fry prototype review; no production integration or juvenile/adult repair.
+
+# Verification & Testing
+## Preservation and structural checks
+- Protected original and completed adult/juvenile files/.meta/import settings unchanged; no writes outside fry folder except this plan. Baseline hashes and final diff inventory must identify unexpected changes as failures.
+- Fry rest vertices, normals, tangents, UV0–7, submesh/index arrays exactly match the selected original; only skinning/bindposes/MouthOpen and justified culling bounds added. Exactly ten intended bone paths/order; FishMesh and every source clip property resolve. Weight sums within 1e-5 of 1, finite/nonnegative influences, indices 0–9 and every vertex assigned.
+- Fin side masks correct, zero protected eye/body leakage from mouth deformation, coincident seams deform consistently. Shape zero reproduces original exactly. Finite nonsingular bindposes and identity rest skinning verified.
+- Calibrate BakeMesh/common-space conversion first: existing prototype validation required useScale=true; do not assume useScale=false. Target maximum rest world error <=1e-5 of fry length. Measure adult/juvenile/fry lengths using the same anatomical/bounds convention, report fin-inclusive extent and body-only landmark length separately if available; ratio fry/juvenile=.50 within <=.01 absolute ratio error.
+## Appearance, anatomy and sampled animation
+- Verify original source bytes for each map and byte-identical import copy; shader samples correct UV0/map semantics, white base tint, original markings and dark pupils on BOTH eyes in rest and animated extremes. Albedo-only diagnosis precedes Lit review; identical neutral lighting for all stages. No exact Meshy photometric match claimed without evidence.
+- Sample >=33 independent times/clip plus actual mouth/fin/tail curve extrema on all three targets, with full reset each time. Verify source and selected adapted modes separately. Mouth shape-only weights 0/25/50/90/100/0 plus combined Mouth rotation tests; record opening/closure and whether an aperture/interior genuinely exists.
+- Inspect side/top/front/three-quarter paired views and magnified eye/mouth/fin-root close-ups: stable head/eyes, smooth propulsion, attached side-correct fins, tail continuity, no new seams, pinching, collapse, tears, inversions or unbounded stretching. Record normalized regional excursions, edge/triangle strain and culling containment; finite metrics alone are not natural-motion acceptance.
+- Three-stage contact sheets label targets, clip/time, source/adapted mode, ratios and any magnification. Rest appearance controls must not share an unverified incorrect setup that invalidates the comparison.
+## Continuous and lifecycle tests
+- Actual isolated Play Mode: >=3 Swim loops and >=3 Idle loops, complete Eat, Eat-to-Idle and Eat-to-Swim, repeated Eat with complete closure, pause/resume, reset, repeated sequence, disable/re-enable, variable frame time and offscreen/onscreen return. Track clock advancement and visible deformation, not merely successful Play Mode entry.
+- No stale unkeyed channels, lingering MouthOpen, cumulative rotations, double root-translation scaling, duplicate animation writers, leaked PlayableGraphs or new compile/binding/test errors. Record pre-existing Console issues separately.
+- If runtime execution or visual capture/review is unavailable, label exact tests NOT RUN; provide manual instructions and do not claim natural animations, dark-eye equivalence or convincing mouth success based only on numeric samples.
+- Final acceptance report distinguishes structural success, visual/temporal success and topology limitations. Preserve completed adult/juvenile assets even when reference limitations are observed; stop for user review.

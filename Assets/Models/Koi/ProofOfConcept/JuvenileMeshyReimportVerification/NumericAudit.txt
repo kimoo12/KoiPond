@@ -1,0 +1,3 @@
+Fresh FBX versus accepted rig: 87391 vertices, 159982 triangles, one submesh; positions, indices, normals, tangents and UV0–7 exact. No transfer required.
+New raw albedo: 2048x2048; dark RGB<51=59606 (1.42111778259277%); red-dominant R>100 R>1.5G/B=20970 (0.499963760375977%). Not pupil segmentation.
+New/old albedo byte equality=False

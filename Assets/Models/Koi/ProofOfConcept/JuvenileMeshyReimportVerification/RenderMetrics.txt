@@ -1,0 +1,4 @@
+View 0 fresh source vs rig/new PBR: mean RGB byte error=2.79744466145833E-05, max=3, pixels >2=1
+View 1 fresh source vs rig/new PBR: mean RGB byte error=1.27156575520833E-05, max=1, pixels >2=0
+View 2 fresh source vs rig/new PBR: mean RGB byte error=1.27156575520833E-06, max=1, pixels >2=0
+View 3 fresh source vs rig/new PBR: mean RGB byte error=2.41597493489583E-05, max=3, pixels >2=1

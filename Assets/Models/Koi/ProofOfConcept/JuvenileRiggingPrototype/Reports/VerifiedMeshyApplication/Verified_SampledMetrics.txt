@@ -1,0 +1,5 @@
+Scale-correct sampled verification: BakeMesh(useScale:true), matching existing validation convention. Preliminary useScale:false captures/metrics are INVALID and not evidence of rig defects.
+Clip	Frames	UnresolvedBindings	Nonfinite	OutsideBounds	RestWorldError	MaxWorldDisplacement	MouthPeak
+Swim	34	0	0	0	5.330531E-08	0.0346625	29.99223
+Idle	34	0	0	0	5.330531E-08	0.02732664	25
+Eat	34	0	0	0	5.330531E-08	0.09018905	89.82552

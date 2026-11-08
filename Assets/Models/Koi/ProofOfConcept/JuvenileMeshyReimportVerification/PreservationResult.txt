@@ -1,0 +1,2 @@
+SHA256: 512 pre-existing files checked; 0 changed/missing.
+Test copy retains exact geometry, weights, bindposes and blendshape frames=True

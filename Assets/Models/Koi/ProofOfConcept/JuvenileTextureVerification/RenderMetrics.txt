@@ -1,0 +1,8 @@
+View=0, original vs B_Rig_SourcePBR: mean RGB absolute byte difference=1.52587890625E-05, max=1, pixels differing >2=0
+View=0, original vs C_Rig_CurrentPBR: mean RGB absolute byte difference=0.137604324905961, max=26, pixels differing >2=6224
+View=1, original vs B_Rig_SourcePBR: mean RGB absolute byte difference=1.07376663773148E-05, max=1, pixels differing >2=0
+View=1, original vs C_Rig_CurrentPBR: mean RGB absolute byte difference=0.0970498544198495, max=19, pixels differing >2=4471
+View=2, original vs B_Rig_SourcePBR: mean RGB absolute byte difference=6.78168402777778E-06, max=1, pixels differing >2=0
+View=2, original vs C_Rig_CurrentPBR: mean RGB absolute byte difference=0.0287899441189236, max=10, pixels differing >2=225
+View=3, original vs B_Rig_SourcePBR: mean RGB absolute byte difference=2.99524377893519E-05, max=3, pixels differing >2=1
+View=3, original vs C_Rig_CurrentPBR: mean RGB absolute byte difference=0.105285079390914, max=23, pixels differing >2=4025

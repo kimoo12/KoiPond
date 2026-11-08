@@ -1,0 +1,30 @@
+{
+    "success": false,
+    "error": "Runtime sequence timed out after 30 seconds",
+    "sizeRatio": 0.6000000238418579,
+    "samples": [
+        249,
+        0,
+        0
+    ],
+    "maxDisplacement": [
+        0.0,
+        0.0,
+        0.0
+    ],
+    "mouthPeak": [
+        0.0,
+        0.0,
+        0.0
+    ],
+    "screenshotsRequested": [
+        false,
+        false,
+        false
+    ],
+    "nonfiniteVertices": 0,
+    "completedStages": 0,
+    "logs": [
+        "Setup: size ratio=0.6, original albedo=Assets/Models/Koi/New Juvenile/new_juvenile_texture.png, adapted=True"
+    ]
+}

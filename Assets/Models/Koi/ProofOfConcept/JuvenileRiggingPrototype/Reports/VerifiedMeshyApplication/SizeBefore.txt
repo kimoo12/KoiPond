@@ -1,0 +1,1 @@
+juvenile=0.3606059 adult=0.6010098 ratio=0.6 outerScale=(0.60, 0.60, 0.60)
