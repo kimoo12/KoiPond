@@ -1,0 +1,1 @@
+Deterministic current-transferred baseline; localized lower lip jaw <=0.30; removed jaw leakage from eyes/cheeks; stable head blend <=0.65; same-side fin restriction and 12 masked attachment smoothing passes at 0.35; unchanged transferred body/tail foundation. Recomputed bindposes after head/mouth/fin landmark correction. No rest geometry/UV edits.

@@ -1,0 +1,1 @@
+Existing prototype packed derivative verified: R=original metallic.R, A=255-original roughness.R; mismatched pixels=0. Original normal/copy PNG byte equality=True. No texture repaint/generation and no original import changes. Normal Y convention remains unverified; cannot explain missing original albedo markings.

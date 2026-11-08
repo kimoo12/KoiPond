@@ -44,6 +44,10 @@ public static class JuvenileRiggingPrototypeValidation
         var adult=new GameObject("Adult_Rig_ReadOnly_Reference");adult.transform.position=new Vector3(.85f,0,0);
         var armature=UnityEngine.Object.Instantiate(adultSource.transform.GetChild(0).gameObject,adult.transform);armature.name="Armature";
         var adultFish=new GameObject("FishMesh");adultFish.transform.SetParent(adult.transform,false);var r=adultFish.AddComponent<SkinnedMeshRenderer>();r.sharedMesh=adultSkin.sharedMesh;r.sharedMaterials=adultSkin.sharedMaterials;r.bones=adultSkin.bones.Select(b=>adult.transform.Find(AnimationUtility.CalculateTransformPath(b,adultSource.transform))).ToArray();r.rootBone=r.bones[0];
+        var adultAnimator=adult.AddComponent<Animator>();
+        so.FindProperty("_adultSkin").objectReferenceValue=r;so.FindProperty("_adultAnimator").objectReferenceValue=adultAnimator;so.ApplyModifiedPropertiesWithoutUndo();
+        rig.transform.localScale=Vector3.one*.6f;reference.transform.localScale=Vector3.one*.6f;
+        fish.GetComponent<MeshRenderer>().sharedMaterial=AssetDatabase.LoadAssetAtPath<Material>(JuvenileRiggingPrototypeBuilder.Folder+"/Reports/BehaviorMatch/Baseline/Juvenile_BaselineMaterial.mat");
         var camera=new GameObject("Prototype Camera").AddComponent<Camera>();camera.tag="MainCamera";camera.transform.position=new Vector3(1.35f,.8f,2.1f);camera.transform.LookAt(Vector3.zero);camera.orthographic=true;camera.orthographicSize=.72f;camera.nearClipPlane=.01f;camera.farClipPlane=20;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.14f,.16f,.19f);camera.allowHDR=false;
         for(int i=0;i<2;i++){var light=new GameObject(i==0?"Neutral Key":"Neutral Fill").AddComponent<Light>();light.type=LightType.Directional;light.color=Color.white;light.intensity=i==0?1.5f:.9f;light.shadows=LightShadows.None;light.transform.rotation=Quaternion.Euler(i==0?45:145,i==0?-40:120,0);}
         RenderSettings.ambientMode=UnityEngine.Rendering.AmbientMode.Flat;RenderSettings.ambientLight=new Color(.4f,.4f,.4f);RenderSettings.fog=false;RenderSettings.skybox=null;

@@ -1,0 +1,266 @@
+{
+    "geometryPreserved": true,
+    "uvsPreserved": true,
+    "weightsValid": true,
+    "seamsConsistent": true,
+    "mouthSeamsConsistent": true,
+    "maxWeightError": 1.1920928955078125e-7,
+    "sizeRatio": 0.6000000238418579,
+    "maxLipDelta": 0.005734579637646675,
+    "mouthVertices": 3848,
+    "protectedEyeMouthVertices": 0,
+    "metrics": [
+        {
+            "target": "Juvenile baseline",
+            "clip": "Koi_Swim",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 0,
+            "restError": 3.7949835274275756e-8,
+            "maxDisplacement": 0.03733271360397339,
+            "normalizedDisplacement": 0.10352773219347,
+            "maxEdgeRatio": 5.185196399688721,
+            "mouthPeak": 29.99222755432129,
+            "loopSeam": 5.918754197864473e-8,
+            "regionalMaxEdgeRatio": [
+                5.185196399688721,
+                4.615656852722168,
+                5.185196399688721,
+                2.1900179386138916,
+                1.2022247314453125
+            ]
+        },
+        {
+            "target": "Juvenile exact source",
+            "clip": "Koi_Swim",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 0,
+            "restError": 5.330531038794106e-8,
+            "maxDisplacement": 0.03733271732926369,
+            "normalizedDisplacement": 0.1035277396440506,
+            "maxEdgeRatio": 3.7707719802856445,
+            "mouthPeak": 29.99222755432129,
+            "loopSeam": 6.129753415962114e-8,
+            "regionalMaxEdgeRatio": [
+                3.7707719802856445,
+                2.9956414699554443,
+                3.7707719802856445,
+                2.19001841545105,
+                0.0
+            ]
+        },
+        {
+            "target": "Juvenile adapted",
+            "clip": "Koi_Swim",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 0,
+            "restError": 5.330531038794106e-8,
+            "maxDisplacement": 0.03466249629855156,
+            "normalizedDisplacement": 0.09612292796373367,
+            "maxEdgeRatio": 2.8108227252960205,
+            "mouthPeak": 29.99222755432129,
+            "loopSeam": 3.659550174006654e-8,
+            "regionalMaxEdgeRatio": [
+                2.8108227252960205,
+                2.389434337615967,
+                2.8108227252960205,
+                2.012070655822754,
+                0.0
+            ]
+        },
+        {
+            "target": "Adult exact source",
+            "clip": "Koi_Swim",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 11226,
+            "restError": 2.2351741790771484e-8,
+            "maxDisplacement": 0.05838660150766373,
+            "normalizedDisplacement": 0.09714749455451965,
+            "maxEdgeRatio": 32.46052932739258,
+            "mouthPeak": 29.99222755432129,
+            "loopSeam": 6.052880507922964e-8,
+            "regionalMaxEdgeRatio": [
+                32.46052932739258,
+                28.690690994262695,
+                32.46052932739258,
+                1.3592175245285034,
+                9.575484275817871
+            ]
+        },
+        {
+            "target": "Juvenile baseline",
+            "clip": "Koi_Idle",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 0,
+            "restError": 3.7949835274275756e-8,
+            "maxDisplacement": 0.032321009784936905,
+            "normalizedDisplacement": 0.08962972462177277,
+            "maxEdgeRatio": 4.380656719207764,
+            "mouthPeak": 25.0,
+            "loopSeam": 3.5567286005289134e-8,
+            "regionalMaxEdgeRatio": [
+                3.6948368549346924,
+                4.380656719207764,
+                3.6948368549346924,
+                1.3689393997192383,
+                1.1701992750167847
+            ]
+        },
+        {
+            "target": "Juvenile exact source",
+            "clip": "Koi_Idle",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 0,
+            "restError": 5.330531038794106e-8,
+            "maxDisplacement": 0.03232100233435631,
+            "normalizedDisplacement": 0.08962970227003098,
+            "maxEdgeRatio": 3.0250377655029297,
+            "mouthPeak": 25.0,
+            "loopSeam": 4.412957110844218e-8,
+            "regionalMaxEdgeRatio": [
+                2.8516640663146973,
+                3.0250377655029297,
+                2.417802572250366,
+                1.368935227394104,
+                0.0
+            ]
+        },
+        {
+            "target": "Juvenile adapted",
+            "clip": "Koi_Idle",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 0,
+            "restError": 5.330531038794106e-8,
+            "maxDisplacement": 0.027326641604304314,
+            "normalizedDisplacement": 0.07577978819608688,
+            "maxEdgeRatio": 2.3536217212677,
+            "mouthPeak": 25.0,
+            "loopSeam": 2.021639566862632e-8,
+            "regionalMaxEdgeRatio": [
+                2.204622507095337,
+                2.3536217212677,
+                1.938153862953186,
+                1.3088704347610474,
+                0.0
+            ]
+        },
+        {
+            "target": "Adult exact source",
+            "clip": "Koi_Idle",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 14527,
+            "restError": 2.2351741790771484e-8,
+            "maxDisplacement": 0.03840792179107666,
+            "normalizedDisplacement": 0.06390564143657684,
+            "maxEdgeRatio": 26.49637794494629,
+            "mouthPeak": 25.0,
+            "loopSeam": 6.006850128414953e-8,
+            "regionalMaxEdgeRatio": [
+                26.49637794494629,
+                23.121397018432617,
+                26.49637794494629,
+                1.1135092973709106,
+                8.09921646118164
+            ]
+        },
+        {
+            "target": "Juvenile baseline",
+            "clip": "Koi_Eat",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 0,
+            "restError": 3.7949835274275756e-8,
+            "maxDisplacement": 0.10446036607027054,
+            "normalizedDisplacement": 0.2896801233291626,
+            "maxEdgeRatio": 4.304588794708252,
+            "mouthPeak": 89.82551574707031,
+            "loopSeam": 0.0,
+            "regionalMaxEdgeRatio": [
+                4.304588794708252,
+                3.8822226524353027,
+                3.600728988647461,
+                2.5010969638824463,
+                1.7722104787826538
+            ]
+        },
+        {
+            "target": "Juvenile exact source",
+            "clip": "Koi_Eat",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 0,
+            "restError": 5.330531038794106e-8,
+            "maxDisplacement": 0.1056145653128624,
+            "normalizedDisplacement": 0.2928808331489563,
+            "maxEdgeRatio": 3.5482351779937744,
+            "mouthPeak": 89.82551574707031,
+            "loopSeam": 0.0,
+            "regionalMaxEdgeRatio": [
+                3.5482351779937744,
+                3.2495386600494385,
+                2.682827949523926,
+                2.5010969638824463,
+                0.0
+            ]
+        },
+        {
+            "target": "Juvenile adapted",
+            "clip": "Koi_Eat",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 0,
+            "restError": 5.330531038794106e-8,
+            "maxDisplacement": 0.09018904715776443,
+            "normalizedDisplacement": 0.2501041889190674,
+            "maxEdgeRatio": 3.1088881492614746,
+            "mouthPeak": 89.82551574707031,
+            "loopSeam": 0.0,
+            "regionalMaxEdgeRatio": [
+                3.1088881492614746,
+                2.801547050476074,
+                2.234917163848877,
+                2.2754409313201904,
+                0.0
+            ]
+        },
+        {
+            "target": "Adult exact source",
+            "clip": "Koi_Eat",
+            "frames": 34,
+            "unresolvedBindings": 0,
+            "nonfinite": 0,
+            "outsideBounds": 143306,
+            "restError": 2.2351741790771484e-8,
+            "maxDisplacement": 0.20714180171489716,
+            "normalizedDisplacement": 0.3446562588214874,
+            "maxEdgeRatio": 60.76299285888672,
+            "mouthPeak": 89.82551574707031,
+            "loopSeam": 0.0,
+            "regionalMaxEdgeRatio": [
+                60.76299285888672,
+                53.466365814208984,
+                60.76299285888672,
+                1.1640465259552002,
+                27.316532135009766
+            ]
+        }
+    ]
+}

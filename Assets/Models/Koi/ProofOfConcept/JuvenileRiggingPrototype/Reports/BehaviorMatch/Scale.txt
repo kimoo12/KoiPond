@@ -1,0 +1,1 @@
+Adult rest length 0.601009846; juvenile pre-outer-scale 0.6008327; outer scale 0.60017693; final ratio 0.60. Renderer geometry/pivots/bindposes not scaled independently.

@@ -18,9 +18,9 @@ public static class JuvenileRiggingPrototypeBuilder
     private static readonly float[] AdultZ = { -.3006f, -.25f, -.22f, -.15f, -.08f, 0f, .08f, .135f, .225f, .3004f };
     private static readonly float[] Width = { .067f, .065f, .09f, .16f, .245f, .295f, .285f, .292f, .185f, .05f };
     private static readonly float[] AdultWidth = { .024f, .024f, .024f, .031f, .055f, .081f, .087f, .085f, .078f, .025f };
-    private static readonly Vector3[] JointPositions = {
-        new Vector3(0,0,.20f), new Vector3(0,.025f,.47f), new Vector3(0,-.035f,.76f),
-        new Vector3(0,-.15f,.88f), new Vector3(-.265f,-.235f,.50f), new Vector3(.265f,-.235f,.50f),
+    public static readonly Vector3[] JointPositions = {
+        new Vector3(0,0,.20f), new Vector3(0,.025f,.47f), new Vector3(0,-.035f,.70f),
+        new Vector3(0,-.14f,.86f), new Vector3(-.22f,-.29f,.46f), new Vector3(.22f,-.29f,.46f),
         new Vector3(0,0,-.06f), new Vector3(0,0,-.31f), new Vector3(0,0,-.52f), new Vector3(0,0,-.70f)
     };
     [Serializable] public class Audit

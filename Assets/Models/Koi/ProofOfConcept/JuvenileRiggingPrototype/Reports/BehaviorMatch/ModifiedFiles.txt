@@ -1,0 +1,7 @@
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Editor/JuvenileRiggingPrototypeBuilder.cs
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Editor/JuvenileRiggingPrototypeRefinement.cs
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Editor/JuvenileRiggingPrototypeValidation.cs
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Runtime/JuvenilePrototypePlayback.cs
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Meshes/Juvenile_RiggedMesh.asset
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Prefabs/Juvenile_RiggingPrototype.prefab
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Scenes/Juvenile_RiggingPrototype_Test.unity
