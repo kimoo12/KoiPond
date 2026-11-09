@@ -78,13 +78,7 @@ namespace KoiPond.GrowthPrototype.EditorTools
         }
         public static float RestLength(SkinnedMeshRenderer skin, Transform reference)
         {
-            float lo = float.MaxValue, hi = float.MinValue;
-            foreach (var v in skin.sharedMesh.vertices)
-            {
-                float z = reference.InverseTransformPoint(skin.transform.TransformPoint(v)).z;
-                lo = Mathf.Min(lo, z); hi = Mathf.Max(hi, z);
-            }
-            return hi - lo;
+            return KoiStageVisuals.MeasureBounds(skin, reference).size.z;
         }
         [MenuItem("Tools/Koi Pond/Growth Prototype/Build Isolated Scene (new only)")]
         public static void Build()

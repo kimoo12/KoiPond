@@ -102,8 +102,12 @@ namespace KoiPond.GrowthPrototype.EditorTools
                 for (int i = 0; i <= 300; i++)
                 {
                     growth.ResetAge(); growth.Advance(i); visuals.Apply();
-                    float ratio = KoiGrowthPrototypeBuilder.RestLength(visuals.Skins[visuals.ActiveIndex], prefab.transform) / visuals.RestLengths[2];
-                    Near(ratio, growth.Evaluation.SizeRatio, .001, "calibrated rest length");
+                    animation.RestoreRest(visuals.ActiveIndex);
+                    Vector3 size = KoiStageVisuals.MeasureBounds(visuals.Skins[visuals.ActiveIndex], prefab.transform).size;
+                    for (int axis = 0; axis < 3; axis++)
+                        Near(size[axis] / visuals.RestSizes[2][axis], growth.Evaluation.SizeRatio, .001, "calibrated rendered dimension");
+                    float ratio = size.z / visuals.RestLengths[2];
+                    animation.EvaluatePose();
                     Check(ratio >= previous - 1e-6, "monotonic size"); previous = ratio;
                     Check(visuals.Containers.Count(t => t.gameObject.activeSelf) == 1, "one active cached stage");
                     Check(prefab.transform.localPosition == rootPosition && prefab.transform.localRotation == rootRotation && prefab.transform.localScale == rootScale, "persistent root transform");
@@ -122,8 +126,9 @@ namespace KoiPond.GrowthPrototype.EditorTools
                 }
                 foreach (int clip in new[] { 0, 1 })
                 {
-                    animation.SelectClip(clip); animation.AdvanceClock(animation.Clips[clip].length * 3);
-                    Near(animation.Clock, animation.Clips[clip].length * 3, 1e-6, "three logical loops");
+                    animation.SelectClip(clip); double startClock = animation.Clock;
+                    animation.AdvanceClock(animation.Clips[clip].length * 3);
+                    Near(animation.Clock - startClock, animation.Clips[clip].length * 3, 1e-6, "three logical loops");
                 }
                 animation.SelectClip(2); animation.AdvanceClock(animation.Clips[2].length + .2);
                 Check(animation.ClipIndex != 2, "finite Eat returns to loop");
@@ -159,9 +164,11 @@ var stateBefore = JsonUtility.ToJson(UnityEngine.Random.state);
                 {
                     growth.ResetAge(); growth.Advance(edge); visuals.Apply();
                     int current = (int)growth.Evaluation.Stage;
+                    animation.RestoreRest(current - 1); animation.RestoreRest(current);
                     Near(KoiGrowthPrototypeBuilder.RestLength(visuals.Skins[current - 1], prefab.transform),
                         KoiGrowthPrototypeBuilder.RestLength(visuals.Skins[current], prefab.transform),
                         .001 * visuals.RestLengths[2], "outgoing/incoming boundary length continuity");
+                    animation.EvaluatePose();
                 }
 var inspector = UnityEditor.Editor.CreateEditor(growth);
                 try { Check(inspector.CreateInspectorGUI() != null, "diagnostic inspector builds"); }
