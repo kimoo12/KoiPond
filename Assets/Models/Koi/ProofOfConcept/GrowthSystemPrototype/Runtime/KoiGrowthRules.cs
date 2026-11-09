@@ -22,10 +22,10 @@ namespace KoiPond.GrowthPrototype
             if (state.Age >= state.FryDuration)
             {
                 double p = (state.Age - state.FryDuration) / state.JuvenileDuration;
-                return new KoiGrowthEvaluation(KoiGrowthStage.Juvenile, p, (float)(.60 + .40 * p));
+                return new KoiGrowthEvaluation(KoiGrowthStage.Juvenile, p, (float)(.60 + .25 * p));
             }
             double fry = state.Age / state.FryDuration;
-            return new KoiGrowthEvaluation(KoiGrowthStage.Fry, fry, (float)(.30 + .30 * fry));
+            return new KoiGrowthEvaluation(KoiGrowthStage.Fry, fry, (float)(.30 + .10 * fry));
         }
 
         /// <summary>Commits final age before ordered notifications; leftover time is never lost.</summary>

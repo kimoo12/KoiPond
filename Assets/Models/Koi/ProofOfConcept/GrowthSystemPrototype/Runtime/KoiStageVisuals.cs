@@ -117,9 +117,8 @@ namespace KoiPond.GrowthPrototype
             }
             for (int i = 0; i < 3; i++)
             {
-                Vector3 target = _restSizes[2] * e.SizeRatio;
-                _containers[i].localScale = new Vector3(target.x / _restSizes[i].x,
-                    target.y / _restSizes[i].y, target.z / _restSizes[i].z);
+                float scale = _restLengths[2] * e.SizeRatio / _restLengths[i];
+                _containers[i].localScale = Vector3.one * scale;
                 _containers[i].gameObject.SetActive(i == incoming);
             }
             bool rebound = _active != incoming;

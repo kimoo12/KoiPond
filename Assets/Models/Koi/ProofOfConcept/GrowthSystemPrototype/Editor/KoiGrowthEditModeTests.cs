@@ -22,7 +22,7 @@ namespace KoiPond.GrowthPrototype.EditorTools
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("EditMode only.");
             _assertions = 0;
             double[] ages = { 0, 60, 120, 210, 300 };
-            float[] ratios = { .3f, .45f, .6f, .8f, 1 };
+            float[] ratios = { .3f, .35f, .6f, .725f, 1 };
             int[] stages = { 0, 0, 1, 1, 2 };
             for (int i = 0; i < ages.Length; i++)
             {
@@ -104,9 +104,17 @@ namespace KoiPond.GrowthPrototype.EditorTools
                     growth.ResetAge(); growth.Advance(i); visuals.Apply();
                     animation.RestoreRest(visuals.ActiveIndex);
                     Vector3 size = KoiStageVisuals.MeasureBounds(visuals.Skins[visuals.ActiveIndex], prefab.transform).size;
+                    int stage = visuals.ActiveIndex;
+                    float expectedScale = visuals.RestLengths[2] * growth.Evaluation.SizeRatio / visuals.RestLengths[stage];
                     for (int axis = 0; axis < 3; axis++)
-                        Near(size[axis] / visuals.RestSizes[2][axis], growth.Evaluation.SizeRatio, .001, "calibrated rendered dimension");
+                    {
+                        Near(visuals.Containers[stage].localScale[axis], expectedScale, 1e-6, "uniform container scale");
+                        Near(size[axis] / visuals.RestSizes[stage][axis], expectedScale, .001, "preserved stage proportions");
+                    }
                     float ratio = size.z / visuals.RestLengths[2];
+                    Near(ratio, growth.Evaluation.SizeRatio, .001, "calibrated rendered length");
+                    if (stage == 0) Check(ratio <= .400001f, "Fry length cap");
+                    if (stage == 1) Check(ratio <= .850001f, "Juvenile length cap");
                     animation.EvaluatePose();
                     Check(ratio >= previous - 1e-6, "monotonic size"); previous = ratio;
                     Check(visuals.Containers.Count(t => t.gameObject.activeSelf) == 1, "one active cached stage");
@@ -152,7 +160,7 @@ var stateBefore = JsonUtility.ToJson(UnityEngine.Random.state);
                     profileOwner.Advance(60);
                     var serialized = new SerializedObject(profile); serialized.FindProperty("_fryDurationSeconds").doubleValue = 1; serialized.ApplyModifiedPropertiesWithoutUndo();
                     Near(profileOwner.Individual.Growth.FryDuration, 120, 0, "initialized owner freezes its actual shared profile duration");
-                    Near(profileOwner.Evaluation.SizeRatio, .45, 1e-7, "profile edit does not remap existing age or size");
+                    Near(profileOwner.Evaluation.SizeRatio, .35, 1e-7, "profile edit does not remap existing age or size");
                     profileOwner.ResetAge(true);
                     Near(profileOwner.Individual.Growth.FryDuration, 1, 0, "explicit reinitialization adopts profile timing");
                     Check(ReferenceEquals(profileOwner.Individual.Birth, birth), "timing reinitialization retains original birth reference");
@@ -162,12 +170,18 @@ var stateBefore = JsonUtility.ToJson(UnityEngine.Random.state);
                 finally { UnityEngine.Object.DestroyImmediate(temporaryOwner); UnityEngine.Object.DestroyImmediate(profile); }
                 foreach (double edge in new[] { 120d, 300d })
                 {
-                    growth.ResetAge(); growth.Advance(edge); visuals.Apply();
+                    growth.ResetAge(); growth.Advance(edge - 1e-5); visuals.Apply();
+                    int outgoing = visuals.ActiveIndex;
+                    animation.RestoreRest(outgoing);
+                    float outgoingLength = KoiGrowthPrototypeBuilder.RestLength(visuals.Skins[outgoing], prefab.transform);
+                    float outgoingRatio = outgoing == 0 ? .4f : .85f;
+                    Near(outgoingLength / visuals.RestLengths[2], outgoingRatio, .001, "outgoing boundary length cap");
+                    growth.Advance(1e-5); visuals.Apply();
                     int current = (int)growth.Evaluation.Stage;
-                    animation.RestoreRest(current - 1); animation.RestoreRest(current);
-                    Near(KoiGrowthPrototypeBuilder.RestLength(visuals.Skins[current - 1], prefab.transform),
-                        KoiGrowthPrototypeBuilder.RestLength(visuals.Skins[current], prefab.transform),
-                        .001 * visuals.RestLengths[2], "outgoing/incoming boundary length continuity");
+                    animation.RestoreRest(current);
+                    float incomingLength = KoiGrowthPrototypeBuilder.RestLength(visuals.Skins[current], prefab.transform);
+                    Near(incomingLength / visuals.RestLengths[2], current == 1 ? .6 : 1, .001, "incoming boundary length");
+                    Check(outgoingLength < incomingLength * .86f, "noticeably smaller outgoing stage");
                     animation.EvaluatePose();
                 }
 var inspector = UnityEditor.Editor.CreateEditor(growth);
@@ -204,6 +218,46 @@ var inspector = UnityEditor.Editor.CreateEditor(growth);
             Debug.Log("[Test] " + Evidence[Evidence.Count - 1]);
             if (!condition) throw new InvalidOperationException(message);
         }
+        private static void CheckGrowthSizes()
+        {
+            Evidence.Clear();
+            string snapshot = _growth.Snapshot();
+            bool paused = _growth.Paused;
+            _growth.Paused = true;
+            try
+            {
+                Check(_growth.Individual.Growth.FryDuration == 120 && _growth.Individual.Growth.JuvenileDuration == 180,
+                    "unchanged diagnostic durations: 120/180 seconds");
+                Check(Math.Abs(_animation.BlendDuration - .3f) < 1e-6, "unchanged animation blend: 0.3 seconds");
+                double[] ages = { 0, 60, 119.999, 120, 210, 299.999, 300 };
+                float[] expected = { .3f, .35f, .4f, .6f, .725f, .85f, 1 };
+                int[] stages = { 0, 0, 0, 1, 1, 1, 2 };
+                for (int i = 0; i < ages.Length; i++)
+                {
+                    _growth.ResetAge(); _growth.Advance(ages[i]);
+                    int stage = _visuals.ActiveIndex;
+                    _animation.RestoreRest(stage);
+                    Vector3 size = KoiStageVisuals.MeasureBounds(_visuals.Skins[stage], _growth.transform).size;
+                    Vector3 scale = _visuals.Containers[stage].localScale;
+                    float ratio = size.z / _visuals.RestLengths[2];
+                    bool proportions = Math.Abs(scale.x - scale.y) < 1e-6 && Math.Abs(scale.y - scale.z) < 1e-6;
+                    for (int axis = 0; axis < 3; axis++)
+                        proportions &= Math.Abs(size[axis] / _visuals.RestSizes[stage][axis] - scale.z) < .001;
+                    Check(stage == stages[i] && proportions && Math.Abs(ratio - expected[i]) < .001,
+                        "live age=" + ages[i] + " stage=" + stage + " length ratio=" + ratio + " scale=" + scale);
+                    Check(_animation.GraphValid && _animation.BoundStage == stage,
+                        "live size sample retains animation binding, stage=" + stage);
+                    _animation.EvaluatePose();
+                }
+                Check(expected[2] < expected[3] * .86f && expected[5] < expected[6] * .86f,
+                    "separate boundary lengths: Fry 40% < Juvenile 60%; Juvenile 85% < Adult 100%");
+            }
+            finally
+            {
+                _growth.RestoreSnapshot(snapshot);
+                _growth.Paused = paused;
+            }
+        }
         public static void Setup()
         {
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().path != KoiGrowthPrototypeBuilder.ScenePath)
@@ -212,10 +266,11 @@ var inspector = UnityEditor.Editor.CreateEditor(growth);
                 .Single(g => g.GetComponent<KoiGrowthController>() != null);
             _growth = root.GetComponent<KoiGrowthController>(); _visuals = root.GetComponent<KoiStageVisuals>();
             _animation = root.GetComponent<KoiGrowthAnimationAdapter>();
+            CheckGrowthSizes();
             _birth = _growth.Individual.Birth; _genome = _birth.Genome; _birthJson = JsonUtility.ToJson(_birth);
             _growth.StageTransition += (a, b) => { _crossings++; Evidence.Add(a + ">" + b); };
             _phase = 0; _lastFrame = -1; _frames = 0; _crossings = 0; _motion = 0;
-            _swimFirst = _swimSecond = _eatFirst = _eatSecond = false; Evidence.Clear();
+            _swimFirst = _swimSecond = _eatFirst = _eatSecond = false;
             _age = _growth.Individual.Growth.Age; _startTime = Time.time; _growth.Paused = false;
             _finRest = _visuals.Skins[0].bones[4].localRotation;
             Check(_animation.GraphValid && _animation.BoundStage == _visuals.ActiveIndex, "live source graph and stage binding");
