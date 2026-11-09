@@ -1,0 +1,2 @@
+Original loaded scene setup restored without saving protected scenes. Editor in Edit Mode. New growth scene saved at age zero, unpaused, rest pose.
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Scenes/Fry_RiggingPrototype_Test.unity dirty=False

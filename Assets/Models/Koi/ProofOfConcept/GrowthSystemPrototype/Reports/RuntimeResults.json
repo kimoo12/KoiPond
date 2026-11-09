@@ -1,0 +1,26 @@
+{
+    "success": true,
+    "error": "",
+    "detail": "{\n    \"success\": true,\n    \"evidence\": [\n        \"live source graph and stage binding: PASS\",\n        \"actual Update advances growth age: PASS\",\n        \"growth pause preserves age while animation runs: PASS\",\n        \"global timeScale zero pauses age and animation: PASS\",\n        \"disable destroys animation graph: PASS\",\n        \"disabled components preserve age and logical clock: PASS\",\n        \"re-enable restores source graph: PASS\",\n        \"Fry>Juvenile\",\n        \"Fry→Juvenile during Swim: PASS\",\n        \"Fry>Juvenile\",\n        \"Juvenile>Adult\",\n        \"Juvenile→Adult during Swim: PASS\",\n        \"three real Swim loops and changing bone pose; motion degrees=29.46292: PASS\",\n        \"three real Idle loops: PASS\",\n        \"Fry>Juvenile\",\n        \"Fry→Juvenile during Eat: PASS\",\n        \"Fry>Juvenile\",\n        \"Juvenile>Adult\",\n        \"Juvenile→Adult during Eat: PASS\",\n        \"complete Eat and return to Idle: PASS\",\n        \"repeat complete Eat and return to Swim: PASS\",\n        \"no stale Eat MouthOpen after return: PASS\",\n        \"Fry>Juvenile\",\n        \"Juvenile>Adult\",\n        \"same runtime birth/genome references and all identity/lineage values: PASS\",\n        \"one visible cached model: PASS\"\n    ],\n    \"phase\": 8,\n    \"crossingNotifications\": 8,\n    \"finMotionDegrees\": 29.462919235229492\n}",
+    "logs": [
+        "Log: [Test] live source graph and stage binding: PASS",
+        "Log: [Test] actual Update advances growth age: PASS",
+        "Log: [Test] growth pause preserves age while animation runs: PASS",
+        "Log: [Test] global timeScale zero pauses age and animation: PASS",
+        "Log: [Test] disable destroys animation graph: PASS",
+        "Log: [Test] disabled components preserve age and logical clock: PASS",
+        "Log: [Test] re-enable restores source graph: PASS",
+        "Log: [Test] Fry→Juvenile during Swim: PASS",
+        "Log: [Test] Juvenile→Adult during Swim: PASS",
+        "Log: [Test] three real Swim loops and changing bone pose; motion degrees=29.46292: PASS",
+        "Log: [Test] three real Idle loops: PASS",
+        "Log: [Test] Fry→Juvenile during Eat: PASS",
+        "Log: [Test] Juvenile→Adult during Eat: PASS",
+        "Log: [Test] complete Eat and return to Idle: PASS",
+        "Log: [Test] repeat complete Eat and return to Swim: PASS",
+        "Log: [Test] no stale Eat MouthOpen after return: PASS",
+        "Log: [Test] same runtime birth/genome references and all identity/lineage values: PASS",
+        "Log: [Test] one visible cached model: PASS",
+        "Log: [Test] actual frames=1477; crossing notifications=8; maximum fin motion=29.46292"
+    ]
+}

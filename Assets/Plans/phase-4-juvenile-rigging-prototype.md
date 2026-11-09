@@ -370,3 +370,174 @@ Root: `Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/`. If unexpectedly p
 - No stale unkeyed channels, lingering MouthOpen, cumulative rotations, double root-translation scaling, duplicate animation writers, leaked PlayableGraphs or new compile/binding/test errors. Record pre-existing Console issues separately.
 - If runtime execution or visual capture/review is unavailable, label exact tests NOT RUN; provide manual instructions and do not claim natural animations, dark-eye equivalence or convincing mouth success based only on numeric samples.
 - Final acceptance report distinguishes structural success, visual/temporal success and topology limitations. Preserve completed adult/juvenile assets even when reference limitations are observed; stop for user review.
+
+# Revision — Phase 4: Koi Growth System (Final Approval Plan)
+This revision is the current scope for the requested Fry → Juvenile → Adult progression. Earlier rigging sections are historical context, NOT permission to rebuild/refine any completed rig, texture, animation or prototype. This revision authorizes implementation only after approval, confined to a new growth-system prototype. Production integration requires a separate review and approval. No implementation has been performed during this planning phase.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Add configurable, gradual growth to individual koi while retaining their identity, genome and lineage for their entire lifetime. Validate continuous size progression and stage-model changes using existing completed stage assets in a separate scene before proposing production integration.
+- Players: This deliverable is an isolated system-validation prototype; it does not change the production game's player model or multiplayer behavior.
+- Inspiration / Reference Games: Existing KoiPond genetics, breeding records and three completed stage rigs; no external game reference requested.
+- Tone / Art Direction: Preserve existing stylized koi anatomy, markings, textures and authored animation. Stage model shape/markings may differ as already authored; this task does not invent genetic visual matching.
+- Target Platform: StandaloneWindows64, Unity 6000.6.6f1, existing .NET Standard 2.0 API compatibility.
+- Screen Orientation / Resolution: Existing desktop configuration, unchanged. Diagnostic shared-scale captures may use 1920×1080, clearly labeled; no Player Settings changes.
+- Render Pipeline: Existing URP `Assets/Settings/PC_RPAsset.asset`, unchanged.
+
+# Game Mechanics
+## Core Gameplay Loop
+In the isolated scene, initialize an individual from an existing breeding record → advance active simulation age → continuously increase body length → switch only the visual stage at each threshold → reach Adult and stop increasing size. Observe identity, lineage, phenotype and animation continuity throughout. The production-facing intent is readable maturation and long-term attachment (MDA progression aesthetics), but feeding, rewards, maturity-based breeding eligibility and economy balancing are outside this revision.
+
+### Growth timing and stage semantics
+- Two independently configurable, finite, strictly positive durations in seconds: `fryDurationSeconds` and `juvenileDurationSeconds`. Adult is the terminal stage with no further growth.
+- New diagnostic profile defaults: **120 seconds Fry → Juvenile**, **180 seconds Juvenile → Adult**; total **300 active simulation seconds** to adulthood. These are test defaults proposed for approval, not final production pacing. Expose both values in the new profile; no existing settings are modified.
+- Isolated runtime uses scaled active-game time (`Time.deltaTime`); `timeScale=0`, explicit growth pause, or disabled growth controller suspends advancement. No wall-clock/offline growth, background settings changes, cloud save or time service.
+- Store absolute elapsed growth age as a `double`, separate from genetics. Derive stage/progress/size from age and the profile, rather than accumulating scale multipliers or restarting a timer on every stage switch.
+- For `F = fryDurationSeconds`, `J = juvenileDurationSeconds`, age `a`:
+  - `0 ≤ a < F`: Fry model; size ratio `0.30 + 0.30 × (a/F)`.
+  - `F ≤ a < F+J`: Juvenile model; size ratio `0.60 + 0.40 × ((a-F)/J)`.
+  - `a ≥ F+J`: Adult model; size ratio exactly `1.00`; stored growth age saturates at `F+J`.
+- Thus Fry starts at 30%, reaches 60% immediately before its model transition; Juvenile starts at 60% and reaches 100%; Adult remains 100%. Exact boundaries select the later stage. Linear interpolation is the initial monotonic growth policy; no curve overshoot or stage shrinkage. Different growth rates across the threshold are expected when durations differ.
+- Reject invalid durations, nonfinite/negative ages and negative/nonfinite advance deltas with clear diagnostics. Zero delta is a no-op. Large finite deltas may cross both thresholds in one update: preserve leftover time, emit each crossed transition once in order, and present only the final applicable visual stage.
+- The profile is fixed for an initialized individual. Editing a shared profile during runtime must not silently remap existing age or shrink a fish; require explicit diagnostic reset/reinitialization. Future production balancing/migration is outside scope.
+- Initializing/restoring an already juvenile/adult koi applies its current stage directly without replaying historical transition events. Rebinding a visual or disabling/re-enabling does not reset growth.
+
+### Gradual scaling and model transitions
+- Keep one persistent individual GameObject and identity/state throughout its life. Growth never replaces that root or respawns the individual.
+- Recommended implementation: three cached visual children built from the existing stage hierarchies, with only one visible/animated at a time. Prepare them once; switch visibility and rebind the prototype animation adapter on thresholds. Advantage: no repeated prefab instantiation/destruction or identity recreation at thresholds; cost: all three meshes/hierarchies are resident. Suitable for this small isolated test, not a population-memory optimization claim.
+- Alternative considered: instantiate/destroy only the current stage at transitions. Lower retained memory, but greater transition allocations and rebind/lifecycle risk. Defer this optimization until measured population requirements justify it; it is not the initial implementation.
+- Place growth scaling on a dedicated parent above each keyed rig. Preserve each stage's complete internal transforms, bone ordering, renderer transforms, mesh, bindposes and existing authored outer scale.
+- Calibrate a new visual-container multiplier from **rest vertices**, not animated renderer/culling bounds. Let `Lstage` be the stage's rest length including its existing prefab transform scales, `Ladult` the reference adult rest length, and `r(a)` the desired ratio. Container uniform scale is `Ladult × r(a) / Lstage`. This is relative to the common individual-root reference space. Do not apply `.30`/`.60` again to already scaled prefabs.
+- At age zero and exact stage-entry thresholds the existing stage prefabs are effectively at their authored baseline sizes. Between thresholds the current stage grows uniformly. At a transition, the new model has the same target longitudinal length as the outgoing model; inherent stage anatomy changes are allowed, but length must not jump.
+- All stage containers share an explicit local root/origin and forward-axis convention derived from the actual rig transforms. Compare body/root anchors; do not silently align by animated bounds or shift the persistent root.
+- Use an atomic visibility switch; geometry/material crossfading and morphing are NOT part of this task. Shape and authored marking changes at model swaps are reported as existing asset behavior, not confused with identity changes.
+- Preserve animation clip identity, speed, logical clip time and normalized phase in a new isolated adapter. Evaluate the incoming stage's current pose before exposing it. Reset unkeyed transform and blendshape channels from cached rest so Idle/Eat omissions cannot leak old poses.
+- Reuse original Swim/Idle/Eat clips read-only. Preserve source animation amplitudes initially; no rig refinement, clip edits, procedural motion redesign or attenuation tuning. The adapter uses one animation writer per active rig and scales Root translation only through the established hierarchy, not an additional growth multiplier.
+
+## Controls and Input Methods
+- Verified active backend is New Input System (`activeInputHandler=1`). No new runtime keyboard/touch bindings, input assets or changes to production controls.
+- Use a new Inspector/editor diagnostic panel for duration selection, pause/resume growth, reset an existing individual's age, bounded manual time advance, snapshot/restore and Swim/Idle/Eat selection.
+- Growth pause affects growth age only; animation can continue. Global game pause follows existing scaled time behavior. Manual diagnostic advancement is explicit and uses the same growth rules; it does not run from production input.
+
+# UI
+No production menu, HUD, label, font or UI asset modifications. Provide an editor-only panel/Inspector, not a new in-game interface:
+```
+Growth Prototype — Persistent Individual
+ID: ...     Parents: ... / ...     Breeding seed: ...
+Stage: Fry / Juvenile / Adult     Active age: ... s
+Stage progress: ... %            Size: ... % of Adult
+Fry duration: 120 s              Juvenile duration: 180 s
+[Pause growth] [Resume] [Advance +1 s / +10 s] [Reset age]
+[Snapshot] [Restore]             [Swim] [Idle] [Eat]
+Genome/lineage unchanged: PASS / FAIL
+```
+Arrange the growing koi beside static Fry 30%, Juvenile 60%, Adult 100% references using the same view scale. Reference objects are fresh reconstructed visual instances, not edits to completed assets. Shared-scale captures document growth; any magnified close-up is labeled.
+
+# Key Asset & Context
+## Confirmed inspection findings
+- Existing `Assets/Scripts/KoiData.cs` defines schema-version-1 `KoiGenome` with six diploid loci and mesh-independent `KoiTraits`. It explicitly contains no growth or Unity appearance references. Allele IDs and genome schema remain unchanged.
+- `Assets/Scripts/KoiGeneticsRules.cs` validates/resolves genomes, including independent Standard/Hirenaga fin traits. It is not an appearance renderer and must not be expanded into growth logic.
+- `Assets/Scripts/KoiBreedingService.cs` defines `KoiOffspringRecord` with stable `Id`, `FirstParentId`, `SecondParentId`, `BreedingSeed`, and `Genome`. `Breed` generates a fresh ID for each birth/replay; NEVER call it during stage transitions or restoration merely to recreate an individual.
+- No growth controller, individual lifecycle owner, or genetic appearance rendering implementation was found in `Assets/Scripts/`. Existing genetics is data-only; the growth-to-appearance boundary must be explicit without claiming complete phenotype rendering exists.
+- Adult prefab: `Assets/Prefabs/Koi_Stage3_Adult.prefab`, mesh `Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset`; 221,941 vertices, ten bones, MouthOpen. It includes Animator, `KoiFishController`, and CapsuleCollider and is referenced by `Assets/Scenes/PondScene.unity`.
+- Juvenile prefab: `Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Prefabs/Juvenile_RiggingPrototype.prefab`; 87,391 vertices, ten bones, MouthOpen, no prefab Animator/production controller. Its material uses the verified `Assets/Models/Koi/New Juvenile/new_juvenile_texture.png` and existing derived maps. It is used by isolated juvenile scenes.
+- Fry prefab: `Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Prefabs/Fry_RiggingPrototype.prefab`; 81,417 vertices, ten bones, MouthOpen, no prefab Animator/production controller. Existing original-map shader/material and byte-identical import copies remain untouched.
+- Fresh exact transformed-rest-vertex Z lengths: Adult **0.60100980**, Juvenile **0.36060590**, Fry **0.18030300**. Authored root uniform scales: Adult **1.00000000**, Juvenile **0.60017690**, Fry **0.30018530**. Ratios confirm **1 : .60 : .30**; literal rounded root scales are not a substitute for calibration. Renderer/culling bounds are larger than actual geometry and are unsuitable for growth calibration.
+- Counterintuitive unrigged FBX names remain unchanged: `Koi_Stage1_Juvenile.fbx`, `Koi_Stage2_Fry.fbx`. Use explicit stage mapping to completed rigged prefabs, not filename numeric ordering.
+- Original animation bindings use Armature/Root hierarchy and FishMesh/MouthOpen. Source Swim=1.15 s looping, Idle=3.2 s looping, Eat=2.5 s finite. Idle omits Mouth rotation and Eat omits some tail rotations; reset omitted channels deliberately.
+- Existing `FryStageComparisonPlayback.cs` has a three-target shared-clock/rest-cache model, but its `Stage` refers to diagnostic playback sequence, NOT biological growth. Read as a reference only; do not repurpose or edit it, and do not attach it as a second animation writer in the growth scene.
+- `Reports/Fry_Results.md` records unresolved fry strain and failed convincing mouth aperture. Juvenile also has documented mouth/fin limitations. Continuous playback was not successfully verified through prior tooling. Preserve these warnings; growth implementation does not recertify or repair the rigs.
+- Current loaded scene is `Fry_RiggingPrototype_Test.unity`, clean at inspection. The inspected Console contains no warnings/errors. Recheck scene state and Console before implementation; never overwrite subsequent user work.
+- Dependencies/dependents were inspected through `AssetDatabase.GetDependencies` and reverse serialized asset references because dedicated dependency tooling is unavailable. Script-to-script type usage requires source search too; empty asset dependency results for genetics scripts do not prove no code consumers.
+- Existing tests under `Assets/Tests/Editor/` are menu-driven static EditMode suites; follow that convention without installing packages or changing assembly definitions.
+- Original Meshy textures are authoritative. Existing `_MetallicSmoothness` files include Unity AI-generated derivatives; verified juvenile deterministic derivatives have separate provenance. No texture generation, packing, reassignment or shader edits are required for growth.
+
+## Identity/genetics separation
+- Add a persistent individual-state wrapper that holds the supplied `KoiOffspringRecord` and a separate growth-state object. Keep the original birth record/genome object references during runtime; never rebuild them at model swaps.
+- Expose birth identity/parents/seed/genome read-only. Growth routines receive only growth state and duration data, not mutation/breeding services, meshes, textures or phenotype selection rules.
+- Growth does not alter alleles, resolve a new genome, assign a founder variety, change lineage, reroll randomness, or create a new ID. Test both ordinary and mutated/non-starter genomes.
+- Stage visual binding provides a separate read-only appearance context: persistent ID, unchanged genome/resolved traits, current stage, new renderer reference. The isolated binder leaves completed source materials unchanged. A future genetic appearance renderer may consume this boundary; no genotype-to-texture or Hirenaga rig creation occurs here.
+- Standard/Hirenaga genomes retain their exact fin allele/phenotype at every stage even if no matching completed visual variant exists. Mark unsupported visual variants explicitly rather than silently changing genes or claiming standard geometry depicts Hirenaga.
+- Add a local diagnostic snapshot containing the existing birth record values, growth schema version, age, and frozen duration values. Restore without calling the birth constructor/Breed or generating IDs. Serialization preserves value identity/genome/lineage; restored managed object references need not equal pre-serialization references. This is a serialization test, not production save integration.
+
+## New outputs and write boundary
+Implementation root: **`Assets/Models/Koi/ProofOfConcept/GrowthSystemPrototype/`**. Recheck for conflicts before creation; if occupied, inspect and use a unique versioned sibling for all new outputs. Existing source folders/files remain read-only.
+- `Runtime/KoiGrowthData.cs`: explicit stage enum (Fry=0, Juvenile=1, Adult=2), separate growth state/snapshot schema and persistent individual wrapper. Do not reuse `KoiState` or comparison playback `Stage`.
+- `Runtime/KoiGrowthRules.cs`: deterministic age advancement, stage/progress/size derivation and ordered threshold reporting, independent of genetic appearance and scene objects.
+- `Runtime/KoiGrowthProfile.cs`: new ScriptableObject duration profile and validation; snapshot effective timing at individual initialization.
+- `Runtime/KoiGrowthController.cs`: persistent MonoBehaviour owner, age tick/pause/reset/restore, read-only accessors and transition notifications; no birth generation or material logic.
+- `Runtime/KoiStageVisuals.cs`: explicit stage-to-visual references, measured scale calibration, visibility switching and appearance-context handoff; no genetics expression/material repainting.
+- `Runtime/KoiGrowthAnimationAdapter.cs`: independent isolated clip clock, rest reset, stage rebinding, phase-preserving pose evaluation and graph cleanup. Existing runtime/editor playback scripts unchanged.
+- `Editor/KoiGrowthPrototypeBuilder.cs`: source protection manifest and new scene/prefab assembly. Reconstruct visual hierarchies using read-only mesh/material references; do not instantiate live production behavior and then allow Awake/OnValidate to find pond systems. Adult production controller/collider are excluded from the new visual-only hierarchy by construction. Validate all copied transforms/bone paths and mesh/material references.
+- `Editor/KoiGrowthPrototypeInspector.cs`: editor-only diagnostics; no production UI or input.
+- `Editor/KoiGrowthEditModeTests.cs`: menu-driven deterministic growth, identity, serialization and scale/structure checks following existing test conventions. New tests only; existing suites unchanged.
+- `Profiles/Growth_Diagnostic.asset`: 120/180-second timing, clearly diagnostic.
+- `Prefabs/Koi_GrowthPrototype.prefab`: persistent root and three cached visual-only children. No edits to completed stage prefabs.
+- `Scenes/Koi_GrowthSystem_Test.unity`: separate neutral scene with the persistent growing koi, static stage references, camera/light and isolated diagnostic setup; no production feeding, wandering, pond systems or genetic appearance changes.
+- `Reports/SourceProtection.tsv`, `GrowthValidationResults.json`, `GrowthSystemResults.md`, actual output inventory and labeled diagnostic captures. Record runtime tests NOT RUN when appropriate.
+- Unity metadata for these new assets/folders. No mesh, texture, animation clip, material or shader output is planned; source asset references are reused.
+
+# Implementation Steps
+1. **Establish protection and exact calibration baseline.**
+   - Dependencies: approval of this final revision; read-only reference assets available.
+   - Recheck dependencies/dependents, source consumers, scene setup/dirty states and Console. Hash completed rigs/prefabs/meshes/materials/textures/animations/genetics/tests/production scenes and metadata, plus project/package settings. Allow writes only in the new prototype root; this existing plan is the only planning-file revision.
+   - Verify stage hierarchy paths, rest vertices/transforms, root anchors, source clip bindings and explicit stage mappings. Record exact rest-length ratios; do not use expanded culling bounds. Confirm no new folder conflict.
+2. **Implement deterministic growth data/profile/rules.**
+   - Dependencies: Step 1.
+   - Create KoiGrowthData/Profile/Rules and the diagnostic profile. Implement the specified piecewise size/timing semantics, input validation, ordered crossing notifications, terminal adult clamp and initialization/restore behavior.
+   - Add menu-driven data tests first: boundaries, split versus large time advances, invalid data, independent fish, pause-equivalent zero delta and monotonic ratios.
+3. **Implement persistent individual ownership and preservation checks.**
+   - Dependencies: Step 2.
+   - Create KoiGrowthController holding the supplied existing birth record and separate growth state. Bind records explicitly once; no automatic rebirth on Awake/OnEnable/transition. A diagnostic harness may call existing Breed once to produce a fixture, or supply a serialized record; do not alter Breed.
+   - Add read-only identity/lineage/genome access and local snapshot/restore. Growth reset resets age of the same fish, not identity. Test unchanged runtime object references and byte/value snapshots through both thresholds; restored snapshots retain exact IDs/alleles/parents/seed.
+4. **Build visual-only stage caches and gradual scaling.**
+   - Dependencies: Steps 1–3.
+   - Create the builder, visual binder and new prefab, preserving all copied internal transforms, rest pose, bone order, meshes/material references and authored outer scales. Exclude production controller/colliders, completed diagnostic scripts and duplicate animators/writers from new instances by construction.
+   - Apply calibrated uniform container scale above keyed rigs. Align verified root frames, switch visibility atomically, and pass the read-only appearance context without changing materials/genetics.
+   - Test current-stage ratio at entry/midpoint/boundary and outgoing/incoming equal target length. Keep persistent individual root position/rotation/scale unchanged.
+5. **Implement phase-preserving isolated animation binding.**
+   - Dependencies: Step 4; verified source clip bindings from Step 1.
+   - Create independent adapter referencing original clips. Cache and restore rest channels, resolve MouthOpen by name, evaluate incoming model at the retained shared clip time, and clean up graphs on lifecycle changes.
+   - Verify Swim/Idle loops and finite Eat across both stage thresholds; same speed/phase, no doubled translation, pose drift, stale MouthOpen or second animation writer. Missing mappings fail visibly and retain the previous valid visual; report mismatch rather than modifying completed rigs.
+6. **Assemble and exercise the isolated growth scene.**
+   - Dependencies: Steps 3–5.
+   - Create the new scene and editor diagnostics with the persistent koi and static three-stage visual references. Preserve current Fry test scene and production scenes; handle unsaved user work without discarding it.
+   - Run the 300-second diagnostic schedule and accelerated/manual-delta scenarios through the same rules. Capture entry/midpoint/threshold/adult comparisons at shared camera scale. No production scene integration, feeding hooks, breeding eligibility changes or input additions.
+7. **Verify regressions, actual runtime and preservation.**
+   - Dependencies: Step 6.
+   - Run new data/structural tests and existing breeding/mutation/multi-generation suites through their existing entry points. Verify no existing system changes or RNG stream perturbation from growth.
+   - Attempt one bounded supported isolated runtime check. Previous editor runtime limitations must not trigger repeated long polling, package edits or global background settings changes. If unavailable, mark runtime assertions NOT RUN and provide manual new-scene review steps.
+   - Verify final protected hashes/metadata, no external writes and unchanged completed scene assets. Restore original editor scene setup without saving protected scenes or discarding user work.
+8. **Report and stop before production integration.**
+   - Dependencies: Step 7.
+   - Save GrowthSystemResults.md with timing, actual sizes, transition/phase results, identity/lineage/genome invariants, snapshot behavior, exact created files/metadata, test statuses, captures and unchanged source manifest.
+   - Distinguish growth success from pre-existing rig/mouth/strain and unavailable genetic visual variant limitations. List concrete production integration follow-ups only; do not execute them or claim production readiness.
+
+# Verification & Testing
+## Data/timing
+- With diagnostic F=120/J=180: ages 0/60/120/210/300 yield ratios .30/.45/.60/.80/1.00 and stages Fry/Fry/Juvenile/Juvenile/Adult. Test exact boundaries and epsilon before/after.
+- Many small advances versus one equal-total delta produce equivalent age/stage/ratio within declared double/float tolerance. A delta beyond adulthood emits Fry→Juvenile then Juvenile→Adult once each and clamps; subsequent ticks emit no further stage event.
+- Pause/resume and disable/re-enable preserve age; global timeScale=0 does not grow. No hidden offline catch-up. Growth pause can leave animation running.
+- Reject NaN/infinity/negative values and nonpositive durations, including deserialized invalid data. Zero advance valid. Profile edits require explicit reinitialization, not automatic shrinkage.
+- Two individuals sharing a profile progress independently. Initialization/restore at a later age does not emit historical threshold events or duplicate initialization.
+## Genetics/identity/serialization
+- Runtime persistent root, birth-record reference and genome reference stay identical through both switches. ID, parent IDs, breeding seed, schema and all six allele pairs remain exactly unchanged by serialized snapshots.
+- Test carrier, mutated, hybrid/non-starter and Hirenaga records; traits before/after remain equal. No founder reassignment or genotype-to-material inference. Unsupported visuals remain explicit limitations.
+- Snapshot/restore at Fry midpoint, exact Juvenile threshold, Juvenile midpoint and Adult preserves identity/lineage/genome, timing and age; resume correctly. No Breed/Guid generation on restore or transition. Invalid snapshot schema rejected.
+- Growth makes no calls into Unity/System random streams. Existing breeding, mutation and multi-generation suites still pass; report actual execution rather than infer from compilation.
+## Size/visual transitions
+- Measure rest geometry in the common individual-root reference frame. Target entry ratios .30/.60/1.00 and midpoint ratios as above within **0.001 absolute ratio**. Monotonic longitudinal size with no reset, overshoot or double prefab scaling.
+- Outgoing and incoming boundary rest lengths agree within **0.001 of adult reference length**; persistent root transform does not move. Stage anatomical shape changes are expected and documented separately.
+- Exactly one stage renderer set visible after a successful transition; cached inactive stages have no active competing animation writer. No stage-root/controller duplication or per-frame instantiate/destroy.
+- Source mesh/material references and internal bone/renderer transforms remain unchanged. No renderer-only scaling, importer edits, geometry updates or shared material writes.
+## Animation/lifecycle/runtime
+- Swim and Idle: at least three loops; finite Eat and return to selected loop. Cross both growth thresholds during Swim and during Eat, including a large-step skip; verify logical clip time/normalized phase and MouthOpen behavior on the incoming rig.
+- Reset all omitted source channels; test disable/re-enable, growth pause/resume, snapshot restore, repeated diagnostic reset and scene exit. No leaked graphs, cumulative pose drift, extra Root translation scaling or new compile/binding exceptions.
+- Observe actual isolated runtime age advancement and visible size/model progression, not just Play Mode entry. Static sample tests do not certify continuous playback.
+- Manual fallback: open only Koi_GrowthSystem_Test.unity, run default 120/180 profile or explicit diagnostic increments, review 30→60→100 sizing, both transitions, identity/lineage status, pause/resume and Swim/Eat continuity. Record which checks were user-reviewed versus automated.
+## Preservation/reporting
+- Completed adult/juvenile/fry rigs, textures/importers, animations, genetics/breeding/mutation scripts/tests, existing prototypes/production scenes, packages and project settings have unchanged protected file/metadata hashes.
+- Any unexpected external edit is a failure requiring disclosure, not silently accepted. Enumerate every new output and tests not executed.
+- No rig/topology/texture repair, appearance renderer implementation, production feeding/locomotion integration, offspring auto-spawning, maturity gating, production persistence, offline growth, memory optimization or unrelated modifications.
+- Final stop: isolated growth-system review and separate approval before production integration.
+

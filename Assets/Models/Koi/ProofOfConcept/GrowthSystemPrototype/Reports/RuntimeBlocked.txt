@@ -1,0 +1,2 @@
+State=InPlayMode; result NOT_READY after one bounded 30-second wait. Compiling=False. No successful runtime assertions; no retries or settings changes.
+SUPERSEDED: the SAME attempt completed successfully on the subsequent bounded retrieval. RuntimeResults.json is authoritative. No second runtime test was run.

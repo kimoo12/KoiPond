@@ -1,0 +1,5 @@
+{
+    "passed": true,
+    "assertions": 1354,
+    "summary": "PASS: 1354 growth EditMode assertions. Data/identity/snapshot/scaling/source-bindings/phase checks passed. Logical animation sampling is not continuous runtime certification."
+}

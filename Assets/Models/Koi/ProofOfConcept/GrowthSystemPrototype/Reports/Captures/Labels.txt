@@ -1,0 +1,1 @@
+1920x1080 shared camera scale; growing fish in front; static rear row left→right Fry30%, Juvenile60%, Adult100%. Files name age, stage and adult-length percentage. Rest pose camera renders in EditMode, NOT runtime footage or texture replacements.

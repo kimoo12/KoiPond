@@ -1,0 +1,3 @@
+PASS: 10 breeding EditMode tests; 20800 assertions.
+PASS: 7 mutation EditMode tests; 32552 assertions.
+PASS: 5 multi-generation validation groups; 63855 assertions; 3148 unique offspring records (including deterministic replays).

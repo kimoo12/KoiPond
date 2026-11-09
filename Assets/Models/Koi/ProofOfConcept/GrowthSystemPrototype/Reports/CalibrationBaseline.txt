@@ -1,0 +1,45 @@
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Prefabs/Fry_RiggingPrototype.prefab
+Fry_RiggingPrototype components=UnityEngine.Transform
+Armature components=UnityEngine.Transform
+Root components=UnityEngine.Transform
+Spine_Front components=UnityEngine.Transform
+Head components=UnityEngine.Transform
+Mouth components=UnityEngine.Transform
+PectoralFin_L components=UnityEngine.Transform
+PectoralFin_R components=UnityEngine.Transform
+Spine_Back components=UnityEngine.Transform
+Spine_Tail1 components=UnityEngine.Transform
+Spine_Tail2 components=UnityEngine.Transform
+TailFin components=UnityEngine.Transform
+FishMesh components=UnityEngine.Transform,UnityEngine.SkinnedMeshRenderer
+Rest Z length=0.180302963
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Prefabs/Juvenile_RiggingPrototype.prefab
+Juvenile_RiggingPrototype components=UnityEngine.Transform
+Armature components=UnityEngine.Transform
+Root components=UnityEngine.Transform
+Spine_Front components=UnityEngine.Transform
+Head components=UnityEngine.Transform
+Mouth components=UnityEngine.Transform
+PectoralFin_L components=UnityEngine.Transform
+PectoralFin_R components=UnityEngine.Transform
+Spine_Back components=UnityEngine.Transform
+Spine_Tail1 components=UnityEngine.Transform
+Spine_Tail2 components=UnityEngine.Transform
+TailFin components=UnityEngine.Transform
+FishMesh components=UnityEngine.Transform,UnityEngine.SkinnedMeshRenderer
+Rest Z length=0.360605925
+Assets/Prefabs/Koi_Stage3_Adult.prefab
+Koi_Stage3_Adult components=UnityEngine.Transform,UnityEngine.Animator,KoiPond.KoiFishController,UnityEngine.CapsuleCollider
+Armature components=UnityEngine.Transform
+Root components=UnityEngine.Transform
+Spine_Front components=UnityEngine.Transform
+Head components=UnityEngine.Transform
+Mouth components=UnityEngine.Transform
+PectoralFin_L components=UnityEngine.Transform
+PectoralFin_R components=UnityEngine.Transform
+Spine_Back components=UnityEngine.Transform
+Spine_Tail1 components=UnityEngine.Transform
+Spine_Tail2 components=UnityEngine.Transform
+TailFin components=UnityEngine.Transform
+FishMesh components=UnityEngine.Transform,UnityEngine.SkinnedMeshRenderer
+Rest Z length=0.601009846

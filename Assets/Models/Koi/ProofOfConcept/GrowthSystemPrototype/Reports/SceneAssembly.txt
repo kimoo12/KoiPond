@@ -1,0 +1,4 @@
+Rest lengths Fry/Juvenile/Adult: 0.180302963, 0.360605925, 0.601009846
+Birth ID: a6470080db3d487cb9f746faffae9c4c
+Static row left/right: Fry, Juvenile, Adult. Growing individual in front.
+No source scripts/colliders/controllers instantiated.
