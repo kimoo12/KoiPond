@@ -22,7 +22,7 @@ namespace KoiPond.GrowthPrototype.EditorTools
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("EditMode only.");
             _assertions = 0;
             double[] ages = { 0, 60, 120, 210, 300 };
-            float[] ratios = { .3f, .35f, .6f, .725f, 1 };
+            float[] ratios = { .2f, .275f, .6f, .725f, 1 };
             int[] stages = { 0, 0, 1, 1, 2 };
             for (int i = 0; i < ages.Length; i++)
             {
@@ -113,7 +113,7 @@ namespace KoiPond.GrowthPrototype.EditorTools
                     }
                     float ratio = size.z / visuals.RestLengths[2];
                     Near(ratio, growth.Evaluation.SizeRatio, .001, "calibrated rendered length");
-                    if (stage == 0) Check(ratio <= .400001f, "Fry length cap");
+                    if (stage == 0) Check(ratio <= .350001f, "Fry length cap");
                     if (stage == 1) Check(ratio <= .850001f, "Juvenile length cap");
                     animation.EvaluatePose();
                     Check(ratio >= previous - 1e-6, "monotonic size"); previous = ratio;
@@ -160,7 +160,7 @@ var stateBefore = JsonUtility.ToJson(UnityEngine.Random.state);
                     profileOwner.Advance(60);
                     var serialized = new SerializedObject(profile); serialized.FindProperty("_fryDurationSeconds").doubleValue = 1; serialized.ApplyModifiedPropertiesWithoutUndo();
                     Near(profileOwner.Individual.Growth.FryDuration, 120, 0, "initialized owner freezes its actual shared profile duration");
-                    Near(profileOwner.Evaluation.SizeRatio, .35, 1e-7, "profile edit does not remap existing age or size");
+                    Near(profileOwner.Evaluation.SizeRatio, .275, 1e-7, "profile edit does not remap existing age or size");
                     profileOwner.ResetAge(true);
                     Near(profileOwner.Individual.Growth.FryDuration, 1, 0, "explicit reinitialization adopts profile timing");
                     Check(ReferenceEquals(profileOwner.Individual.Birth, birth), "timing reinitialization retains original birth reference");
@@ -174,7 +174,7 @@ var stateBefore = JsonUtility.ToJson(UnityEngine.Random.state);
                     int outgoing = visuals.ActiveIndex;
                     animation.RestoreRest(outgoing);
                     float outgoingLength = KoiGrowthPrototypeBuilder.RestLength(visuals.Skins[outgoing], prefab.transform);
-                    float outgoingRatio = outgoing == 0 ? .4f : .85f;
+                    float outgoingRatio = outgoing == 0 ? .35f : .85f;
                     Near(outgoingLength / visuals.RestLengths[2], outgoingRatio, .001, "outgoing boundary length cap");
                     growth.Advance(1e-5); visuals.Apply();
                     int current = (int)growth.Evaluation.Stage;
@@ -230,7 +230,7 @@ var inspector = UnityEditor.Editor.CreateEditor(growth);
                     "unchanged diagnostic durations: 120/180 seconds");
                 Check(Math.Abs(_animation.BlendDuration - .3f) < 1e-6, "unchanged animation blend: 0.3 seconds");
                 double[] ages = { 0, 60, 119.999, 120, 210, 299.999, 300 };
-                float[] expected = { .3f, .35f, .4f, .6f, .725f, .85f, 1 };
+                float[] expected = { .2f, .275f, .35f, .6f, .725f, .85f, 1 };
                 int[] stages = { 0, 0, 0, 1, 1, 1, 2 };
                 for (int i = 0; i < ages.Length; i++)
                 {
@@ -250,7 +250,7 @@ var inspector = UnityEditor.Editor.CreateEditor(growth);
                     _animation.EvaluatePose();
                 }
                 Check(expected[2] < expected[3] * .86f && expected[5] < expected[6] * .86f,
-                    "separate boundary lengths: Fry 40% < Juvenile 60%; Juvenile 85% < Adult 100%");
+                    "separate boundary lengths: Fry 35% < Juvenile 60%; Juvenile 85% < Adult 100%");
             }
             finally
             {
