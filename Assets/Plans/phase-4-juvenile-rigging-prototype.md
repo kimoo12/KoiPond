@@ -680,3 +680,69 @@ Use Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/; if occupied
 - Diagnostic materials retain original normals, roughness, shader and all non-albedo settings. Source Meshy versus upstream adult derivative versus new stage derivative provenance explicitly distinguished.
 - Capture actual results and list quality limitations, source-asset animation defects and tests NOT RUN. No claim of complete inherited genetics or production readiness. Four-texture pilot only, then stop.
 
+# Revision — Phase 4 Step 3B: Refine Four Pilot Transfers
+Supersedes Step 3A correspondence and eye-protection implementation only within the existing isolated pilot after approval. Re-bake the same four Kohaku/Tancho Fry/Juvenile albedos; no AI repainting, generated replacement artwork, guessed-color filling, other varieties or integration.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Remove duplicate adult-eye artwork and repair incomplete anatomical correspondence while retaining original early-stage eyes, facial detail and inherited Kohaku/Tancho markings. Review the same four pilot appearances before expansion.
+- Players: Isolated asset-validation prototype; no gameplay changes.
+- Inspiration / Reference Games: Original stage Meshy textures/anatomy and current adult Kohaku/Tancho source appearances.
+- Tone / Art Direction: Existing stylized anatomy; source-sampled inherited markings.
+- Target Platform: StandaloneWindows64, Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Existing settings unchanged; labeled diagnostic views and close-ups.
+- Render Pipeline: Existing URP PC_RPAsset unchanged.
+
+# Game Mechanics
+## Core Gameplay Loop
+Compare baseline → inspect anatomical failures and eye sources → refine surface correspondence/protection → re-bake four albedos → audit coverage and markings → review multi-angle results. No genetics, growth, identity or random-state changes.
+## Controls and Input Methods
+Existing editor-only pilot commands; New Input System unchanged. No new runtime controls.
+
+# UI
+No production UI. Extend diagnostic review to left and right face, front, top, both sides, fin roots/tail/seams. Labels distinguish Step 3A baseline from Step 3B results, Lit versus albedo-only and diagnostic magnification.
+
+# Key Asset & Context
+- Write boundary: Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/ only, plus this plan. Preserve all outside sources and metadata.
+- Modify Editor/EarlyStageAlbedoTransferBuilder.cs and Editor/EarlyStageAlbedoTransferValidation.cs; update only the four existing Textures/*_Albedo_DERIVED.png and pilot-only settings/reports as needed. Preserve existing material GUIDs, shader and non-albedo settings; do not delete/recreate materials during rebake.
+- Profiles/: versioned numeric anatomical landmarks/region definitions and source-eye exclusion masks. Reports/Step3B/: new captures, metrics, verification, inventory and results. Preserve Step 3A reports/captures and baseline copies of changed pilot outputs under Reports/Step3B/Baseline/.
+- Existing read-only adult mesh/albedos, Fry/Juvenile prefabs/meshes/source albedos, normals/roughness, rigs, animation clips and all genetics/growth/appearance systems remain unchanged.
+- Current builder uses only body/left-pectoral/right-pectoral triangle classification, global width/height ratios, longitudinal bone anchors and small stage eye/lip spheres. There is no source adult-eye exclusion. These are plausible causes of duplicate eyes and poorly mapped unboned fins, not yet independently certified diagnoses.
+- Previous rejected surface fractions: Fry 9.02%, Juvenile 6.14%. Mean accepted distances .04110/.02934 in adult body length .60101. Previous overlap audit omits coincident-source color disagreement and deterministic repeat testing.
+- Current loaded scene: pilot Scenes/Pilot_MagnifiedReview.unity. Recheck dirty state; preserve setup and never discard unsaved user edits. Inspect current validator before editing, including capture isolation, cleanup and missing views.
+
+# Implementation Steps
+1. **Protect and diagnose.** Dependencies: approval.
+   - Recheck dependencies and reverse references for intended pilot edits via read-only AssetDatabase APIs and code usage search where appropriate. Hash all outside protected files/metadata; record pilot baseline and source provenance. Preserve current editor state and baseline images before writes.
+   - Inspect original adult/Fry/Juvenile eyes, facial surfaces, mouth, dorsal head region, fin roots/tips/edges, tail peduncle and current rejected samples from both sides. Locate actual source UV footprints; dark thresholds and existing skin weights are only candidate hints, not final segmentation.
+2. **Separate inherited markings from eye/facial artwork.** Dependencies: Step 1.
+   - Define reviewed left/right adult eye artwork exclusion in source surface/UV space, including eyelid artwork and bilinear/mip sampling footprint; evaluate exclusions per variety if footprints differ. Never allow inherited adult-eye samples outside original stage eyes.
+   - Replace small centroid spheres with anatomically bounded stage eye/eyelid and facial-detail masks sampled directly from the matching original stage albedo. Preserve lips and local original facial detail without copying broad original colored head/body patches. Keep the dorsal head marking domain separate so Tancho's spot and Kohaku head markings are not erased.
+   - For transferred regions previously reaching adult eyes, correct facial correspondence to verified corresponding non-eye source surfaces. If a valid eye-free source correspondence is unavailable, mark unresolved; do not manufacture white pixels, blur/inpaint eyes away, substitute arbitrary nearby colors or silently enlarge retained stage regions to hide it.
+3. **Refit body and all fin/tail regions.** Dependencies: Steps 1–2.
+   - Add anatomy-based segmentation for head/body, left/right pectoral, dorsal, ventral/other fins, tail peduncle and caudal fin using geometry/connectivity/landmarks, with skin weights as supporting hints only.
+   - Fit local body cross-section profiles and explicit fin root/tip/leading/trailing-edge coordinate charts to matching adult anatomy; preserve side and thin-surface orientation. Tail fin maps to adult caudal surface, not extrapolated body chain. Keep destination mesh/UVs untouched.
+   - Use accelerated constrained barycentric source-surface queries after local chart fitting; record mapping Jacobians, region-specific distance/normal/side gates and ambiguity. Correct bad segmentation/chart geometry rather than globally raising thresholds or filling holes.
+   - Ensure boundaries and coincident seams share compatible mappings without welding or changing indices. If a stage region lacks a compatible adult surface, retain explicit unresolved status and request review, not guessed colors.
+4. **Re-bake idempotently and audit.** Dependencies: Steps 2–3.
+   - Re-bake the same four 2048-square albedos; update existing pilot materials only if needed, keeping GUIDs and non-albedo configuration. No scene/system rebuild unless required for isolated diagnostics.
+   - Track source triangle/UV/region and protection provenance per sample. Check UV overlap including source-coordinate/color disagreement for coincident samples, rejected regions, duplicate-eye source leakage, filtering footprint and seams. Never average incompatible overlaps or pad across failed surface regions.
+   - Repeat the same bake twice and compare decoded appearance pixels/configuration hashes; prevent output/material duplication and cumulative edits. Keep padding outside valid UV interiors only; report subpixel/mip limitations.
+5. **Verify anatomy and markings visually.** Dependencies: Step 4.
+   - Capture all four results against original stage controls and adult sources: top/front/left/right/three-quarter plus left-eye, right-eye, lips, fin-root/tail/seam close-ups. Use identical neutral local lighting with albedo-only and Lit views. Preserve source normal/roughness maps and scalar properties.
+   - Verify exactly the original left/right eye artwork remains, without a second adult eye on cheek/head. Compare protected pixels to original stage samples and assert zero adult-eye-mask sampling outside protection.
+   - Verify Kohaku marking boundaries/distribution against the adult source, and Tancho one circular dorsal head spot with no accidental retained stage red elsewhere. Compare landmark registration and top-view spot outline; do not redraw a circle or force colors to obtain a pass.
+   - Sample original Swim/Idle/Eat at relevant eye/mouth/fin/tail extremes on diagnostic instances; distinguish pre-existing deformation defects from texture defects. Mark unavailable continuous runtime tests NOT RUN.
+6. **Report and stop.** Dependencies: Step 5.
+   - Save Reports/Step3B/RefinementResults.md with per-texture baseline/new rejection fractions, region residuals, overlap conflicts, eye leakage, protection coverage, spot/marking findings, determinism, captures, files changed/created and remaining issues.
+   - Recheck all outside protected bytes/metadata and unchanged stage geometry/UVs/rig/clip/material references. Restore initial editor setup without saving outside scenes or discarding unsaved work.
+   - Stop for visual approval. No expansion, hybrid rendering, Hirenaga, source repainting or production integration.
+
+# Verification & Testing
+- Outside pilot protected files and metadata unchanged; stage mesh/UV/rig/animations/normals/roughness untouched. Existing pilot materials retain GUIDs and shader/non-albedo properties. Baseline evidence preserved, new evidence separately versioned.
+- No adult-eye exclusion-mask sample or its filtering footprint contributes to transferred non-eye regions; original two stage eyes and facial detail preserved and reviewed from both sides. Protected stage-source pixels match documented original UV sampling.
+- Explicit per-region valid/rejected/conflicting coverage. A complete coverage PASS requires zero unresolved visible-surface holes, no cross-anatomy matches and reviewed seam continuity; magenta remaining means PARTIAL/FAIL, never silently hidden.
+- Repeat-bake decoded pixels identical; no duplicate material assets or changed source references. Finite barycentrics/Jacobians, correct side/normal constraints and source correspondence provenance recorded.
+- Kohaku markings preserved; Tancho head spot remains one circular dorsal feature with no extra eye/spot/body-red contamination. Numeric checks support, not replace, labeled multi-angle visual review.
+- Recheck Console; disclose implementation warnings/failures and checks NOT RUN. Do not claim eye, coverage or marking success until actually reviewed. Stop at four-texture visual approval.
+

@@ -1,0 +1,2 @@
+OutsideProtectedUnchanged=2360
+PASS outside files/metadata and four existing pilot material bytes unchanged

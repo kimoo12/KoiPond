@@ -1,0 +1,5 @@
+Root cause: baseline .cs backups were renamed directly through File.Move; the AssetDatabase now reports only TextAssets, but CompilationPipeline.GetAssemblies retains both missing .cs paths. Generated Assembly-CSharp-Editor.csproj and Library/Bee response inputs inherited the orphaned source list.
+Inspected all Assets asmdef/asmref/rsp files: no baseline references. Removed exactly two stale Compile items from generated editor project; actual builder/validator and .cs.txt archives preserved. Registered archive moves and forced imports/clean-cache compilation did not clear the in-memory compiler source list. Newly generated projects reintroduce the stale paths. Temporary unverified project-generation hook removed.
+Compilation restoration NOT VERIFIED: CS2001 remains in the compiler cache. Editor restart/reload required to reconstruct the script list from current files before Step 3B can resume safely. No four-texture rebake, no production system edits.
+
+After editor restart: Console CS2001 cleared; current compiler list contains no archived baseline .cs inputs. Resume approved Step3B.

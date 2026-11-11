@@ -1,0 +1,72 @@
+Kohaku_AdultSource restLength=0.6010098 unchangedMesh=Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset
+Kohaku_Fry_Pilot restLength=0.180303 unchangedMesh=Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Meshes/Fry_RiggedMesh.asset
+Kohaku_Fry_Pilot Swim sample=0 finite=True
+Kohaku_Fry_Pilot Swim sample=1 finite=True
+Kohaku_Fry_Pilot Swim sample=2 finite=True
+Kohaku_Fry_Pilot Swim sample=3 finite=True
+Kohaku_Fry_Pilot Swim sample=4 finite=True
+Kohaku_Fry_Pilot Idle sample=0 finite=True
+Kohaku_Fry_Pilot Idle sample=1 finite=True
+Kohaku_Fry_Pilot Idle sample=2 finite=True
+Kohaku_Fry_Pilot Idle sample=3 finite=True
+Kohaku_Fry_Pilot Idle sample=4 finite=True
+Kohaku_Fry_Pilot Eat sample=0 finite=True
+Kohaku_Fry_Pilot Eat sample=1 finite=True
+Kohaku_Fry_Pilot Eat sample=2 finite=True
+Kohaku_Fry_Pilot Eat sample=3 finite=True
+Kohaku_Fry_Pilot Eat sample=4 finite=True
+Kohaku_Fry_OriginalControl restLength=0.180303 unchangedMesh=Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Meshes/Fry_RiggedMesh.asset
+Kohaku_Juvenile_Pilot restLength=0.3606059 unchangedMesh=Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Meshes/Juvenile_RiggedMesh.asset
+Kohaku_Juvenile_Pilot Swim sample=0 finite=True
+Kohaku_Juvenile_Pilot Swim sample=1 finite=True
+Kohaku_Juvenile_Pilot Swim sample=2 finite=True
+Kohaku_Juvenile_Pilot Swim sample=3 finite=True
+Kohaku_Juvenile_Pilot Swim sample=4 finite=True
+Kohaku_Juvenile_Pilot Idle sample=0 finite=True
+Kohaku_Juvenile_Pilot Idle sample=1 finite=True
+Kohaku_Juvenile_Pilot Idle sample=2 finite=True
+Kohaku_Juvenile_Pilot Idle sample=3 finite=True
+Kohaku_Juvenile_Pilot Idle sample=4 finite=True
+Kohaku_Juvenile_Pilot Eat sample=0 finite=True
+Kohaku_Juvenile_Pilot Eat sample=1 finite=True
+Kohaku_Juvenile_Pilot Eat sample=2 finite=True
+Kohaku_Juvenile_Pilot Eat sample=3 finite=True
+Kohaku_Juvenile_Pilot Eat sample=4 finite=True
+Kohaku_Juvenile_OriginalControl restLength=0.3606059 unchangedMesh=Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Meshes/Juvenile_RiggedMesh.asset
+Tancho_AdultSource restLength=0.6010098 unchangedMesh=Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset
+Tancho_Fry_Pilot restLength=0.1803031 unchangedMesh=Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Meshes/Fry_RiggedMesh.asset
+Tancho_Fry_Pilot Swim sample=0 finite=True
+Tancho_Fry_Pilot Swim sample=1 finite=True
+Tancho_Fry_Pilot Swim sample=2 finite=True
+Tancho_Fry_Pilot Swim sample=3 finite=True
+Tancho_Fry_Pilot Swim sample=4 finite=True
+Tancho_Fry_Pilot Idle sample=0 finite=True
+Tancho_Fry_Pilot Idle sample=1 finite=True
+Tancho_Fry_Pilot Idle sample=2 finite=True
+Tancho_Fry_Pilot Idle sample=3 finite=True
+Tancho_Fry_Pilot Idle sample=4 finite=True
+Tancho_Fry_Pilot Eat sample=0 finite=True
+Tancho_Fry_Pilot Eat sample=1 finite=True
+Tancho_Fry_Pilot Eat sample=2 finite=True
+Tancho_Fry_Pilot Eat sample=3 finite=True
+Tancho_Fry_Pilot Eat sample=4 finite=True
+Tancho_Fry_OriginalControl restLength=0.1803031 unchangedMesh=Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Meshes/Fry_RiggedMesh.asset
+Tancho_Juvenile_Pilot restLength=0.360606 unchangedMesh=Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Meshes/Juvenile_RiggedMesh.asset
+Tancho_Juvenile_Pilot Swim sample=0 finite=True
+Tancho_Juvenile_Pilot Swim sample=1 finite=True
+Tancho_Juvenile_Pilot Swim sample=2 finite=True
+Tancho_Juvenile_Pilot Swim sample=3 finite=True
+Tancho_Juvenile_Pilot Swim sample=4 finite=True
+Tancho_Juvenile_Pilot Idle sample=0 finite=True
+Tancho_Juvenile_Pilot Idle sample=1 finite=True
+Tancho_Juvenile_Pilot Idle sample=2 finite=True
+Tancho_Juvenile_Pilot Idle sample=3 finite=True
+Tancho_Juvenile_Pilot Idle sample=4 finite=True
+Tancho_Juvenile_Pilot Eat sample=0 finite=True
+Tancho_Juvenile_Pilot Eat sample=1 finite=True
+Tancho_Juvenile_Pilot Eat sample=2 finite=True
+Tancho_Juvenile_Pilot Eat sample=3 finite=True
+Tancho_Juvenile_Pilot Eat sample=4 finite=True
+Tancho_Juvenile_OriginalControl restLength=0.360606 unchangedMesh=Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Meshes/Juvenile_RiggedMesh.asset
+
+Static clip sampling only, 5 times/clip. Continuous runtime NOT RUN. Extreme-pose/complete-loop certification NOT CLAIMED.

@@ -1,0 +1,2 @@
+Unchanged=2359
+PASS protected bytes and metadata unchanged

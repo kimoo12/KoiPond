@@ -1,0 +1,18 @@
+PARTIAL pending visual review
+accepted=2406437
+protected=401013
+rejected=22
+UVoverlapEvents=15
+UVconflictingTexels=0
+subpixelFaces=34721
+meanDistance=0.00981190403698488
+maxDistance=0.07478104
+bodyLength=0.6010098
+Threshold maxDistance=.075; normalDot=.25; longitudinalBand=.045 unchanged
+Adult-eye sampled points=0 (asserted). No failed region filled. Magenta=rejected; cyan=UV conflict. Green coverage=original-stage protected detail.
+region=0 accepted=1328519 rejected=22 meanResidual=0.00643920406322714
+region=1 accepted=178996 rejected=0 meanResidual=0.0221014463502033
+region=2 accepted=223842 rejected=0 meanResidual=0.0225948758504282
+region=3 accepted=445463 rejected=0 meanResidual=0.00513252932454361
+region=4 accepted=151329 rejected=0 meanResidual=0.0180109225509704
+region=5 accepted=78288 rejected=0 meanResidual=0.0131750009190144

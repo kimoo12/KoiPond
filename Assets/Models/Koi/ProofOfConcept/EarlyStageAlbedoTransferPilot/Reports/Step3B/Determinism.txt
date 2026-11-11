@@ -1,0 +1,4 @@
+Kohaku_Fry_Albedo_DERIVED.png repeatedPNGBytesIdentical=True
+Tancho_Fry_Albedo_DERIVED.png repeatedPNGBytesIdentical=True
+Kohaku_Juvenile_Albedo_DERIVED.png repeatedPNGBytesIdentical=True
+Tancho_Juvenile_Albedo_DERIVED.png repeatedPNGBytesIdentical=True

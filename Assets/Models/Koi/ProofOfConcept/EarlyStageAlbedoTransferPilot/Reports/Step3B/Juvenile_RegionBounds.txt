@@ -1,0 +1,6 @@
+Region 0 destination=Center: (0.00, 0.00, 0.06), Extents: (0.10, 0.16, 0.24) adult=Center: (0.00, 0.00, 0.06), Extents: (0.09, 0.18, 0.24)
+Region 1 destination=Center: (-0.10, -0.12, 0.10), Extents: (0.02, 0.03, 0.04) adult=Center: (-0.12, -0.08, 0.11), Extents: (0.04, 0.08, 0.06)
+Region 2 destination=Center: (0.10, -0.12, 0.10), Extents: (0.02, 0.03, 0.04) adult=Center: (0.12, -0.08, 0.11), Extents: (0.04, 0.08, 0.06)
+Region 3 destination=Center: (0.00, 0.00, -0.23), Extents: (0.04, 0.09, 0.07) adult=Center: (0.00, 0.00, -0.23), Extents: (0.02, 0.12, 0.07)
+Region 4 destination=Center: (0.00, 0.11, -0.02), Extents: (0.02, 0.05, 0.10) adult=Center: (0.00, 0.11, -0.02), Extents: (0.03, 0.07, 0.16)
+Region 5 destination=Center: (0.00, -0.09, -0.06), Extents: (0.02, 0.03, 0.08) adult=Center: (0.00, -0.09, -0.05), Extents: (0.02, 0.04, 0.12)

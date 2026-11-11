@@ -23,7 +23,10 @@ namespace KoiPond.EarlyStageTransferPilot
             public Vector2[] UV;
             public int[] T, Regions;
             public Bounds Bounds;
+            public Bounds[] RegionBounds;
+            public float[,] Radius;
             public SkinnedMeshRenderer Skin;
+            const int Rings = 64, Angles = 48;
             public Surface(string path)
             {
                 var root = AssetDatabase.LoadAssetAtPath<GameObject>(path);
@@ -45,8 +48,52 @@ namespace KoiPond.EarlyStageTransferPilot
                         var w = weights[T[t * 3 + j]];
                         l += Weight(w, 4); r += Weight(w, 5);
                     }
-                    Regions[t] = l > 1.05f ? 1 : r > 1.05f ? 2 : 0;
+                    var p = (V[T[t * 3]] + V[T[t * 3 + 1]] + V[T[t * 3 + 2]]) / 3;
+                    var normal = (N[T[t * 3]] + N[T[t * 3 + 1]] + N[T[t * 3 + 2]]).normalized;
+                    Regions[t] = p.z < -.17f ? 3 :
+                        Mathf.Abs(p.x) < .024f && Mathf.Abs(normal.x) > .50f && Mathf.Abs(p.y) > .055f && p.z < .17f ? (p.y > 0 ? 4 : 5) :
+                        l > 1.05f ? 1 : r > 1.05f ? 2 : 0;
                 }
+                RegionBounds = new Bounds[6]; var initialized = new bool[6];
+                Radius = new float[Rings, Angles];
+                for (int f = 0; f < Regions.Length; f++) for (int k = 0; k < 3; k++)
+                {
+                    var p = V[T[f * 3 + k]]; int region = Regions[f];
+                    if (!initialized[region]) { RegionBounds[region] = new Bounds(p, Vector3.zero); initialized[region] = true; }
+                    else RegionBounds[region].Encapsulate(p);
+                    if (region != 0) continue;
+                    int z = Mathf.Clamp(Mathf.RoundToInt((p.z - Bounds.min.z) / Bounds.size.z * (Rings - 1)), 0, Rings - 1);
+                    int angle = Mathf.Clamp(Mathf.RoundToInt((Mathf.Atan2(p.y, p.x) + Mathf.PI) / (2 * Mathf.PI) * (Angles - 1)), 0, Angles - 1);
+                    Radius[z, angle] = Mathf.Max(Radius[z, angle], new Vector2(p.x, p.y).magnitude);
+                }
+                // Interpolate empty geometric chart cells, never appearance pixels or rejected surface samples.
+                var measured = (float[,])Radius.Clone();
+                for (int z = 0; z < Rings; z++) for (int angle = 0; angle < Angles; angle++)
+                {
+                    if (Radius[z, angle] > 0) continue;
+                    float nearest = float.MaxValue, value = 0;
+                    for (int zz = 0; zz < Rings; zz++) for (int aa = 0; aa < Angles; aa++)
+                    {
+                        if (measured[zz, aa] <= 0) continue;
+                        int da = Mathf.Abs(angle - aa); da = Mathf.Min(da, Angles - da);
+                        float distance = (zz - z) * (zz - z) + da * da;
+                        if (distance < nearest) { nearest = distance; value = measured[zz, aa]; }
+                    }
+                    Radius[z, angle] = value;
+                }
+                for (int pass = 0; pass < 2; pass++)
+                {
+                    var old = (float[,])Radius.Clone();
+                    for (int z = 0; z < Rings; z++) for (int a = 0; a < Angles; a++)
+                        Radius[z, a] = (old[z, a] * 4 + old[Mathf.Max(0, z - 1), a] + old[Mathf.Min(Rings - 1, z + 1), a] + old[z, (a + 1) % Angles] + old[z, (a + Angles - 1) % Angles]) / 8;
+                }
+            }
+            public float Radial(float z, float angle)
+            {
+                float zz = Mathf.Clamp((z - Bounds.min.z) / Bounds.size.z * (Rings - 1), 0, Rings - 1);
+                float aa = Mathf.Clamp((angle + Mathf.PI) / (2 * Mathf.PI) * (Angles - 1), 0, Angles - 1);
+                int z0 = Mathf.FloorToInt(zz), a0 = Mathf.FloorToInt(aa);
+                return Mathf.Lerp(Mathf.Lerp(Radius[z0, a0], Radius[z0, Mathf.Min(a0 + 1, Angles - 1)], aa - a0), Mathf.Lerp(Radius[Mathf.Min(z0 + 1, Rings - 1), a0], Radius[Mathf.Min(z0 + 1, Rings - 1), Mathf.Min(a0 + 1, Angles - 1)], aa - a0), zz - z0);
             }
             static float Weight(BoneWeight w, int b) => (w.boneIndex0 == b ? w.weight0 : 0) + (w.boneIndex1 == b ? w.weight1 : 0) + (w.boneIndex2 == b ? w.weight2 : 0) + (w.boneIndex3 == b ? w.weight3 : 0);
         }
@@ -87,6 +134,25 @@ namespace KoiPond.EarlyStageTransferPilot
             if (va <= 0 && d4 - d3 >= 0 && d5 - d6 >= 0) { float w = (d4 - d3) / ((d4 - d3) + (d5 - d6)); return new Vector3(0, 1 - w, w); }
             float inv = 1 / (va + vb + vc); return new Vector3(1 - (vb + vc) * inv, vb * inv, vc * inv);
         }
+        static bool AdultEyeArtwork(Vector3 p)
+        {
+            // Source Kohaku/Tancho dark-pupil samples locate both eyes near |X|=.07,Z=.234.
+            // Expanded anatomical volume includes eyelids and adjacent filter footprint, not just dark pixels.
+            return Mathf.Abs(p.x) > .040f && p.z > .183f && p.z < .281f && p.y > -.049f && p.y < .048f;
+        }
+        static bool StageFace(Surface s, Vector3[] eyes, Vector3 p)
+        {
+            float scale = s.Bounds.size.x > .28f ? 1f : .8f;
+            foreach (var eye in eyes)
+            {
+                var q = p - eye;
+                q = new Vector3(q.x / (.064f * scale), q.y / (.060f * scale), q.z / (.067f * scale));
+                // Preserve lateral eyeball, eyelid and cheek detail; dorsal inherited marking domain stays separate.
+                if (q.sqrMagnitude <= 1 && p.y < .048f) return true;
+            }
+            var mouth = p - s.Bones[3];
+            return mouth.x * mouth.x / (.070f * .070f) + mouth.y * mouth.y / (.043f * .043f) + mouth.z * mouth.z / (.041f * .041f) <= 1 && p.y < -.013f;
+        }
         static void Search(Node n, Surface s, Vector3 p, Vector3 normal, ref float best, ref int face, ref Vector3 bary)
         {
             if (n == null || n.Bounds.SqrDistance(p) > best) return;
@@ -95,8 +161,10 @@ namespace KoiPond.EarlyStageTransferPilot
                 foreach (int f in n.Faces)
                 {
                     int a = s.T[f * 3], b = s.T[f * 3 + 1], c = s.T[f * 3 + 2];
+                    if (AdultEyeArtwork(s.V[a]) || AdultEyeArtwork(s.V[b]) || AdultEyeArtwork(s.V[c])) continue;
                     var w = Bary(p, s.V[a], s.V[b], s.V[c]);
                     var q = s.V[a] * w.x + s.V[b] * w.y + s.V[c] * w.z;
+                    if (AdultEyeArtwork(q)) continue;
                     if (Mathf.Abs(p.x) > .015f && q.x * p.x < 0) continue;
                     // Head/body/tail bands exclude unrelated longitudinal anatomy.
                     if (Mathf.Abs(q.z - p.z) > .045f) continue;
@@ -114,18 +182,23 @@ namespace KoiPond.EarlyStageTransferPilot
         {
             if (region != 0)
             {
-                int bone = region == 1 ? 4 : 5;
-                var ratio = new Vector3(a.Bounds.size.x / d.Bounds.size.x, a.Bounds.size.y / d.Bounds.size.y, 1);
-                return a.Bones[bone] + Vector3.Scale(p - d.Bones[bone], ratio);
+                var db = d.RegionBounds[region]; var ab = a.RegionBounds[region];
+                return ab.center + Vector3.Scale(p - db.center, new Vector3(ab.size.x / Mathf.Max(db.size.x, .00001f), ab.size.y / Mathf.Max(db.size.y, .00001f), ab.size.z / Mathf.Max(db.size.z, .00001f)));
             }
-            int[] chain = { 9, 8, 7, 6, 1, 2, 3 };
+            // The body and caudal charts share the SAME -.17 peduncle boundary.
+            // Old tail-bone extrapolation sent destination body samples into source caudal-only triangles.
+            float[] dz = { -.17f, d.Bones[6].z, d.Bones[1].z, d.Bones[2].z, d.Bounds.max.z };
+            float[] az = { -.17f, a.Bones[6].z, a.Bones[1].z, a.Bones[2].z, a.Bounds.max.z };
             float z = p.z;
-            int i = 0; while (i < chain.Length - 2 && z > d.Bones[chain[i + 1]].z) i++;
-            int lo = chain[i], hi = chain[i + 1];
-            float t = (z - d.Bones[lo].z) / (d.Bones[hi].z - d.Bones[lo].z);
-            var dc = Vector3.LerpUnclamped(d.Bones[lo], d.Bones[hi], t);
-            var ac = Vector3.LerpUnclamped(a.Bones[lo], a.Bones[hi], t);
-            return ac + new Vector3((p.x - dc.x) * a.Bounds.size.x / d.Bounds.size.x, (p.y - dc.y) * a.Bounds.size.y / d.Bounds.size.y, 0);
+            int i = 0; while (i < dz.Length - 2 && z > dz[i + 1]) i++;
+            float t = (z - dz[i]) / (dz[i + 1] - dz[i]);
+            float targetZ = Mathf.LerpUnclamped(az[i], az[i + 1], t);
+            // Dorsal-head chart keeps longitudinal/lateral distances isotropic to preserve the authored Tancho circle.
+            bool dorsalHead = p.z > d.Bones[2].z - .012f && p.y > .050f;
+            if (dorsalHead) targetZ = p.z - d.Bones[2].z + a.Bones[2].z;
+            float angle = Mathf.Atan2(p.y, p.x);
+            float ratio = a.Radial(targetZ, angle) / Mathf.Max(d.Radial(p.z, angle), .0001f);
+            return new Vector3(dorsalHead ? p.x : p.x * ratio, p.y * ratio, targetZ);
         }
         static Texture2D Decode(string path)
         {
@@ -155,13 +228,17 @@ namespace KoiPond.EarlyStageTransferPilot
         {
             foreach (var dir in new[] { "Textures", "Materials", "Reports", "Scenes", "Profiles" }) Directory.CreateDirectory(Folder + "/" + dir);
             var adult = new Surface(Adult); var dst = new Surface(stage == "Fry" ? Fry : Juvenile);
-            var trees = Enumerable.Range(0, 3).Select(r => Build(adult, Enumerable.Range(0, adult.Regions.Length).Where(t => adult.Regions[t] == r).ToArray())).ToArray();
+            var trees = Enumerable.Range(0, 6).Select(r => Build(adult, Enumerable.Range(0, adult.Regions.Length).Where(t => adult.Regions[t] == r).ToArray())).ToArray();
             var original = Decode(AssetDatabase.GetAssetPath(dst.Skin.sharedMaterial.GetTexture("_BaseMap")));
             var eyes = EyeCenters(dst, original);
-            File.WriteAllText(Folder + "/Profiles/" + stage + "_Landmarks.json", "{\"eyeLeft\":\"" + eyes[0] + "\",\"eyeRight\":\"" + eyes[1] + "\",\"mouth\":\"" + dst.Bones[3] + "\",\"maxDistance\":0.075,\"normalDot\":0.25,\"eyeRadius\":0.026,\"lipRadius\":0.022,\"method\":\"piecewise bone-anchor longitudinal mapping; independently anchored left/right fins; candidate pupil centroids require visual review\"}");
+            File.WriteAllText(Folder + "/Profiles/" + stage + "_Step3B_Landmarks.json", "{\"eyeLeft\":\"" + eyes[0].ToString("F6") + "\",\"eyeRight\":\"" + eyes[1].ToString("F6") + "\",\"mouth\":\"" + dst.Bones[3].ToString("F6") + "\",\"maxDistance\":0.075,\"normalDot\":0.25,\"regions\":\"body,leftPectoral,rightPectoral,caudal,dorsal,ventral\",\"method\":\"measured angular body profiles; separate fin charts; original-stage face ellipsoids; conservative adult eye-surface exclusion; isotropic dorsal-head chart\"}");
+            File.WriteAllLines(Folder + "/Reports/Step3B/" + stage + "_RegionBounds.txt", Enumerable.Range(0, 6).Select(r => "Region " + r + " destination=" + dst.RegionBounds[r] + " adult=" + adult.RegionBounds[r]));
             var sourceUV = new Vector2[Size * Size]; var originalUV = new Vector2[Size * Size]; var position = new Vector3[Size * Size];
+            var auditKohaku = Decode("Assets/Models/Koi/ProofOfConcept/KohakuTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_BaseColor.png");
+            var auditTancho = Decode("Assets/Models/Koi/ProofOfConcept/TanchoTopologyTransfer/Tancho_OriginalMeshy_ToRigged_BaseColor.png");
             var state = new byte[Size * Size]; // 0 unused, 1 transfer, 2 explicitly protected, 3 rejected, 4 UV conflict
             long overlap = 0, conflicts = 0, rejected = 0, protectedCount = 0, accepted = 0, subpixel = 0;
+            var regionAccepted = new long[6]; var regionRejected = new long[6]; var regionResidual = new double[6];
             double distanceSum = 0; float distanceMax = 0;
             for (int f = 0; f < dst.T.Length / 3; f++)
             {
@@ -183,11 +260,35 @@ namespace KoiPond.EarlyStageTransferPilot
                     if (state[idx] != 0)
                     {
                         overlap++;
-                        if ((position[idx] - p).sqrMagnitude > .00000001f && state[idx] != 4) { state[idx] = 4; conflicts++; }
+                        bool bad = (position[idx] - p).sqrMagnitude > .00000001f;
+                        if (!bad && state[idx] == 1)
+                        {
+                            var alternate = Map(dst, adult, p, dst.Regions[f]);
+                            const float step = .0001f;
+                            var j = Matrix4x4.identity;
+                            j.SetColumn(0, (Map(dst, adult, p + Vector3.right * step, dst.Regions[f]) - alternate) / step);
+                            j.SetColumn(1, (Map(dst, adult, p + Vector3.up * step, dst.Regions[f]) - alternate) / step);
+                            j.SetColumn(2, (Map(dst, adult, p + Vector3.forward * step, dst.Regions[f]) - alternate) / step);
+                            var nn = j.inverse.transpose.MultiplyVector(dst.N[ia] * wa + dst.N[ib] * wb + dst.N[ic] * wc).normalized;
+                            float dd = MaxDistance * MaxDistance; int ff = -1; var ww = Vector3.zero;
+                            Search(trees[dst.Regions[f]], adult, alternate, nn, ref dd, ref ff, ref ww);
+                            bad = ff < 0;
+                            if (!bad)
+                            {
+                                var otherUV = adult.UV[adult.T[ff * 3]] * ww.x + adult.UV[adult.T[ff * 3 + 1]] * ww.y + adult.UV[adult.T[ff * 3 + 2]] * ww.z;
+                                foreach (var appearance in new[] { auditKohaku, auditTancho })
+                                {
+                                    var first = appearance.GetPixelBilinear(sourceUV[idx].x, sourceUV[idx].y);
+                                    var second = appearance.GetPixelBilinear(otherUV.x, otherUV.y);
+                                    bad |= Mathf.Max(Mathf.Abs(first.r - second.r), Mathf.Abs(first.g - second.g), Mathf.Abs(first.b - second.b)) > 2f / 255;
+                                }
+                            }
+                        }
+                        if (bad && state[idx] != 4) { state[idx] = 4; conflicts++; }
                         continue;
                     }
                     position[idx] = p; originalUV[idx] = uv;
-                    if ((p - eyes[0]).sqrMagnitude < .026f * .026f || (p - eyes[1]).sqrMagnitude < .026f * .026f || (p - dst.Bones[3]).sqrMagnitude < .022f * .022f)
+                    if (StageFace(dst, eyes, p))
                     { state[idx] = 2; protectedCount++; continue; }
                     var mapped = Map(dst, adult, p, dst.Regions[f]);
                     // Transform destination normals by the inverse transpose of the local mapping Jacobian.
@@ -196,12 +297,17 @@ namespace KoiPond.EarlyStageTransferPilot
                     var normal = jac.inverse.transpose.MultiplyVector(dst.N[ia] * wa + dst.N[ib] * wb + dst.N[ic] * wc).normalized;
                     float best = MaxDistance * MaxDistance; int face = -1; var bary = Vector3.zero;
                     Search(trees[dst.Regions[f]], adult, mapped, normal, ref best, ref face, ref bary);
-                    if (face < 0) { state[idx] = 3; rejected++; continue; }
+                    if (face < 0) { state[idx] = 3; rejected++; regionRejected[dst.Regions[f]]++; continue; }
+                    var sourcePoint = adult.V[adult.T[face * 3]] * bary.x + adult.V[adult.T[face * 3 + 1]] * bary.y + adult.V[adult.T[face * 3 + 2]] * bary.z;
+                    if (AdultEyeArtwork(sourcePoint)) throw new InvalidOperationException("Forbidden adult-eye source point selected.");
                     sourceUV[idx] = adult.UV[adult.T[face * 3]] * bary.x + adult.UV[adult.T[face * 3 + 1]] * bary.y + adult.UV[adult.T[face * 3 + 2]] * bary.z;
                     state[idx] = 1; accepted++; float dist = Mathf.Sqrt(best); distanceSum += dist; distanceMax = Mathf.Max(dist, distanceMax);
+                    regionAccepted[dst.Regions[f]]++; regionResidual[dst.Regions[f]] += dist;
                 }
                 if (hits == 0) subpixel++;
             }
+            UnityEngine.Object.DestroyImmediate(auditKohaku);
+            UnityEngine.Object.DestroyImmediate(auditTancho);
             foreach (string variety in new[] { "Kohaku", "Tancho" })
             {
                 string src = "Assets/Models/Koi/ProofOfConcept/" + variety + "TopologyTransfer/" + variety + "_OriginalMeshy_ToRigged_BaseColor.png";
@@ -225,15 +331,17 @@ namespace KoiPond.EarlyStageTransferPilot
                     foreach (int i in add) occupied[i] = true;
                 }
                 string path = Folder + "/Textures/" + variety + "_" + stage + "_Albedo_DERIVED.png";
-                Save(path, pixels); Save(Folder + "/Reports/" + variety + "_" + stage + "_Coverage.png", coverage);
+                Save(path, pixels); Save(Folder + "/Reports/Step3B/" + variety + "_" + stage + "_Coverage.png", coverage);
                 AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
-                var importer = (TextureImporter)AssetImporter.GetAtPath(path); importer.sRGBTexture = true; importer.textureCompression = TextureImporterCompression.Uncompressed; importer.maxTextureSize = Size; importer.mipmapEnabled = true; importer.wrapMode = TextureWrapMode.Clamp; importer.SaveAndReimport();
-                var mat = new Material(dst.Skin.sharedMaterial); mat.name = variety + " " + stage + " Pilot"; mat.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(path)); if (mat.HasProperty("_MainTex")) mat.SetTexture("_MainTex", mat.GetTexture("_BaseMap"));
-                AssetDatabase.CreateAsset(mat, Folder + "/Materials/" + variety + "_" + stage + "_Pilot.mat");
+                string materialPath = Folder + "/Materials/" + variety + "_" + stage + "_Pilot.mat";
+                var mat = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+                if (mat == null) throw new InvalidOperationException("Existing pilot material missing: " + materialPath);
+                if (mat.GetTexture("_BaseMap") != AssetDatabase.LoadAssetAtPath<Texture2D>(path))
+                    throw new InvalidOperationException("Pilot albedo reference changed unexpectedly; refusing shared material edits.");
                 UnityEngine.Object.DestroyImmediate(tex);
             }
             UnityEngine.Object.DestroyImmediate(original);
-            File.WriteAllText(Folder + "/Reports/" + stage + "_Metrics.txt", "PARTIAL pending visual review\naccepted=" + accepted + "\nprotected=" + protectedCount + "\nrejected=" + rejected + "\nUVoverlapEvents=" + overlap + "\nUVconflictingTexels=" + conflicts + "\nsubpixelFaces=" + subpixel + "\nmeanDistance=" + distanceSum / Math.Max(1, accepted) + "\nmaxDistance=" + distanceMax + "\nbodyLength=" + adult.Bounds.size.z + "\nThreshold maxDistance=.075; normalDot=.25; longitudinalBand=.045\nNo failed region filled. Magenta=rejected; cyan=UV conflict. Green coverage=original-stage protected detail.\nCounts before later overlap conflicts; final masks authoritative.\n");
+            File.WriteAllText(Folder + "/Reports/Step3B/" + stage + "_Metrics.txt", "PARTIAL pending visual review\naccepted=" + accepted + "\nprotected=" + protectedCount + "\nrejected=" + rejected + "\nUVoverlapEvents=" + overlap + "\nUVconflictingTexels=" + conflicts + "\nsubpixelFaces=" + subpixel + "\nmeanDistance=" + distanceSum / Math.Max(1, accepted) + "\nmaxDistance=" + distanceMax + "\nbodyLength=" + adult.Bounds.size.z + "\nThreshold maxDistance=.075; normalDot=.25; longitudinalBand=.045 unchanged\nAdult-eye sampled points=0 (asserted). No failed region filled. Magenta=rejected; cyan=UV conflict. Green coverage=original-stage protected detail.\n" + string.Join("\n", Enumerable.Range(0, 6).Select(r => "region=" + r + " accepted=" + regionAccepted[r] + " rejected=" + regionRejected[r] + " meanResidual=" + regionResidual[r] / Math.Max(1, regionAccepted[r]))));
             AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
         }
         static GameObject CopyVisual(GameObject source)

@@ -22,7 +22,7 @@ namespace KoiPond.EarlyStageTransferPilot
             var camera = scene.GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<Camera>()).Single();
             var skins = scene.GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<SkinnedMeshRenderer>()).ToArray();
             var log = new StringBuilder();
-            Directory.CreateDirectory(Root + "/Reports/Captures");
+            Directory.CreateDirectory(Root + "/Reports/Step3B/Captures");
             var unlit = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
             try
             {
@@ -41,7 +41,11 @@ namespace KoiPond.EarlyStageTransferPilot
                     for (int mode = 0; mode < 2; mode++)
                     {
                         if (mode == 1) { unlit.SetTexture("_BaseMap", material.GetTexture("_BaseMap")); unlit.SetColor("_BaseColor", Color.white); skin.sharedMaterial = unlit; }
-                        RenderViews(camera, bounds, rig.name + (mode == 0 ? "_Lit_Rest" : "_Albedo_Rest"));
+                        string modeLabel = rig.name + (mode == 0 ? "_Lit_Rest" : "_Albedo_Rest");
+                        RenderViews(camera, bounds, modeLabel);
+                        var headCenter = rig.TransformPoint(new Vector3(0, 0, .235f));
+                        var headBounds = new Bounds(headCenter, new Vector3(.34f, .20f, .22f) * rig.lossyScale.x);
+                        RenderViews(camera, headBounds, modeLabel + "_FaceDetail");
                     }
                     skin.sharedMaterial = material;
                     if (!rig.name.EndsWith("_Pilot")) continue;
@@ -65,7 +69,7 @@ namespace KoiPond.EarlyStageTransferPilot
                     for (int i = 0; i < transforms.Length; i++) { transforms[i].localPosition = positions[i]; transforms[i].localRotation = rotations[i]; transforms[i].localScale = scales[i]; }
                     for (int i = 0; i < skin.sharedMesh.blendShapeCount; i++) skin.SetBlendShapeWeight(i, 0);
                 }
-                File.WriteAllText(Root + "/Reports/SampledValidation.txt", log + "\nStatic clip sampling only, 5 times/clip. Continuous runtime NOT RUN. Extreme-pose/complete-loop certification NOT CLAIMED.\n");
+                File.WriteAllText(Root + "/Reports/Step3B/SampledValidation.txt", log + "\nStatic clip sampling only, 5 times/clip. Continuous runtime NOT RUN. Extreme-pose/complete-loop certification NOT CLAIMED.\n");
             }
             finally
             {
@@ -76,13 +80,13 @@ namespace KoiPond.EarlyStageTransferPilot
         }
         static void RenderViews(Camera c, Bounds b, string label)
         {
-            var directions = new[] { Vector3.right, Vector3.up, Vector3.forward };
-            var names = new[] { "Side", "Top", "Front" };
-            for (int view = 0; view < 3; view++)
+            var directions = new[] { Vector3.right, Vector3.left, Vector3.up, Vector3.forward, new Vector3(1, .45f, 1).normalized };
+            var names = new[] { "Right", "Left", "Top", "Front", "ThreeQuarter" };
+            for (int view = 0; view < directions.Length; view++)
             {
                 c.transform.position = b.center + directions[view] * 3;
-                c.transform.rotation = Quaternion.LookRotation(-directions[view], view == 1 ? Vector3.forward : Vector3.up);
-                c.orthographicSize = view == 2 ? Mathf.Max(b.size.x, b.size.y) * .65f : b.size.z * .65f;
+                c.transform.rotation = Quaternion.LookRotation(-directions[view], view == 2 ? Vector3.forward : Vector3.up);
+                c.orthographicSize = view == 3 ? Mathf.Max(b.size.x, b.size.y) * .65f : b.size.z * .65f;
                 c.nearClipPlane = .01f; c.farClipPlane = 10;
                 var rt = RenderTexture.GetTemporary(1024, 1024, 24, RenderTextureFormat.ARGB32);
                 var previous = RenderTexture.active; var target = c.targetTexture;
@@ -91,7 +95,7 @@ namespace KoiPond.EarlyStageTransferPilot
                 {
                     c.targetTexture = rt; c.Render(); RenderTexture.active = rt;
                     image.ReadPixels(new Rect(0, 0, 1024, 1024), 0, 0); image.Apply();
-                    File.WriteAllBytes(Root + "/Reports/Captures/" + label + "_" + names[view] + ".png", image.EncodeToPNG());
+                    File.WriteAllBytes(Root + "/Reports/Step3B/Captures/" + label + "_" + names[view] + ".png", image.EncodeToPNG());
                 }
                 finally { c.targetTexture = target; RenderTexture.active = previous; RenderTexture.ReleaseTemporary(rt); UnityEngine.Object.DestroyImmediate(image); }
             }

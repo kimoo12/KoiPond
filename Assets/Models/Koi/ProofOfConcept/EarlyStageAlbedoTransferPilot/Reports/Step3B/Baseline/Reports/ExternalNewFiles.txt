@@ -1,0 +1,1 @@
+PASS no new files outside pilot (pilot root .meta excluded).

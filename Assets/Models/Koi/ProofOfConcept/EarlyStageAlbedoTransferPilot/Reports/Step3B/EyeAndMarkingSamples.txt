@@ -1,0 +1,10 @@
+Kohaku Fry eyeSide=-1 originalDarkCandidates=573 retainedDark=573 meanRGBError=0.00618050689524589 maxRGBError=0.1159688
+Kohaku Fry eyeSide=1 originalDarkCandidates=572 retainedDark=571 meanRGBError=0.00728362531016965 maxRGBError=0.2091741
+Tancho Fry eyeSide=-1 originalDarkCandidates=573 retainedDark=573 meanRGBError=0.00619983716004806 maxRGBError=0.1159688
+Tancho Fry eyeSide=1 originalDarkCandidates=572 retainedDark=571 meanRGBError=0.00730033651958187 maxRGBError=0.2091741
+Tancho Fry redVertexSamples=154 redBodySamples(Z<.17)=2 redBounds=Center: (0.03, -0.03, 0.18), Extents: (0.08, 0.13, 0.09) NOTE: geometric vertex sampling is not full atlas/surface segmentation or circularity certification.
+Kohaku Juvenile eyeSide=-1 originalDarkCandidates=461 retainedDark=460 meanRGBError=0.0143339944409445 maxRGBError=0.1405227
+Kohaku Juvenile eyeSide=1 originalDarkCandidates=453 retainedDark=452 meanRGBError=0.0133296475390067 maxRGBError=0.1552189
+Tancho Juvenile eyeSide=-1 originalDarkCandidates=461 retainedDark=460 meanRGBError=0.0143339944409445 maxRGBError=0.1405227
+Tancho Juvenile eyeSide=1 originalDarkCandidates=453 retainedDark=452 meanRGBError=0.0133250478827795 maxRGBError=0.1552189
+Tancho Juvenile redVertexSamples=280 redBodySamples(Z<.17)=0 redBounds=Center: (0.02, 0.04, 0.25), Extents: (0.05, 0.02, 0.03) NOTE: geometric vertex sampling is not full atlas/surface segmentation or circularity certification.
