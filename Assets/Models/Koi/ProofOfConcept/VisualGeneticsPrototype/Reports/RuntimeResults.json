@@ -1,0 +1,13 @@
+{
+    "success": false,
+    "suite": "Separate temporal check. Prior in-PlayMode suite passed 463 assertions; evidence retained in RuntimeSuiteAndTemporalAttempt1.json.",
+    "updateDrivenTransitions": true,
+    "error": "System.Exception: Bounded test timed out, phase=3\r\n  at KoiVisualGeneticsTesting.AppearancePlayModeRunner.UpdateTest () [0x00028] in E:\\UnityEngine\\Projects\\KoiPond\\Assets\\Models\\Koi\\ProofOfConcept\\VisualGeneticsPrototype\\Editor\\AppearancePlayModeRunner.cs:77 ",
+    "logs": [
+        "[Test] Separate temporal check. Prior in-PlayMode suite passed 463 assertions; evidence retained in RuntimeSuiteAndTemporalAttempt1.json.",
+        "[Test] Temporal setup elapsed=5.19478070002515, frame=5, delta=0.3333333",
+        "[Test] Actual Update-driven Fry to Juvenile appearance bound.",
+        "[Test] Actual Update-driven Juvenile to Adult selects Kohaku and preserves birth/genome references."
+    ],
+    "screenshotPath": ""
+}

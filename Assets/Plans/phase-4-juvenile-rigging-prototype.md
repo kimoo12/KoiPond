@@ -541,3 +541,59 @@ Implementation root: **`Assets/Models/Koi/ProofOfConcept/GrowthSystemPrototype/`
 - No rig/topology/texture repair, appearance renderer implementation, production feeding/locomotion integration, offspring auto-spawning, maturity gating, production persistence, offline growth, memory optimization or unrelated modifications.
 - Final stop: isolated growth-system review and separate approval before production integration.
 
+# Revision — Phase 4 Visual Genetics, Step 1
+Inspection/proposal only. User selected existing-material lookup over full three-stage expression. This revision does not authorize implementation or production integration. Only this planning document is revised now.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Map inherited expressed traits to existing compatible appearances without modifying source assets. Start with Adult material selection; explicitly disclose missing early-stage and hybrid visual coverage.
+- Players: Isolated diagnostic prototype; production player model unchanged.
+- Inspiration / Reference Games: Existing KoiPond founder profiles and Meshy appearances.
+- Tone / Art Direction: Preserve original stylized koi artwork.
+- Target Platform: StandaloneWindows64, Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Existing desktop configuration, unchanged.
+- Render Pipeline: Existing URP PC_RPAsset, unchanged.
+
+# Game Mechanics
+## Core Gameplay Loop
+Existing breeding supplies genome → KoiGeneticsRules.Resolve supplies phenotype → exact appearance lookup → apply on stage binding. No breeding rerolls, genome changes, growth changes or new RNG. Existing-material lookup is simplest and supports progression readability (MDA); full independent expression would require additional stage-specific appearance assets.
+
+| Stage | Initial appearance policy |
+|---|---|
+| Fry | Existing Fry_Prototype_MAT; explicitly mark genetic appearance unsupported. |
+| Juvenile | Existing Juvenile_Prototype_MAT with verified new_juvenile_texture; explicitly mark genetic appearance unsupported. |
+| Adult | Exact supported color/pattern/metallic phenotype selects existing adult-compatible material; unknown combinations retain authored baseline with explicit unsupported status. |
+
+Match expressed traits, not parent variety labels or hidden carrier alleles. Founder-profile color signatures: Taisho Sanke=white/red/black/distributed/nonmetallic; Kohaku=white/red/no black/distributed/nonmetallic; Tancho=white/red/no black/head spot/nonmetallic; Chagoi=brown/no red/no black/solid/nonmetallic; Purachina=white/no red/no black/solid/metallic; Yamabuki Ogon=yellow/no red/no black/solid/metallic; Shiro Utsuri=black/no red/black/distributed/nonmetallic; Showa Sanshoku=black/red/black/distributed/nonmetallic. These are lookup templates, NOT genome reassignment. Pattern remains part of the exact key even without markings; do not silently collapse arbitrary combinations.
+Fin is orthogonal. Material choice cannot express Hirenaga geometry; retain genes and report unsupported fin form, even when color matches. No closest-variety guessing or global tinting of baked markings.
+
+## Controls and Input Methods
+No controls/input changes. Existing New Input System remains intact. Inspector-only diagnostic selection and growth advancement reuse existing prototype behavior.
+
+# UI
+No production UI. Proposed diagnostic Inspector: `ID | Stage | Resolved traits | Material | Color coverage | Fin coverage`. Clearly distinguish represented, authored placeholder and unsupported states.
+
+# Key Asset & Context
+- Read: Assets/Scripts/KoiData.cs, KoiGeneticsRules.cs, KoiBreedingService.cs. Six diploid loci resolve into mesh-independent traits; arbitrary valid hybrid phenotypes are allowed.
+- Existing GrowthSystemPrototype/Runtime/KoiStageVisuals.cs exposes AppearanceBound(KoiGrowthAppearanceContext): birth record, resolved traits, stage and SkinnedMeshRenderer. A separate consumer can bind materials without changing growth/genetics scripts. Growth controller retains birth identity through transitions.
+- Loaded Koi_GrowthSystem_Test.unity is clean and wired to growth controller, stage visuals and animation adapter; all three stages currently have fixed materials. Dependency inspection used AssetDatabase.GetDependencies and reverse-reference queries; production Adult prefab is referenced by PondScene.
+- Adult Taisho_Sanke_Koi_MAT and seven existing topology-transfer test materials are lookup candidates, not newly certified visual assets. Original variety textures cannot be blindly assigned to another UV layout; existing transfer tooling explicitly remaps source UVs into adult rig UVs.
+- Fry uses KoiPrototype/FryOriginalMaps, with metallic hard-coded zero and no base tint. Juvenile uses URP/Lit and verified new juvenile albedo. Neither has a library of genetically distinct stage appearances. No shared shader-property assumption across stages.
+- Original Meshy textures are authoritative. Adult packed _MetallicSmoothness maps include Unity AI-generated derivatives; juvenile deterministic derivatives and topology-transfer outputs have distinct provenance. Shader scalar values alone do not establish genetic metallic appearance.
+- Current KoiGrowthRules.cs differs from historical reports: Fry .20→.35, Juvenile .60→.85, Adult 1.00. Preserve actual behavior; do not repair growth in this appearance task or cite old reports as current verification.
+- Proposed implementation, only after separate approval: new Assets/Models/Koi/ProofOfConcept/VisualGeneticsPrototype/Runtime/KoiAppearanceLookup.cs and KoiGeneticAppearanceBinder.cs; Profiles/ExistingAppearanceCatalog.asset; Editor/KoiAppearanceLookupTests.cs; a separate copied diagnostic scene; Reports/AppearanceCoverage.md. No existing implementation files need edits.
+
+# Implementation Steps
+1. Recheck source/material dependencies and reverse references; capture scene state and protected hashes. Audit candidate Adult materials against the actual adult mesh/UVs, markings and metallic semantics. Dependencies: separate implementation approval.
+2. Implement pure exact-trait lookup and explicit coverage results; catalog only visually verified existing materials. Keep Hirenaga support separate from color support. Dependencies: Step 1.
+3. Add an isolated binder that subscribes/unsubscribes to AppearanceBound and applies the current valid context when enabled. Assign existing material references only to fresh diagnostic renderers; never mutate shared materials. Retain/reset the renderer's authored baseline for unsupported mappings. Dependencies: Step 2.
+4. Test on a separate scene copy with founder, carrier, hybrid and Hirenaga fixtures across Fry→Juvenile→Adult and snapshot/reset/re-enable. Existing growth scenes, prefabs, meshes, rigs, textures, shaders, animations and production scenes remain untouched. Dependencies: Step 3.
+5. Report supported signatures and limitations, verify protected hashes, and stop. Full Fry/Juvenile inheritance, arbitrary hybrid markings, Hirenaga rigs and production integration require later approval. Dependencies: Step 4.
+
+# Verification & Testing
+- Exact signatures map consistently; equivalent expressed phenotypes with different carrier alleles select the same material. Invalid genomes rejected; unsupported combinations explicitly flagged, never nearest-matched.
+- All eight founder color profiles audited on the adult rig; UV registration, eyes, markings and metallic appearance visually reviewed before catalog acceptance.
+- Fry/Juvenile placeholders and Hirenaga limitations remain visible in diagnostics; no claim of full three-stage visual inheritance.
+- Birth ID, genome, lineage and seed unchanged; no RNG/Breed calls. Stage transitions, large skips, reset/restore and re-enable bind the correct renderer without duplicate subscriptions or stale materials.
+- No shared material mutation, source/importer edits, rig/mesh/clip changes or production scene changes. Preserve current growth and animation behavior, including known discrepancies. Tests and visual review are proposed, not performed in Step 1.
+

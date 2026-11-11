@@ -1,0 +1,1 @@
+PASS: 284 lookup assertions; 8/192 adult signatures, all founders, equivalent carriers, hybrids, Hirenaga, early stages and invalid genomes.

@@ -1,0 +1,13 @@
+VisualGenetics_00_TaishoSanke | position=(-1.73, 0.00, 1.73) | stage=Adult | material=Assets/Models/Koi/Materials/Taisho_Sanke_Koi_MAT.mat | limits=None
+VisualGenetics_01_Chagoi | position=(-0.58, 0.00, 1.73) | stage=Adult | material=Assets/Models/Koi/ProofOfConcept/ChagoiTopologyTransfer/Chagoi_OriginalMeshy_ToRigged_PBR_Test.mat | limits=None
+VisualGenetics_02_Kohaku | position=(0.58, 0.00, 1.73) | stage=Adult | material=Assets/Models/Koi/ProofOfConcept/KohakuPbrTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_PBR_Test.mat | limits=None
+VisualGenetics_03_Purachina | position=(1.73, 0.00, 1.73) | stage=Adult | material=Assets/Models/Koi/ProofOfConcept/PurachinaTopologyTransfer/Purachina_OriginalMeshy_ToRigged_PBR_Test.mat | limits=AuthoredMetallicOnly
+VisualGenetics_04_ShiroUtsuri | position=(-1.73, 0.00, 0.58) | stage=Adult | material=Assets/Models/Koi/ProofOfConcept/ShiroUtsuriTopologyTransfer/ShiroUtsuri_OriginalMeshy_ToRigged_PBR_Test.mat | limits=None
+VisualGenetics_05_ShowaSanshoku | position=(-0.58, 0.00, 0.58) | stage=Adult | material=Assets/Models/Koi/ProofOfConcept/ShowaSanshokuTopologyTransfer/ShowaSanshoku_OriginalMeshy_ToRigged_PBR_Test.mat | limits=None
+VisualGenetics_06_Tancho | position=(0.58, 0.00, 0.58) | stage=Adult | material=Assets/Models/Koi/ProofOfConcept/TanchoTopologyTransfer/Tancho_OriginalMeshy_ToRigged_PBR_Test.mat | limits=None
+VisualGenetics_07_YamabukiOgon | position=(1.73, 0.00, 0.58) | stage=Adult | material=Assets/Models/Koi/ProofOfConcept/YamabukiOgonTopologyTransfer/YamabukiOgon_OriginalMeshy_ToRigged_PBR_Test.mat | limits=AuthoredMetallicOnly
+VisualGenetics_08_Carrier_Kohaku | position=(-1.73, 0.00, -0.58) | stage=Adult | material=Assets/Models/Koi/ProofOfConcept/KohakuPbrTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_PBR_Test.mat | limits=None
+VisualGenetics_09_Unsupported_Hybrid | position=(-0.58, 0.00, -0.58) | stage=Adult | material=Assets/Models/Koi/Materials/Taisho_Sanke_Koi_MAT.mat | limits=UnsupportedPhenotype
+VisualGenetics_10_Unsupported_Hirenaga | position=(0.58, 0.00, -0.58) | stage=Adult | material=Assets/Models/Koi/Materials/Taisho_Sanke_Koi_MAT.mat | limits=HirenagaGeometry
+VisualGenetics_11_Fry_Placeholder | position=(1.73, 0.00, -0.58) | stage=Fry | material=Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Materials/Fry_Prototype_MAT.mat | limits=EarlyStage
+VisualGenetics_12_Juvenile_Placeholder | position=(-1.73, 0.00, -1.73) | stage=Juvenile | material=Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Materials/Juvenile_Prototype_MAT.mat | limits=EarlyStage
