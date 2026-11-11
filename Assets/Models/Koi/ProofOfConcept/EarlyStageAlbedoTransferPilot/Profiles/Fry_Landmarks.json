@@ -1,0 +1,1 @@
+{"eyeLeft":"(-0.12, -0.01, 0.24)","eyeRight":"(0.12, -0.01, 0.24)","mouth":"(0.00, -0.04, 0.29)","maxDistance":0.075,"normalDot":0.25,"eyeRadius":0.026,"lipRadius":0.022,"method":"piecewise bone-anchor longitudinal mapping; independently anchored left/right fins; candidate pupil centroids require visual review"}

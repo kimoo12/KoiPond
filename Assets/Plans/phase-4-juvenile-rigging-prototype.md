@@ -597,3 +597,86 @@ No production UI. Proposed diagnostic Inspector: `ID | Stage | Resolved traits |
 - Birth ID, genome, lineage and seed unchanged; no RNG/Breed calls. Stage transitions, large skips, reset/restore and re-enable bind the correct renderer without duplicate subscriptions or stale materials.
 - No shared material mutation, source/importer edits, rig/mesh/clip changes or production scene changes. Preserve current growth and animation behavior, including known discrepancies. Tests and visual review are proposed, not performed in Step 1.
 
+# Revision — Phase 4 Visual Genetics Step 3A: Texture Transfer Pilot
+This revision proposes implementation of only Kohaku and Tancho adult-to-Fry/Juvenile albedo transfer after approval. Previous implementation scopes are historical, not authorization to edit their outputs. Stop for visual approval before expansion.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Validate inherited starter markings on original early-stage anatomy using four offline UV-aware derivative albedos and isolated diagnostic materials. No production or genetics/growth integration.
+- Players: Asset-validation prototype only.
+- Inspiration / Reference Games: Existing adult Kohaku/Tancho appearances and original Meshy stage anatomy.
+- Tone / Art Direction: Preserve stylized stage proportions and anatomical detail; reuse authored markings, not generated artwork.
+- Target Platform: StandaloneWindows64; Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Existing desktop settings unchanged; labeled side/top/front diagnostic captures.
+- Render Pipeline: Existing URP PC_RPAsset unchanged.
+
+# Game Mechanics
+## Core Gameplay Loop
+Inspect rest-stage anatomy → establish constrained adult correspondence → bake into unchanged stage UV0 → inspect coverage and registration → refine correspondence only → review four outcomes. No genome, identity, trait resolution, growth or RNG changes.
+## Controls and Input Methods
+Editor-only builder/validation commands. No new player controls or input assets; existing New Input System unchanged.
+
+# UI
+No production UI. Diagnostic layout:
+```
+Adult source | Fry result + original control | Juvenile result + original control
+Kohaku row / Tancho row
+Views: Side / Top / Front; eyes/mouth/fin-root close-ups
+Status: valid transfer / protected source detail / rejected / UV conflict
+```
+Diagnostic controls remain editor-only; no UI asset or package dependency.
+
+# Key Asset & Context
+- Adult source mesh: Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset (221,941 vertices, 417,156 triangles).
+- Source albedos: Assets/Models/Koi/ProofOfConcept/KohakuTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_BaseColor.png and Assets/Models/Koi/ProofOfConcept/TanchoTopologyTransfer/Tancho_OriginalMeshy_ToRigged_BaseColor.png; confirm against current catalog material references before baking. These are already adult-UV-compatible derivatives, not original Meshy exports. Record upstream provenance.
+- Fry reference: Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Prefabs/Fry_RiggingPrototype.prefab and its mesh/material dependencies (81,417 vertices, 149,086 triangles).
+- Juvenile reference: Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Prefabs/Juvenile_RiggingPrototype.prefab and its mesh/material dependencies (87,391 vertices, 159,982 triangles). Current albedo is Assets/Models/Koi/New Juvenile/new_juvenile_texture.png.
+- All three have one submesh, UV0 only, ten bindposes and one blendshape. Inspection found no zero-area UV triangles at the inspected tolerance; UV overlap freedom and accurate surface correspondence remain unverified.
+- Existing adult topology-transfer code requires triangle bijection; it cannot be run unchanged against early-stage topology. Implement independent anatomy-constrained surface mapping, not index copying or global bounds projection.
+- Fry shader retains existing stage normals/roughness and zero metallic; Juvenile retains existing stage normals and packed map. No normal, roughness, metallic or shader output/change in this nonmetallic pilot.
+- Loaded VisualGeneticsPrototype/Scenes/Koi_VisualGenetics_Test.unity was clean at inspection. Preserve editor setup and subsequent unsaved work.
+- Read-only dependency inspection uses AssetDatabase.GetDependencies and reverse asset-reference queries because dedicated dependency tooling is unavailable.
+
+## New output boundary
+Use Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/; if occupied, inspect and choose a unique versioned sibling. All implementation writes confined here, except this plan revision.
+- Editor/EarlyStageAlbedoTransferBuilder.cs: protection manifest, landmark/region correspondence, accelerated triangle search, UV rasterization and four derivative bakes.
+- Editor/EarlyStageAlbedoTransferValidation.cs: coverage/conflict audits, deterministic checks, preservation and view capture tooling.
+- Profiles/TransferLandmarks.asset: explicit stage/adult anatomical landmarks, protected region masks and recorded rejection thresholds.
+- Textures/Kohaku_Fry_Albedo_DERIVED.png, Kohaku_Juvenile_Albedo_DERIVED.png, Tancho_Fry_Albedo_DERIVED.png, Tancho_Juvenile_Albedo_DERIVED.png. Start at 2048 square; higher resolution only if reported sampling evidence warrants it. Exactly four appearance albedos.
+- Materials/: four copies of existing stage materials with only base albedo references changed; synchronize legacy base slot only where relevant. Diagnostic unlit material/shader may be created here for albedo review, never replacing source shaders.
+- Scenes/EarlyStage_AlbedoTransfer_Test.unity: fresh visual-only hierarchies using unchanged mesh/rig/material references and neutral local lighting; no production behavior scripts.
+- Reports/: hashes, source/derivative provenance, landmark and threshold records, coverage/conflict metrics, quality results, inventory and side/top/front captures. Coverage images are report diagnostics, not additional appearance textures.
+- No existing catalog/binder, growth/genetics code, source material/importer, prefab, mesh, animation, scene, package or project-setting edits. Hirenaga and other varieties excluded.
+
+# Implementation Steps
+1. **Protect sources and recheck context.** Dependencies: approval.
+   - Recheck dependencies/reverse references of all read-only sources. Hash source meshes/prefabs/maps/materials/clips, existing systems/scenes and metadata. Record loaded/dirty scenes and prevent external writes. Read meshes in EditMode without changing importers; if unavailable, stop and report rather than alter sources.
+2. **Establish anatomical correspondence.** Dependencies: Step 1.
+   - Inspect adult/Fry/Juvenile rest geometry in a measured common orientation/scale. Identify body/head boundaries, eyes, lips, both fin roots, tail peduncle and fins; record landmarks and protected masks explicitly.
+   - Fit a piecewise, non-destructive destination-to-adult correspondence space, separating body/head/tail/left and right fins. Use accelerated closest-triangle barycentric queries constrained by region, side, normal agreement and normalized distance. Record thresholds before full baking; reject ambiguous/opposing/poor matches. No adult mesh deformation or destination UV edits.
+   - Preserve original-stage eye/pupil and lip detail through explicit narrowly bounded protected-region sampling of original stage albedo. Label this intentional source-detail retention separately from adult transfer; do not use it to conceal failed mappings. Protect fin-root registration via regional constraints, not broad retention of old colored markings.
+3. **Audit and bake four derivatives.** Dependencies: Step 2.
+   - Rasterize destination UV0 at texel centers; recover destination surface positions and evaluate correspondence per sample, not just per vertex. Sample adult UV albedo with documented color-space/filtering semantics; no tinting or new pattern synthesis.
+   - Audit UV overlap owners, source-coordinate/color disagreements, subpixel triangles, unmapped/rejected samples and finite values. Incompatible overlap samples remain explicit conflicts, not averaged or arbitrarily first-wins accepted.
+   - Mark rejected/conflicting surface texels with conspicuous diagnostic color and report masks/counts. Such textures remain failed/partial pilot outputs, never certified appearances. Unused atlas space is not an unmapped surface.
+   - Allow finite nearest-edge padding only outside valid UV interiors for seam/mip sampling; never pad across rejected surface regions or overwrite conflicts. Check coincident geometric seams without welding or changing mesh data.
+4. **Create isolated diagnostic materials and scene.** Dependencies: Step 3.
+   - Copy stage materials, replacing only albedo references while retaining all stage normal/roughness settings and shader semantics. Preserve source materials and shared assets byte-for-byte.
+   - Construct fresh visual-only hierarchies preserving source transforms/bone paths, using original stage meshes and clips. Include adult references and independent original-stage controls. No catalog or system hookup.
+5. **Validate and capture.** Dependencies: Step 4.
+   - Capture labeled side/top/front for both varieties and both stages under identical local lighting; add eye/mouth/fin-root/seam close-ups and albedo-only views. Review coverage masks alongside rendered results.
+   - Verify Tancho head-spot location and lack of unintended body red; compare Kohaku body marking distribution with adult source at matched anatomical positions. Compare landmark positions/normalized correspondence residuals, not just similarity of screenshots.
+   - Sample unchanged Swim/Idle/Eat at representative/extreme poses to inspect eye/mouth preservation and seam/fin-root stability; do not repair existing rig defects. Label continuous playback NOT RUN if unavailable; static captures are not runtime certification.
+6. **Report and stop.** Dependencies: Step 5.
+   - Report each of four textures as PASS/PARTIAL/FAIL with numeric coverage/conflicts, protected-source-detail fraction, registration findings, finite-resolution/resampling limitations and unperformed checks. Verify protected hashes and enumerate every new file and metadata.
+   - Restore editor scene setup without saving protected scenes or discarding user work. Stop for user visual approval; do not expand varieties, implement hybrid compositing, Hirenaga or production integration.
+
+# Verification & Testing
+- Exact source bytes/importer metadata, stage geometry/UVs/normals/tangents/indices/weights/bindposes/blendshapes, rigs, clips and original materials unchanged. No writes outside isolated folder apart from this plan.
+- Deterministic repeated bake with identical configuration; barycentric validity, finite UVs/results, side and region consistency. Record per-region accepted/rejected coverage and correspondence-distance/normal distributions normalized to body length.
+- Quantify UV overlap events and incompatible surface/color samples, degenerate/subpixel footprints, seam disagreement, protected-source sampling and unused atlas pixels separately. A PASS requires no unresolved failed/conflicting visible-surface regions and no concealed extrapolation; report remaining holes as PARTIAL/FAIL.
+- Both pupils and lips retain source registration; no inherited body patches on eyes, opposite fins or mouth detail. Fin-root transitions and UV seams reviewed at close range and with filtering/mips. Any shared-UV conflict with protected anatomy blocks certification rather than changing UVs.
+- Kohaku red/white distribution and Tancho head spot reviewed on all four outputs in side/top/front views. Numerical correspondence alone cannot certify visual accuracy; record human approval pending.
+- Diagnostic materials retain original normals, roughness, shader and all non-albedo settings. Source Meshy versus upstream adult derivative versus new stage derivative provenance explicitly distinguished.
+- Capture actual results and list quality limitations, source-asset animation defects and tests NOT RUN. No claim of complete inherited genetics or production readiness. Four-texture pilot only, then stop.
+
