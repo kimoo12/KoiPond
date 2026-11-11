@@ -223,6 +223,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 57364152}
+  - component: {fileID: 57364154}
+  - component: {fileID: 57364153}
   m_Layer: 0
   m_Name: Tancho_Fry_Pilot
   m_TagString: Untagged
@@ -247,6 +249,42 @@ Transform:
   - {fileID: 1174367211}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &57364153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57364151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 671e0bfac193962409c0a33ec2c97574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PilotSwimPlayback
+  _clip: {fileID: 7400000, guid: 9a501ec01d88380469ea3c1d41cf7e13, type: 2}
+  _skin: {fileID: 1174367212}
+--- !u!95 &57364154
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57364151}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &101629021
 GameObject:
   m_ObjectHideFlags: 0
@@ -3538,6 +3576,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1322884471}
+  - component: {fileID: 1322884473}
+  - component: {fileID: 1322884472}
   m_Layer: 0
   m_Name: Tancho_Juvenile_Pilot
   m_TagString: Untagged
@@ -3562,6 +3602,42 @@ Transform:
   - {fileID: 975695312}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1322884472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322884470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 671e0bfac193962409c0a33ec2c97574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PilotSwimPlayback
+  _clip: {fileID: 7400000, guid: 9a501ec01d88380469ea3c1d41cf7e13, type: 2}
+  _skin: {fileID: 975695313}
+--- !u!95 &1322884473
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322884470}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1358646978
 GameObject:
   m_ObjectHideFlags: 0
@@ -3667,6 +3743,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1447945363}
+  - component: {fileID: 1447945365}
+  - component: {fileID: 1447945364}
   m_Layer: 0
   m_Name: Kohaku_Fry_Pilot
   m_TagString: Untagged
@@ -3691,6 +3769,42 @@ Transform:
   - {fileID: 1113458837}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1447945364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447945362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 671e0bfac193962409c0a33ec2c97574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PilotSwimPlayback
+  _clip: {fileID: 7400000, guid: 9a501ec01d88380469ea3c1d41cf7e13, type: 2}
+  _skin: {fileID: 1113458838}
+--- !u!95 &1447945365
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447945362}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1454399650
 GameObject:
   m_ObjectHideFlags: 0
@@ -4861,6 +4975,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1966807687}
+  - component: {fileID: 1966807689}
+  - component: {fileID: 1966807688}
   m_Layer: 0
   m_Name: Kohaku_Juvenile_Pilot
   m_TagString: Untagged
@@ -4885,6 +5001,42 @@ Transform:
   - {fileID: 1927033999}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1966807688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1966807686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 671e0bfac193962409c0a33ec2c97574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PilotSwimPlayback
+  _clip: {fileID: 7400000, guid: 9a501ec01d88380469ea3c1d41cf7e13, type: 2}
+  _skin: {fileID: 1927034000}
+--- !u!95 &1966807689
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1966807686}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2005916543
 GameObject:
   m_ObjectHideFlags: 0
