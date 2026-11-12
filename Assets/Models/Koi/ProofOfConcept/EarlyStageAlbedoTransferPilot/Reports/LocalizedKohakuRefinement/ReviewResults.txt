@@ -1,0 +1,8 @@
+PENDING VISUAL APPROVAL — no Step 3C or scene assignment.
+Contact sheet rows: Adult reference / previous candidate / refined candidate.
+Columns: side +X / top / opposite side -X / elevated side.
+Fry v04: 6794 dorsal body texels edited. Juvenile v02: 3248 dorsal texels; initial spot pass 14993 texels and correction pass 32765 overlapping texels (not additive).
+Original assets and metadata: 3461 hashes unchanged. Original rigs, fins, eyes, maps and saved scene assignments unchanged.
+Visual review: broad white strip ahead of fin replaced with red; fin blade pale line intentionally retained. Localized jagged pale/red boundary remains near attachment and requires user review. Juvenile gray/dark pigmentation largely removed; faint original detail contours remain.
+First-attempt Juvenile bytes preserved as report evidence. Script Bake reproduces first pass only; correction pass was an editor command. Final-candidate deterministic rerun NOT RUN.
+Lit and albedo rest views reviewed; one Swim pose captured at 0.3 seconds, continuous runtime NOT RUN. Mip/close-up testing not completed. No production readiness claim.

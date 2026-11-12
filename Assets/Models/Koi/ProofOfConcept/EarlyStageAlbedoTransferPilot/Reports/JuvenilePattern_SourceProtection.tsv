@@ -1,0 +1,62 @@
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Textures/Kohaku_Fry_RedPattern_Candidate_v03.png	53-33-67-15-87-1E-81-36-B0-FA-A8-08-D5-E5-5D-46-F6-FB-D1-B1-3F-9D-FB-11-7B-BA-12-D7-5E-47-1B-08
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Textures/Kohaku_Fry_RedPattern_Candidate_v03.png.meta	1B-46-1B-62-85-CD-84-52-87-91-D0-D3-6C-85-E4-47-BE-6E-02-BC-44-3E-5C-F9-41-60-8D-60-C9-B5-68-0B
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Shaders/FryOriginalMaps.shader	0B-01-86-D4-5B-90-CF-BB-7A-03-4F-62-4A-17-D5-4B-20-F4-A0-4D-24-0A-AE-BB-42-18-A2-2E-23-91-EF-CA
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Shaders/FryOriginalMaps.shader.meta	00-8E-05-6A-C2-54-5B-41-17-6A-98-EC-E9-78-E2-C6-56-0F-CD-1D-90-F4-F5-E7-6B-6F-B6-0C-23-BC-7F-5E
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Textures/Kohaku_Fry_Albedo_DERIVED.png	DB-06-9C-9A-08-DA-D7-18-2F-C4-9C-B4-A1-7B-3A-03-5E-13-DC-ED-76-95-5D-8F-FE-68-09-25-99-7B-79-93
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Textures/Kohaku_Fry_Albedo_DERIVED.png.meta	EB-0B-E6-FA-C7-C4-BC-3A-9B-87-13-A0-7F-DD-48-D7-51-0D-F3-D7-89-58-5A-A4-AE-19-16-5C-E2-DE-A4-03
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Materials/Kohaku_Fry_Pilot.mat	45-76-1C-91-DD-3D-D0-B4-38-7D-FC-E9-B8-ED-0D-78-87-71-9B-DF-47-10-3F-2B-41-D6-A2-18-4F-BD-B5-23
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Materials/Kohaku_Fry_Pilot.mat.meta	A7-62-EF-29-E9-15-48-8C-52-6F-9C-DE-93-3B-75-D5-C3-B9-B5-40-75-D1-2B-21-48-BA-1D-C4-F9-84-AD-62
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Materials/OriginalMapImportCopies/Fry_roughness.png	53-CF-86-54-69-BB-3A-7C-18-E0-AC-61-9F-93-8B-4B-63-1D-86-2D-DD-30-9B-3E-37-F1-9B-6A-08-98-08-05
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Materials/OriginalMapImportCopies/Fry_roughness.png.meta	F0-F8-41-E4-D5-96-B1-BD-E6-5C-B3-3D-1A-B8-F7-C6-30-2B-15-A2-62-54-22-E0-CB-46-E9-16-38-0B-7A-48
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Materials/OriginalMapImportCopies/Fry_normal.png	40-57-EC-32-9B-4F-3F-CB-B7-B5-2C-12-00-BE-88-4E-D6-20-E6-57-99-EA-75-9F-81-79-98-9B-E4-FA-3B-70
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Materials/OriginalMapImportCopies/Fry_normal.png.meta	82-9A-D9-54-FD-76-3E-19-C5-D6-38-22-12-EC-90-B3-5A-86-67-97-C7-0F-79-F9-24-8A-FB-5B-BB-E6-01-5D
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Materials/NewMeshy/Juvenile_NewMeshy_Normal.png	B6-0B-72-0E-9E-73-10-8C-A4-20-A9-8F-CC-17-AC-7D-39-75-FC-16-40-77-27-4B-2E-2F-B8-A4-9C-A6-F9-38
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Materials/NewMeshy/Juvenile_NewMeshy_Normal.png.meta	EA-A4-2C-12-01-11-FF-E6-CE-AA-52-53-A6-34-BF-64-6E-31-27-B8-DC-5D-05-A1-E1-67-B1-AB-6A-5C-F3-DF
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Materials/Kohaku_Juvenile_Pilot.mat	6A-0A-68-CA-15-97-DA-CE-49-C0-72-E9-66-2D-79-82-CA-94-14-1A-EA-19-8E-42-6B-C7-B9-CB-F2-E6-3B-D7
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Materials/Kohaku_Juvenile_Pilot.mat.meta	BC-BF-0B-1F-C3-BF-53-2C-93-AA-87-B1-D8-65-62-6C-E8-0F-38-62-C3-79-C7-7E-65-78-F5-19-DE-94-D3-8F
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Materials/NewMeshy/Juvenile_NewMeshy_MetallicSmoothness_DERIVED.png	99-0E-1C-4C-02-45-C8-8E-CD-B7-9B-2A-4A-9C-86-8F-A6-FC-3E-1C-C8-37-49-90-45-BC-4A-47-16-3B-E1-CF
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Materials/NewMeshy/Juvenile_NewMeshy_MetallicSmoothness_DERIVED.png.meta	13-BE-A0-24-E5-E2-DA-00-8B-72-54-4F-60-42-8F-6A-33-E7-7A-C6-00-9E-72-A9-EE-00-DD-23-72-DE-F5-D3
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Textures/Kohaku_Juvenile_Albedo_DERIVED.png	1B-D8-F1-10-E4-BE-2B-A7-24-6E-5F-28-B5-12-7C-33-B6-DF-84-42-44-02-B9-BD-9F-43-C1-21-A7-A7-DA-5D
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Textures/Kohaku_Juvenile_Albedo_DERIVED.png.meta	8B-AE-87-E5-F8-0E-1F-55-E2-48-1F-4D-65-0C-92-D2-6F-1C-05-63-7C-0F-34-ED-FC-2F-CB-83-EB-D2-5B-55
+Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset	01-DD-E1-CC-7B-04-96-DD-0D-91-27-0A-7A-59-3F-7A-D7-85-F5-DB-9B-9C-1B-1A-E9-BF-56-A5-B3-05-6F-3E
+Assets/Models/Koi/Meshes/KoiFish_RiggedMesh.asset.meta	FB-DC-DE-97-92-99-88-28-C9-BD-23-FF-A7-32-A3-12-FB-75-97-7E-28-C1-73-1E-DF-46-6A-F7-C9-57-16-42
+Assets/Models/Koi/Materials/taisho sanke koi texture/taisho sanke koi texture.png	AD-FD-A4-52-C7-21-23-DA-BC-7D-C2-02-46-16-80-ED-AE-C3-55-69-CD-A4-F7-19-52-8E-07-40-B7-02-E3-B2
+Assets/Models/Koi/Materials/taisho sanke koi texture/taisho sanke koi texture.png.meta	C9-2F-3D-EF-12-C1-A6-70-F9-8F-52-8E-0E-89-9D-BB-F3-DE-BF-AA-AB-CA-44-57-B8-48-1C-65-A9-6C-17-CD
+Assets/Models/Koi/Materials/taisho sanke koi texture/Koi_MetallicSmoothness.png	FA-F8-74-8A-D6-4C-20-40-CC-29-FA-BC-90-A8-E9-B6-7A-BE-79-88-78-EB-88-E0-EE-28-7F-71-8B-A0-64-73
+Assets/Models/Koi/Materials/taisho sanke koi texture/Koi_MetallicSmoothness.png.meta	CC-44-FB-E5-4A-BC-C7-72-03-F6-99-A5-8E-30-59-24-15-66-99-81-E1-5A-D5-9D-D0-D1-C6-E9-B7-3D-8B-C6
+Assets/Models/Koi/Animations/Koi_AnimatorController.controller	BC-93-00-66-BC-FB-54-78-8E-04-EE-8A-C2-AB-8F-7C-5F-68-57-86-C5-86-C2-28-82-B0-FB-9D-B8-49-75-6D
+Assets/Models/Koi/Animations/Koi_AnimatorController.controller.meta	B1-4A-2B-20-7E-EE-73-04-13-B3-53-6C-C3-A7-DF-5F-9A-B8-AD-34-AD-52-8C-F8-04-D4-07-50-7C-73-05-72
+Assets/Models/Koi/Materials/Taisho_Sanke_Koi_MAT.mat	20-54-BB-4F-D5-C8-40-84-22-B6-85-38-11-84-BF-D0-B9-1C-69-F9-B3-DA-1D-E7-C5-94-7B-B5-03-67-3F-55
+Assets/Models/Koi/Materials/Taisho_Sanke_Koi_MAT.mat.meta	D7-7F-28-51-ED-15-2A-CD-61-20-88-35-65-50-72-83-E7-7B-9D-64-74-E2-00-0A-C3-0A-A4-95-8C-D1-DF-00
+Assets/Models/Koi/Materials/taisho sanke koi texture/taisho sanke koi texture_normal.png	85-ED-13-D5-66-32-CA-20-73-C3-C6-77-8B-5F-3C-DE-2F-D5-B8-E5-58-49-0A-C0-D7-93-AA-D8-C1-14-6D-06
+Assets/Models/Koi/Materials/taisho sanke koi texture/taisho sanke koi texture_normal.png.meta	BF-8D-56-CE-DF-69-37-88-E2-A3-A3-F7-60-CC-D3-15-01-49-8B-DC-C9-BD-7B-49-F6-FD-1C-15-79-33-36-88
+Assets/Models/Koi/Animations/Koi_Swim.anim	D9-12-1A-B7-63-E8-A4-25-90-F2-F1-5F-D0-A7-81-0B-92-3E-09-A6-6D-37-D1-84-0A-B5-6C-45-91-2A-13-F8
+Assets/Models/Koi/Animations/Koi_Swim.anim.meta	2C-F3-37-3C-27-9E-E6-B1-5A-74-72-E4-0E-96-6F-B6-CB-CF-F5-7E-B6-8A-04-8C-3C-E0-29-53-0E-96-C7-83
+Assets/Models/Koi/Animations/Koi_Eat.anim	1F-0A-F5-5A-43-C7-3F-A1-BD-42-F3-7A-FF-6C-78-28-56-F3-D9-97-ED-E4-45-59-A1-C0-B8-E8-BC-62-A2-B1
+Assets/Models/Koi/Animations/Koi_Eat.anim.meta	20-95-0F-BE-A7-7C-DE-20-03-C5-89-2D-6F-75-CF-43-6D-3E-33-55-09-29-02-99-9E-8F-BF-60-AC-27-69-20
+Assets/Prefabs/Koi_Stage3_Adult.prefab	7E-C2-51-7A-66-4F-07-07-1A-00-49-6A-AF-E9-23-77-D1-CE-00-99-8B-DA-A4-06-35-53-0E-E2-D8-EA-6D-3C
+Assets/Prefabs/Koi_Stage3_Adult.prefab.meta	7B-7B-E5-22-A6-A7-66-5D-DF-BC-A3-2E-4A-E8-1E-DE-6A-79-A6-35-26-93-15-B5-E4-58-E2-B9-59-CD-FE-24
+Assets/Scripts/KoiFishController.cs	33-1E-0E-52-3B-C1-4D-0A-AF-CF-7D-CA-F0-FA-C5-C6-15-4F-2B-D6-60-CE-BF-AF-9D-13-F4-00-7A-D9-D8-39
+Assets/Scripts/KoiFishController.cs.meta	9B-12-39-17-6D-FC-C5-CF-D0-1B-1A-69-F9-E8-0C-93-95-24-5E-21-1A-7E-37-E0-55-2D-2D-6E-E2-4C-3C-C1
+Assets/Models/Koi/Animations/Koi_Idle.anim	9C-68-04-DF-C7-FE-A8-3A-58-14-FE-38-29-8A-C9-59-81-D5-75-2F-F8-76-B2-64-59-45-D3-2B-49-C4-24-60
+Assets/Models/Koi/Animations/Koi_Idle.anim.meta	60-61-8C-43-B2-A4-16-3B-C5-65-BE-A1-7A-43-0D-77-92-03-35-57-0E-4F-4F-E8-66-F7-42-5D-F5-D7-7A-0E
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Materials/Juvenile_Prototype_MAT.mat	37-F4-9E-64-6C-0D-59-CF-D4-58-3A-4E-E8-5A-88-54-6B-49-C0-87-C4-34-6C-A5-29-8F-A9-38-7A-EB-EA-96
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Materials/Juvenile_Prototype_MAT.mat.meta	72-51-C0-3A-36-90-49-83-B0-BA-F1-23-8D-A3-77-B6-68-3A-6B-9F-84-3F-B5-B1-D5-65-72-1C-10-9A-8C-D8
+Assets/Models/Koi/New Juvenile/new_juvenile_texture.png	34-98-2A-E9-AE-60-8F-63-DA-C1-18-C6-42-CE-45-63-D8-C6-86-31-29-39-EF-C3-87-16-0C-DC-98-E2-55-78
+Assets/Models/Koi/New Juvenile/new_juvenile_texture.png.meta	FD-8D-D5-75-21-CE-40-1A-99-BB-6D-5D-0C-00-19-CF-63-2A-30-70-0C-4A-2A-33-FF-11-AA-EC-8C-06-C1-82
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Prefabs/Juvenile_RiggingPrototype.prefab	C4-01-0F-16-B4-BE-35-C1-4E-EE-7D-A0-29-5A-C3-3A-92-64-69-B6-32-08-BB-B7-8A-53-6D-F1-96-F3-4C-93
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Prefabs/Juvenile_RiggingPrototype.prefab.meta	F6-7B-09-CA-AC-5E-A1-F8-66-87-8E-A3-4A-90-25-DC-93-E1-D4-F3-E2-4D-8C-0F-1D-63-A6-C6-3A-C8-0D-D8
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Meshes/Juvenile_RiggedMesh.asset	9C-86-F2-9F-6D-CA-42-B1-7B-A8-30-CC-02-68-13-31-1F-E1-AD-F3-A1-2B-6A-8B-5B-3D-59-61-C3-20-29-C1
+Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Meshes/Juvenile_RiggedMesh.asset.meta	E7-B7-1C-42-99-4D-87-DA-85-00-26-75-58-6D-B4-6E-8E-22-25-51-7C-2B-9F-9F-3E-BE-02-2C-CD-7E-8D-A8
+Assets/Models/Koi/Materials/fry texture/Meshy_AI_stylized_cute_fish_20261024_image-to-3d-texture.png	94-8F-10-F1-C7-BA-F7-37-82-C1-30-61-F4-EC-9F-D4-ED-EC-00-A4-19-4E-18-15-8B-0A-A6-4D-88-5B-33-8E
+Assets/Models/Koi/Materials/fry texture/Meshy_AI_stylized_cute_fish_20261024_image-to-3d-texture.png.meta	6C-86-7D-F8-AA-21-88-F6-EC-E6-F6-4A-67-05-63-76-E1-42-FC-73-97-77-30-EC-B5-A2-FB-DB-BD-8C-14-19
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Meshes/Fry_RiggedMesh.asset	62-DE-1B-8A-E7-ED-87-3A-C3-25-DC-29-E0-F4-DC-CE-85-5D-13-5B-F2-DF-D1-57-49-7E-4F-F9-3E-AA-65-C0
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Meshes/Fry_RiggedMesh.asset.meta	F0-CA-DB-CF-6E-F0-AE-67-04-F2-28-15-10-5A-99-14-BF-03-C4-CA-FC-2E-BF-CD-97-A9-44-2C-D2-BE-32-2A
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Prefabs/Fry_RiggingPrototype.prefab	C6-20-9C-AB-B1-AC-1B-07-7E-EA-19-C0-11-49-E1-2F-79-A0-A3-08-27-49-08-10-A0-F3-40-61-D8-6F-F0-56
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Prefabs/Fry_RiggingPrototype.prefab.meta	BE-A0-D7-0B-A7-45-32-B0-93-AE-5E-8F-69-E6-26-6F-58-5F-D9-57-09-EE-72-30-96-0D-56-A9-7F-0D-B7-06
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Materials/Fry_Prototype_MAT.mat	3E-09-43-F4-C9-45-59-97-9D-36-20-E5-3F-55-BF-57-66-A6-65-CE-FB-13-AD-8E-74-EF-6B-EE-51-D6-CC-D0
+Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Materials/Fry_Prototype_MAT.mat.meta	D6-75-4B-2E-D5-02-39-8E-A8-FF-E5-D6-17-4F-DF-8D-75-CB-C0-B2-ED-32-DF-5A-26-01-16-7F-F8-5C-2C-F4
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Editor/KohakuFryPatternTrial.cs	FF-CD-EF-0B-27-BE-5E-96-B5-69-CD-23-AE-D9-A4-A7-63-A0-28-50-63-81-6F-CB-CB-B6-CA-2F-75-4A-1B-3A
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Editor/KohakuFryPatternTrial.cs.meta	B7-0D-CC-30-73-DB-58-18-65-CE-BB-6B-04-67-0E-4A-CD-4D-5B-2E-E9-BD-46-CA-E0-4A-DE-20-A2-88-38-A5
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Editor/KohakuFrySeamCleanup.cs	87-D7-62-68-E3-AC-85-3E-20-5D-D1-8C-99-95-D0-E2-B8-7E-70-CF-CE-0D-AA-1F-89-D4-10-7E-53-34-DE-E3
+Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Editor/KohakuFrySeamCleanup.cs.meta	ED-C6-32-AC-EF-1A-6F-F6-8B-84-4E-E3-C1-B9-14-09-FD-56-73-1B-10-94-E7-54-CB-B4-2B-3A-5D-6B-4D-AB

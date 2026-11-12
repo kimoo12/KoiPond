@@ -1,0 +1,3 @@
+Fry v04 pending visual approval
+Dorsal body texels=6794 spot texels=0 protectedChanges=0 nonbodyChanges=0 conflicts=0
+Blade protected; attachment threshold: |x|>.009, y<=measured body roof+.006. Red supported on BOTH neighboring sides; intentional white gaps retained. Spot residual uses original 3x3 fine detail and median clean-red neighbors; uncertain samples retained. No existing assets assigned.

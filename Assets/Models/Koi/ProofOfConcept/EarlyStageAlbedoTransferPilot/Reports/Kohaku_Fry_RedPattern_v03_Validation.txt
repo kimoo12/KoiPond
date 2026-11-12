@@ -1,0 +1,5 @@
+Fry v03 gutter cleanup; v02 surface colours and pattern unchanged
+Surface texels=2747724
+Surface texels changed=0
+Gutter texels extended=1013403
+12-pixel ring-wise UV padding; no recolouring or pattern remapping. Pending visual review.

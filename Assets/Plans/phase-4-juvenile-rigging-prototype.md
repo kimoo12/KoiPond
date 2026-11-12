@@ -746,3 +746,153 @@ No production UI. Extend diagnostic review to left and right face, front, top, b
 - Kohaku markings preserved; Tancho head spot remains one circular dorsal feature with no extra eye/spot/body-red contamination. Numeric checks support, not replace, labeled multi-angle visual review.
 - Recheck Console; disclose implementation warnings/failures and checks NOT RUN. Do not claim eye, coverage or marking success until actually reviewed. Stop at four-texture visual approval.
 
+# Revision — Assign Approved Kohaku Fry v03 and Trial Juvenile Red Pattern
+This revision supersedes earlier full-albedo/re-bake scopes for this task only. Fry v03 is user-approved; produce exactly one new Juvenile candidate using the accepted red-pattern extraction and UV-gutter cleanup. Execution requires approval of this saved revision. Do not proceed to Step 3C.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Display the approved Kohaku Fry appearance only in the isolated pilot, then test coherent inherited red markings on original Juvenile anatomy without altering existing systems or source assets.
+- Players: Asset-review prototype; no gameplay changes.
+- Inspiration / Reference Games: Adult Kohaku Meshy appearance and approved Fry v03; no external game references required.
+- Tone / Art Direction: Existing stylized stage details with adult-derived red-pattern placement.
+- Target Platform: StandaloneWindows64, Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Existing desktop settings unchanged; labeled side/top/three-quarter review captures.
+- Render Pipeline: Existing URP PC_RPAsset unchanged.
+
+# Game Mechanics
+## Core Gameplay Loop
+Review adult/original-stage/candidate appearances, validate protected detail and seam continuity, and stop for human visual approval. No growth, genetics, feeding, locomotion or identity changes.
+## Controls and Input Methods
+Editor-only bake and review commands; retain existing New Input System and all pilot playback components unchanged.
+
+# UI
+No UI assets or production interface edits. Review contact sheet:
+```
+                     Side          Top          Three-quarter
+Adult Kohaku         reference     reference    reference
+Original Juvenile    baseline      baseline     baseline
+Juvenile candidate   result        result       result
+```
+Provide both side views or an additional opposite-side detail capture to verify both eyes. Use isolated camera culling, neutral consistent local lighting, and labels identifying stage and version.
+
+# Key Asset & Context
+- Inspected active scene: Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/Scenes/Pilot_MagnifiedReview.unity, clean. Kohaku_Fry_Pilot and Kohaku_Juvenile_Pilot still use their original pilot derivative albedos.
+- Approved read-only Fry texture: Textures/Kohaku_Fry_RedPattern_Candidate_v03.png under the pilot folder; exists and remains unassigned.
+- Existing editor references: KohakuFryPatternTrial.cs extracts only red chroma into a 192x128 anatomical chart using surface peduncle/widest-shoulder/nose landmarks; KohakuFrySeamCleanup.cs extends UV gutters by 12 pixels while preserving every covered texel. Preserve these scripts and prior candidates unchanged; do not run their hardcoded Fry bake methods.
+- Adult source: KohakuTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_BaseColor.png, an adult-UV-compatible derivative with original Meshy artwork as upstream authority. Not an original export or packed metallic/smoothness source.
+- Juvenile source: JuvenileRiggingPrototype/Prefabs/Juvenile_RiggingPrototype.prefab and Meshes/Juvenile_RiggedMesh.asset. Original albedo resolves to Assets/Models/Koi/New Juvenile/new_juvenile_texture.png; existing normal and metallic/smoothness derivative references stay unchanged.
+- Create a new pilot-only material copy, Materials/Kohaku_Fry_v03_PilotOnly.mat, preserving all shader/non-albedo settings. Assign it only to Kohaku_Fry_Pilot in Pilot_MagnifiedReview.unity. Do not mutate shared Kohaku_Fry_Pilot.mat: other scenes may reference it.
+- New independent pilot-only editor helper: Editor/KohakuJuvenileRedPatternTrial.cs (or a unique name if occupied); no edits to existing builders, playback or systems.
+- Exactly one new appearance texture: Textures/Kohaku_Juvenile_RedPattern_Candidate_v01.png, using a unique next version if that path exists. Never overwrite a candidate.
+- Reports: versioned validation/preservation manifest and side/top/three-quarter comparison images. Diagnostic captures are not additional appearance textures. Candidate Juvenile material is transient and not assigned to the saved pilot.
+
+# Implementation Steps
+1. Protect and recheck state. Dependencies: approval of this revision.
+   - Inspect source/output dependencies and reverse references using available read-only AssetDatabase queries; record hashes for sources, previous candidates/materials/scripts and metadata. Preserve current scene setup and unsaved work.
+   - Read complete Fry pattern and seam helpers; verify candidate output collision and material non-albedo configuration.
+2. Assign approved Fry in the isolated scene. Dependencies: Step 1.
+   - Create a unique pilot-only copy of the current Fry pilot material. Replace only its albedo slot with approved Fry v03, synchronizing a legacy albedo slot only if actually used by its shader.
+   - Assign only Kohaku_Fry_Pilot; preserve positions, camera, all controls, Adult/Tancho/other-stage renderers and animation configuration. Save only Pilot_MagnifiedReview.unity. Existing shared/source materials stay byte-identical.
+3. Adapt red-pattern mapping to Juvenile. Dependencies: Step 1.
+   - Reuse the accepted adult red chroma extraction and chart/filter parameters, but measure Juvenile surface landmarks and stage-space transforms afresh. Do not copy Fry coordinates or broad face thresholds blindly.
+   - Use pristine new_juvenile_texture.png as baseline. Explicitly protect Juvenile eyes, eyelids, lips, lateral face, fins and original texture detail; separate dorsal head markings from protected facial artwork.
+   - Audit classification, anatomical chart continuity, interpolation fraction, finite values and overlapping UV ownership/marking agreement before saving. Retain all rig/mesh/UV/normal/roughness data. Do not return to full-albedo radial projection.
+4. Produce one candidate with gutter cleanup. Dependencies: Step 3 validation.
+   - Apply red chroma while retaining stage luminance/detail; use accepted smoothing with no unapproved pattern redesign. Apply 12-pixel ring-wise padding exclusively outside valid UV interiors, with no changes to protected surface texels.
+   - Complete transfer and padding in memory, then save one versioned 2048-square candidate. No intermediate appearance texture, original overwrite, shared material edit or saved Juvenile assignment.
+   - Record sampled/interpolated chart cells, conflicts, protected-pixel equality, gutter edits and deterministic configuration. If protection or mapping checks fail, stop and report rather than create a misleading accepted result.
+5. Capture and inspect. Dependencies: Steps 2 and 4.
+   - Use transient visual-only reference hierarchies and material copies, isolated camera culling and local lighting. Capture Adult/original Juvenile/candidate side/top/three-quarter comparisons and opposite-eye view as needed. Restore editor state; no other scene changes.
+   - Review cohesive pattern shapes, seams, edge quality, stretching, magenta gaps, both eyes, lips and fins. Existing pilot swim components remain unchanged; inspect representative sampled swim poses if available and clearly distinguish static sampling from continuous runtime verification.
+6. Report and stop. Dependencies: Step 5.
+   - Verify Fry assignment is confined to the isolated pilot and Juvenile remains unassigned. Check protected file hashes, shader/non-albedo settings and scene diffs; enumerate the only intended modified scene plus new helper/material/candidate/report files.
+   - Present captures and exact limitations; request Juvenile visual approval. No Step 3C, production integration, further varieties or additional candidate iterations without authorization.
+
+# Verification & Testing
+- Fry source v03, prior candidates and original shared materials unchanged; only the new material copy and isolated scene reference change.
+- Juvenile geometry, UVs, rigs, animations and source maps unchanged. Original two eyes, facial details and fins preserved by protected texel comparisons and multi-angle review.
+- Monotonic finite surface landmarks; periodic chart continuity; report interpolation explicitly rather than calling inferred cells directly sampled. No incompatible protected/shared UV conflicts.
+- Gutter cleanup changes zero covered texels relative to the pre-padding candidate. Check bilinear/mip seam behavior and shape/placement consistency.
+- Exactly one new Juvenile appearance candidate; no saved assignment until visual approval. Captures free of background scene contamination.
+- No new compile errors; distinguish existing rig limitations and tests not run from new texture issues. Static views do not certify animation.
+- Final stop before Step 3C.
+
+# Revision — Kohaku Fry v03 and Juvenile v01 Localized Albedo Refinement
+This revision supersedes the previous candidate-only stop scope solely for the two corrections below, after implementation approval. It does not authorize Step 3C or assigning candidates to existing saved scenes/materials.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Refine two existing Kohaku candidates locally so adult-consistent red wraps across the upper body, and Juvenile red patches no longer inherit unwanted dark Meshy markings. Preserve all other artwork and anatomy.
+- Players: Isolated asset review; no gameplay changes.
+- Inspiration / Reference Games: Existing adult Kohaku reference, Fry v03 and Juvenile v01.
+- Tone / Art Direction: Existing stylized koi with natural surface detail; no pattern redesign.
+- Target Platform: StandaloneWindows64, Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Existing desktop settings unchanged; diagnostic views at least 768 pixels per panel, with close-ups.
+- Render Pipeline: Existing URP PC_RPAsset unchanged.
+
+# Game Mechanics
+## Core Gameplay Loop
+Compare adult and current candidates → identify exact defective surface regions → correct only those albedo regions → validate preservation → present versioned comparisons → stop for user visual approval.
+## Controls and Input Methods
+No controls, gameplay, genetics, growth or input changes. Retain New Input System and all existing playback tooling.
+
+# UI
+No interface assets changed. Labeled contact sheets for each stage:
+```
+                         Left side   Top   Right side   Dorsal close-up
+Adult reference          reference   ref   reference    reference
+Existing v03 / v01       before      before before      before
+Candidate v04 / v02      after       after after        after
+```
+Include Juvenile spot close-ups and corresponding albedo-only comparisons. Use fixed per-stage framing between before/after, consistent neutral lighting, and explicit magnification/version labels.
+
+# Key Asset & Context
+- Root: Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/ (all new implementation outputs confined here).
+- Read-only inputs: Textures/Kohaku_Fry_RedPattern_Candidate_v03.png and Textures/Kohaku_Juvenile_RedPattern_Candidate_v01.png; original stage maps, adult Kohaku albedo/reference material, all existing candidates, scripts, materials, scenes, rigs, meshes and clips.
+- Inspected KohakuFrySeamCleanup.cs only dilates 12-pixel unused UV gutters and explicitly changes zero covered texels. It cannot repair a white strip painted on occupied body surface.
+- Inspected KohakuFryPatternTrial.cs and KohakuJuvenileRedPatternTrial.cs protect all non-body classified regions and apply red chroma using clamped original red-channel brightness. Broad classification near the dorsal attachment and chart interpolation must be investigated; they are possible causes, not a confirmed diagnosis. Original brightness retention can preserve dark artwork inside Juvenile red patches.
+- Adult source is the existing adult-compatible KohakuTopologyTransfer/Kohaku_OriginalMeshy_ToRigged_BaseColor.png derivative. Original Meshy exports remain upstream appearance authority; AI-generated _MetallicSmoothness maps are not original Meshy sources.
+- Add independent Editor/KohakuLocalizedAlbedoRefinement.cs and Editor/KohakuLocalizedAlbedoRefinementValidation.cs; do not modify or rerun old hardcoded candidate writers.
+- Exactly two appearance outputs: Textures/Kohaku_Fry_RedPattern_Candidate_v04.png and Textures/Kohaku_Juvenile_RedPattern_Candidate_v02.png. If occupied, refuse overwrite and use the next available version, recording it explicitly.
+- Profiles/LocalizedKohakuRefinement/: versioned body-space defect masks, protected masks, thresholds and source correspondence metadata. Reports/LocalizedKohakuRefinement/: preservation manifest, mask/change diagnostics, comparisons and results. Diagnostic mask PNGs are reports, not extra appearance variants.
+- Optional two new candidate-only material copies preserve every non-albedo property and reference; use transient review hierarchies. No existing saved scene/material assignment changes.
+- Selected narrow approach: deterministic geometry/UV-aware masked editing, using neighboring valid red and adult marking evidence. Alternative masked AI inpainting risks moving boundaries and inventing detail, so is not proposed. No model regeneration, global recoloring, broad smoothing or UV/rig edits.
+
+# Implementation Steps
+1. **Protect and diagnose actual surface defects.** Dependencies: approval of this revision.
+   - Recheck dependencies/dependents for inputs, references and any proposed outputs using available dependency queries and AssetDatabase fallback; inspect actual renderer/material slots, UV transforms and scene wiring before attributing defects to albedo.
+   - Record loaded scenes and dirty state, protected file/.meta hashes and import settings. Never save or discard existing scene changes. Inventory output collisions.
+   - Compare adult, Fry v03 and Juvenile v01 from both sides/top in albedo-only and Lit views. Rasterize UV triangle ownership and body-space coordinates. Determine whether the strip occupies body texels, protected fin texels, UV gutters, overlapping UVs or is a lighting/normal artifact.
+   - Identify intentional white pattern gaps separately from the unwanted strip. Record exact body-only correction domains and protections for eyes, face, lips, fin surfaces, and all genuine pattern boundaries. If fixing it requires fin recoloring, incompatible shared-UV edits or non-albedo changes, stop and disclose the conflict rather than weaken protection.
+2. **Repair dorsal red continuity locally.** Dependencies: Step 1 verified diagnosis and masks.
+   - Start from decoded current candidate pixels at existing resolution, never a fresh global transfer. Map only confirmed defective dorsal-base body texels to normalized anatomical surface coordinates.
+   - Extend matching existing red patch color across the narrow defective body strip only where adult evidence and neighboring patch ownership support continuity. Use surface-space continuity across UV islands; do not dilate all red or bridge intentional white gaps.
+   - Preserve each existing patch outline outside the explicit repair mask, fin artwork, eyes and all other covered pixels. Derive red color and detail from valid local patch samples; do not transfer adult eye artwork or synthesize a new pattern.
+   - Audit all UV owners; reject incompatible protected/body overlap rather than arbitrary first-owner writes. Store before/after mask diagnostics and source attribution.
+3. **Remove Juvenile unwanted dark spot pigmentation within red patches.** Dependencies: Steps 1–2.
+   - Isolate low-frequency gray/dark Meshy marking contamination using original-map comparison, connected spot shapes and local red-patch luminance context, not a global darkness threshold. Protect genuine scale creases, fine texture, natural shading and all red/white edges.
+   - Replace only identified unwanted pigmentation within existing red interiors using robust nearby clean red baseline color/luminance; retain bounded high-frequency detail residuals. Do not preserve the unwanted spot simply because it is present in the original brightness channel, and do not flatten every red patch.
+   - Record spot masks, changed texel counts and detail-preservation checks. Ambiguous spot-versus-surface-detail regions remain flagged for review, not silently erased.
+4. **Save exactly two versioned candidates and isolated previews.** Dependencies: Steps 2–3 preservation/conflict checks passed.
+   - Finish each refinement in memory. Refresh only necessary UV gutters outside covered/protected surfaces with finite nearest-island padding; no padding across intentional boundaries or unresolved conflicts.
+   - Save the two new candidates without overwriting input assets. Match relevant resolution/color-space/filtering/import settings on new assets only; do not change original importers. Keep alpha unchanged on covered pixels.
+   - Use new or transient candidate materials with only relevant base-albedo references changed. Do not assign to Pilot_MagnifiedReview.unity or any existing saved material/scene.
+5. **Capture and verify.** Dependencies: Step 4.
+   - Generate labeled Adult/current/new left/right/top comparison sheets and dorsal/spot close-ups, with identical before/after framing and neutral lighting. Include albedo-only evidence to distinguish texture from shading artifacts.
+   - Inspect rest and representative unchanged sampled Swim poses for seam continuity, protected eye/fin detail and texture stretching; distinguish existing rig limitations. Restore all temporary resources and original scene state with exception-safe cleanup.
+   - Run determinism, preservation and conflict tests below. Do not claim continuous runtime verification from static samples.
+6. **Report and stop for visual approval.** Dependencies: Step 5.
+   - Present exact new files and comparisons, describe masked edits and remaining limitations, and mark candidates pending user approval. Verify protected hashes/importers/scene assignments unchanged.
+   - Hard stop before Step 3C. No catalog hookup, genetics integration, production assignment, additional varieties, rig edits or automatic candidate promotion. Implementation approval is not visual acceptance of the results.
+
+# Verification & Testing
+- Protected existing file/.meta hashes and import settings unchanged, including prior candidates, source textures, materials, scripts, meshes, rigs, clips and saved scenes. All writes restricted to new isolated outputs and this plan.
+- Covered pixels outside the union of explicit approved correction masks match current candidate byte-for-byte; protected eyes, fins, facial artwork, intentional white gaps and alpha have zero unintended changes.
+- Audit UV overlap across every triangle owner; zero unresolved incompatible protected/body edits. Record uncovered atlas pixels separately from visible-surface defects.
+- Dorsal red continuity matches adult-supported patch segments from top and both sides, without bridging authentic white boundaries, bleeding onto fins or introducing seam halos. Check bilinear and mip behavior in new candidate imports.
+- Juvenile unwanted dark pigmentation removed only inside targeted red interiors; compare close-ups for retained scale texture and natural detail. Numeric luminance/detail checks supplement, never replace, human visual review.
+- Deterministic rerun from unchanged inputs/configuration produces identical decoded candidate pixels; no cumulative smoothing or overwrite. Padding changes zero occupied surface texels relative to pre-padding outputs.
+- Candidate material shader/normal/roughness/metallic/scalars identical to corresponding baseline except base-albedo slot(s). No global rendering/post-processing changes.
+- Console has no new compile/test errors. Record sampled checks, unavailable runtime/visual tests and remaining uncertainty honestly.
+- Final acceptance gate: user reviews side/top comparisons before any Step 3C work or saved assignment of new candidates.
+

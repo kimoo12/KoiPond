@@ -1,0 +1,6 @@
+Juvenile candidate NOT approved
+Landmarks peduncle=-0.1746216 shoulder=0.1503223 nose=0.3002964 faceStart=0.1878158 faceHeight=0.03714015
+Chart measured=20185 interpolated=4391 total=24576
+UV conflicts=0 protectedChanges=0 coveredPixelsChangedByPadding=0
+Recolored=273534 protected=1572676 padded=940691
+Chart interpolation remains an approximation; original Juvenile artwork retained outside red chroma mask. No continuous runtime verification.

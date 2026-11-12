@@ -1,0 +1,6 @@
+Protected hashes: 62 checked, 0 changed.
+Fry v03 assigned only through new Kohaku_Fry_v03_PilotOnly.mat in Pilot_MagnifiedReview.unity; Juvenile candidate remains unassigned.
+Visual inspection: red shapes cohesive, no pale seam network or magenta gaps visible in rest and .2875s sampled Swim views. Both original eyes and fins retained. Original dark/gray body spots remain visible and are recolored where covered by red; this is intentional baseline retention, not duplicated adult eyes. Edges and small white interruptions retain original stage detail; exact adult-scale artwork was not transferred.
+Rows Adult/original Juvenile/candidate; columns right/top/three-quarter/left.
+Continuous Play Mode/multiple-loop deformation NOT RUN. Stop before Step3C, pending Juvenile visual approval.
+Created: Editor/KohakuJuvenileRedPatternTrial.cs; Materials/Kohaku_Fry_v03_PilotOnly.mat; Textures/Kohaku_Juvenile_RedPattern_Candidate_v01.png; Reports/JuvenilePattern_SourceProtection.tsv; Reports/Kohaku_Juvenile_RedPattern_v01_Validation.txt; Reports/Kohaku_Juvenile_RedPattern_v01_Rest.png; Reports/Kohaku_Juvenile_RedPattern_v01_SwimSample.png; this report and Unity metadata. Modified isolated pilot scene and approved plan revision only.
