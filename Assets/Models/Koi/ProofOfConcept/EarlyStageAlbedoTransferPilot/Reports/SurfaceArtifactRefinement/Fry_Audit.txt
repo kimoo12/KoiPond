@@ -1,0 +1,3 @@
+Fry: dorsal connected faces=5602, shared protected texels=0, degenerate UV=0, spot footprint=43985
+Normal source=Assets/Models/Koi/ProofOfConcept/FryRiggingPrototype/Materials/OriginalMapImportCopies/Fry_normal.png
+Diagnosis: albedo pigmentation/spot rims visible without lighting; normal-enabled spot relief also visible. Geometry-driven broad facets retained.

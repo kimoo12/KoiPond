@@ -896,3 +896,93 @@ Include Juvenile spot close-ups and corresponding albedo-only comparisons. Use f
 - Console has no new compile/test errors. Record sampled checks, unavailable runtime/visual tests and remaining uncertainty honestly.
 - Final acceptance gate: user reviews side/top comparisons before any Step 3C work or saved assignment of new candidates.
 
+# Revision — Refine Kohaku Fry v04 and Juvenile v02: Fill, Shading and Fin Boundaries
+This is the current revision for this task; earlier candidate builders and outputs remain read-only. Implement only after approval. Stop for visual approval, with no Step 3C or existing saved scene assignment.
+User review direction: keep diagnostics and reports concise, reuse existing compatible read-only/capture utilities, and avoid redundant audits. Perform one fresh protection/dependency baseline and one final preservation check; retain required map attribution, UV-owner checks and in-memory repeatability tests. Create versioned candidates only; show close-ups of red coverage, residual outlines and dorsal-fin edges.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Correct patchy red interiors, residual unwanted spot contours and dorsal-edge bleeding on two existing candidates. Diagnose albedo, normal-map and UV contributions first, then produce narrowly masked, versioned review assets without changing anatomy or approved pattern shapes.
+- Players: Isolated asset review only; existing gameplay unchanged.
+- Inspiration / Reference Games: Adult Kohaku reference and existing stage artwork; no external games requested.
+- Tone / Art Direction: Preserve natural stylized surface detail, approved red/white pattern shapes, eyes and original fins.
+- Target Platform: StandaloneWindows64, Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Existing desktop settings unchanged. At least 1024 pixels per close-up panel, with scale and view labels.
+- Render Pipeline: Existing URP PC_RPAsset, unchanged.
+
+# Game Mechanics
+## Core Gameplay Loop
+Diagnose current candidates → attribute each artifact to its actual source → refine only verified masks → compare against unchanged controls → verify preservation and repeatability → stop for user approval. No gameplay/genetics/growth changes.
+## Controls and Input Methods
+Editor-only diagnostics and capture commands. No new input bindings; New Input System remains unchanged.
+
+# UI
+No UI assets. Produce genuinely close-framed comparisons rather than just elevated full-fish views:
+```
+                       Side close-up   Opposite side   Top/base close-up
+Current Fry v04        before          before          before
+New Fry v05            candidate       candidate       candidate
+Current Juvenile v02   before          before          before
+New Juvenile v03       candidate       candidate       candidate
+```
+Separate sheets isolate albedo-only, Lit without normal, Lit with normal and full material. Label stage/version, viewing direction, lighting, normal state, crop and magnification in the image or companion layout key. Include adult fin-base reference and source-fin close-ups.
+
+# Key Asset & Context
+- Root for all new implementation outputs: Assets/Models/Koi/ProofOfConcept/EarlyStageAlbedoTransferPilot/.
+- Read-only current candidates: Textures/Kohaku_Fry_RedPattern_Candidate_v04.png and Textures/Kohaku_Juvenile_RedPattern_Candidate_v02.png. All earlier candidates, helpers, reports, source maps, materials, meshes, rigs, UVs, clips and saved scenes are protected.
+- Existing Editor/KohakuLocalizedAlbedoRefinement.cs uses a roof estimate, hard positional attachment gates and nearest vertex donor colors. It is not a verified fin-blade segmentation; it can create patchy/jagged boundaries. Do not rerun its hardcoded writes or weaken its gates globally.
+- Its spot repair carries original high-frequency residuals; the later Juvenile correction was a separate editor command. Final v02 cannot be reproduced solely by calling the helper's Bake method. New tooling must take actual v04/v02 bytes as explicit inputs and be fully reproducible.
+- Inspected Fry material: KoiPrototype/FryOriginalMaps; normal is FryRiggingPrototype/Materials/OriginalMapImportCopies/Fry_normal.png, NormalMap, linear, uncompressed, mipmapped, scale 1; roughness is a separate linear uncompressed map. Texture transforms are identity.
+- Inspected Juvenile material: URP/Lit; normal is JuvenileRiggingPrototype/Materials/NewMeshy/Juvenile_NewMeshy_Normal.png, NormalMap, linear, uncompressed, mipmapped, scale 1; packed metallic/smoothness map is a DERIVED asset. Texture transforms are identity. Correct importer categories alone do not prove artifact-free normal contents.
+- Original Meshy maps remain upstream authority; packed _MetallicSmoothness provenance must not be conflated with original maps.
+- Current Pilot_MagnifiedReview.unity is clean. Kohaku Fry still uses the v03 pilot material; Juvenile uses its older pilot material, not v02. Diagnosis must explicitly bind current candidates on transient review instances, not mistake saved-scene appearances for requested inputs.
+- Add independent Editor/KohakuSurfaceArtifactRefinement.cs and Editor/KohakuSurfaceArtifactValidation.cs. No edits to old helpers, shaders, package source or runtime systems.
+- Exactly two new appearance albedos: Textures/Kohaku_Fry_RedPattern_Candidate_v05.png and Textures/Kohaku_Juvenile_RedPattern_Candidate_v03.png. Check collisions and choose the next unused version only if necessary; never overwrite.
+- User-selected approach: allow localized versioned map copies if diagnosis proves a normal-map artifact. Alternative albedo-only has lower risk but cannot remove normal-driven contours. No AI regeneration or blanket smoothing.
+- Optional Textures/Kohaku_[stage]_Normal_Candidate_[version].png only for a proven artifact; no automatic new normals for both stages. New candidate-only material copies bind these derivatives while retaining all unaffected settings/maps. Other implicated map types require explicit follow-up authorization rather than silently adding roughness/metallic repairs.
+- Profiles/SurfaceArtifactRefinement/: versioned geometric segmentation, defect masks, UV ownership, source references, thresholds and configuration. Reports/SurfaceArtifactRefinement/: protection manifest, map attribution, diagnostic comparisons, test results and exact output inventory. Use a unique versioned report folder if occupied.
+
+# Implementation Steps
+1. **Re-establish sources, dependencies and protection.** Dependencies: approval of this revision.
+   - Inspect dependencies and dependents of every input and planned output using dedicated tooling where available, otherwise AssetDatabase.GetDependencies and reverse references; source-search code consumers as needed.
+   - Record current candidate bytes/importers, original map identity, shader slots and transforms, scene setup/dirty state. Hash protected assets and metadata before any edits. Never save/discard existing scene work.
+   - Explicitly bind v04/v02 to fresh isolated review hierarchies using the correct unchanged stage mesh/material. Preserve rig/mesh/UV/normal/tangent/weight data.
+2. **Complete map and UV attribution BEFORE editing appearance.** Dependencies: Step 1.
+   - Compare albedo-only, Lit with normal disabled, Lit with normal enabled, and full-map views under identical neutral lighting. Rotate lighting to distinguish baked pigmentation, normal-driven outlines and legitimate geometry shading. Introduce roughness/metallic separately as diagnosis only.
+   - Inspect raw source normal encoding, imported decoding/Y convention and candidate-scale mip/compression behavior without editing source importers. Correlate unwanted contour footprints across albedo, normals and UV-surface coordinates; do not treat every scale edge as a defect.
+   - Rasterize all UV owners at texel centers and filtering footprints; inspect coincident seams, island boundaries, overlaps and subpixel triangles. Distinguish occupied blade texels from gutters and body skin.
+   - Replace heuristic fin/body masks with reviewed triangle connectivity, local geometry thickness/orientation and anatomical root landmarks. Preserve distinct body, attachment and blade ownership. If shared UV owners prevent independent correction, report a blocker; no UV or mesh edits.
+   - Save attribution findings and reviewed masks. If shading is geometry-driven or another unauthorized map is responsible, report the limitation and stop that correction rather than paint compensating shadows.
+3. **Repair albedo fills and restore fin artwork.** Dependencies: Step 2 completed.
+   - Start from actual v04/v02 pixels. Freeze approved red/white boundary contours, intentional white gaps, eye/face/lip artwork and unaffected fins. Limit fill/shading edits to explicitly identified red-interior defects; no global brightness normalization or patch redesign.
+   - Correct low-frequency fill discontinuities and residual unwanted pigmentation using clean same-patch, same-surface neighbors. Use surface-aware smooth reconstruction with explicit seam consistency; retain verified fine scale detail, not the unwanted spot outline residual itself.
+   - Restore proven red-contaminated dorsal-blade/edge texels from the matching pristine stage albedo. This is restoration, not a new fin pattern. Preserve red continuously on actual body skin to the attachment; retain the naturally pale blade/top-view line.
+   - Feather only within permissible repair interiors. Do not blur across red/white shapes or blade/body ownership. Use owner-aware padding outside surfaces and check bilinear/mip leakage at both sides of the fin base.
+4. **Correct proven normal artifacts in copies only, if needed.** Dependencies: Step 2 attribution; Step 3 masks.
+   - If normal-map spot contours or fill seams are proven, create a versioned derivative from the correctly decoded original normal. Restrict repair to those defect footprints and blend with compatible clean tangent-space neighborhood normals; renormalize vectors and encode correctly.
+   - Preserve fine natural scales, genuine crease shading, eye/fin normals and all texels outside the documented map-specific mask. Do not flatten normal strength globally or erase natural geometry shadows.
+   - Use new NormalMap import settings and candidate material references only; leave original normal files/importers/materials unchanged. If no normal artifact is proven, create no normal candidate.
+5. **Build and verify new review assets reproducibly.** Dependencies: Steps 3–4.
+   - Bake each new albedo and any justified normal derivative once from unchanged inputs/configuration. Audit all protected/shared owners before saving. No overwrite of current candidates or historical evidence.
+   - Create new candidate-only materials preserving shader/non-albedo settings except explicitly approved normal reference changes. Do not assign to any existing saved scene/catalog.
+   - Run the same full pipeline twice in memory and compare decoded pixels/configuration hashes, including every corrective pass and padding. Persist masks and parameters so final candidates reproduce without ad hoc editor commands.
+6. **Capture close-ups and test surface boundaries.** Dependencies: Step 5.
+   - Capture current/new close-up side, opposite side and top views focused on red interiors, former spot outlines and dorsal attachment/edges; include consistent full-fish pattern controls and map-isolation sheets.
+   - Check UV seam, padding and fin-edge behavior at mip levels/realistic distances as well as magnification. Inspect representative unchanged Swim poses; do not repair pre-existing deformation defects or equate static samples with continuous runtime testing.
+   - Use exception-safe temporary resource disposal and restore scene/editor state. Any unexecuted tests must be explicitly marked NOT RUN.
+7. **Report and stop.** Dependencies: Step 6.
+   - Report actual artifacts fixed, remaining issues, map-specific masks/counts, visual attribution, determinism, preservation and exact created files/.meta. Record which original maps versus derivatives were used.
+   - Present close-up comparisons for approval; no automated promotion or saved-scene assignment. Stop before Step 3C, other varieties, production integration or further candidate iterations outside this request.
+
+# Verification & Testing
+- Protected current/earlier assets and metadata unchanged; no shared material/importer changes. Existing scene assignments and scene dirty state preserved.
+- Geometry, indices, all UVs, normals/tangents, skinning, rig transforms, blendshapes and animations unchanged. Normal texture derivatives are distinguished from mesh normals.
+- Approved pattern contours and intentional white gaps preserved. Covered pixels outside explicit repair masks match current input bytes; restored fin artwork matches documented original stage sampling. Eyes, lips and unaffected fins unchanged.
+- Zero unresolved incompatible UV owner edits; audit filtering footprints, visible seams and gutters separately. Dorsal blade has no unintended red contamination in side/top close-ups or mip views, while body red remains continuous to its actual base.
+- No patchy fill or unwanted dark spot outline in albedo-only review; no proven normal-driven unwanted outlines in normal-enabled review. Natural scale relief and expected directional shading remain visible. Do not claim perfectly uniform shading on naturally curved geometry.
+- Normal repairs confined to verified masks; decoded finite vectors, correct tangent-space encoding/import, normalized reconstructed vectors, seamless transition to untouched data. Verify retained fine detail rather than relying only on magnitude checks.
+- Fully deterministic final bake: repeated decoded albedo/normal candidates and masks identical. No correction hidden solely in a one-off command; all inputs/parameters recorded.
+- Candidate materials retain unaffected map references, UV transforms, shader/scalars and rendering settings. No global lighting/pipeline or package edits to conceal defects.
+- Console has no new compile/binding/test errors; record baseline warnings and unavailable tests. Static Swim captures are not continuous animation certification.
+- Final gate: user visual approval of new side/top close-ups. No Step 3C or production readiness claim.
+

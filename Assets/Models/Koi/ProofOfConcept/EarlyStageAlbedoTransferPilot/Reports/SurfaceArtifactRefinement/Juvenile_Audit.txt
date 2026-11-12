@@ -1,0 +1,3 @@
+Juvenile: dorsal connected faces=3865, shared protected texels=0, degenerate UV=0, spot footprint=48866
+Normal source=Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Materials/NewMeshy/Juvenile_NewMeshy_Normal.png
+Diagnosis: albedo pigmentation/spot rims visible without lighting; normal-enabled spot relief also visible. Geometry-driven broad facets retained.

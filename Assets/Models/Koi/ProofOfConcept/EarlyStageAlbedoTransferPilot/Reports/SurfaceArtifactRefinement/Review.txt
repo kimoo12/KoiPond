@@ -1,0 +1,5 @@
+PENDING USER VISUAL APPROVAL — Step 3C not performed.
+BeforeAfter_Close rows: current albedo / candidate albedo / current full material / candidate full material. Columns: side +X / top / side -X with reversed light. 1024-pixel panels. Separate Current/Candidate_Close sheets: albedo / Lit no-normal no-metallic / Lit normal no-metallic / full material.
+Fry v05 and Juvenile v03 albedos, two locally corrected normal derivatives, two isolated candidate-only materials. Meshes, original maps/importers, prior assets and existing assignments preserved.
+Visual result PARTIAL: dorsal-edge contamination reduced but small red fragments remain; spot outlines substantially reduced in normal map, but localized dark/faceted remnants and material-dependent shading remain at magnification. Approved pattern contours and pale fin blade retained. Curved/faceted geometry shading was not painted away.
+Masked surface changes and two full in-memory runs passed repeatability. Initial unapproved candidate bytes retained as backup evidence. Candidate imports retain mips and uncompressed filtering; explicit mip-level/realistic-distance tests NOT RUN. Runtime/Swim tests NOT RUN.

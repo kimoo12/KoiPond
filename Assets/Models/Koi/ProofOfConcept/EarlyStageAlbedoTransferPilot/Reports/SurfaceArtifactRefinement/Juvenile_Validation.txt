@@ -1,0 +1,3 @@
+Juvenile v03: changed surface albedo=42587, fin restoration=146, normal=48652, outside mask=0, deterministic=true
+320 synchronous harmonic iterations; 12-pixel spot footprint dilation constrained to red interiors and protected owners; 12-pixel exterior padding. All original maps/assignments preserved.
+Revision: clean-border initialization, deterministic=true, outside-mask=0. Initial unapproved output bytes backed up.
