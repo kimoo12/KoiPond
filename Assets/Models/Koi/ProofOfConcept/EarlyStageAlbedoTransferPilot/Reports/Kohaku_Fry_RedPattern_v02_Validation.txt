@@ -1,0 +1,6 @@
+Fry-only red-pattern trial, pending visual approval
+Adult surface landmarks: peduncle=-0.1738948 shoulder=0.1006769 nose=0.3003654
+Fry surface landmarks: peduncle=-0.1755942 shoulder=0.1298822 nose=0.3001477
+Measured chart cells=20185 interpolated=4391 total=24576
+Conflicting UV samples=0 recolored texels=426038
+Original Fry albedo is the baseline; lateral face and classified fins unchanged. Only red-pattern chroma transferred; no ray projection or adult-eye texture sampling. Chart interpolation and mask smoothing are approximations requiring visual review.

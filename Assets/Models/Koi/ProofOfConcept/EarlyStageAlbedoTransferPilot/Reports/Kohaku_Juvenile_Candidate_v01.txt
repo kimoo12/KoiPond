@@ -1,0 +1,6 @@
+Step3B candidate, NOT approved
+Continuous radial surface projection; bone-anchored longitudinal mapping; existing face/fin pixels retained.
+transferred=1257027
+protected=1478931
+projectionMisses=60848
+adultEyeExcluded=10666
