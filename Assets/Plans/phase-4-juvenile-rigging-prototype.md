@@ -986,3 +986,80 @@ Separate sheets isolate albedo-only, Lit without normal, Lit with normal and ful
 - Console has no new compile/binding/test errors; record baseline warnings and unavailable tests. Static Swim captures are not continuous animation certification.
 - Final gate: user visual approval of new side/top close-ups. No Step 3C or production readiness claim.
 
+# Revision — Phase 4 Visual Genetics: Stage-Appropriate Trait Composition
+**Current direction; supersedes all adult-to-stage transfers and Kohaku refinement scopes above. Planning only now; requested approval scope is Step 1 ONLY.** Preserve every existing Kohaku experiment, candidate, helper, report, material and scene exactly as found. No rebaking, refinement, reassignment or promotion. Steps 2–4 below are deferred architectural context, NOT approved work. No growth integration or production changes. Stop after Step 1 for visual review.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Reveal inherited appearance gradually: neutral Fry, simplified trait-driven Juvenile, existing detailed Adult. Use a shared early-stage shader rather than eight variety-specific texture sets.
+- Players: Isolated visual prototype; existing gameplay/player model unchanged.
+- Inspiration / Reference Games: Original stage-development design and existing KoiPond genetics; no external reference requested.
+- Tone / Art Direction: Stylized koi; muted gray/brown/olive Fry, emerging Juvenile pigmentation, unchanged detailed Adults.
+- Target Platform: StandaloneWindows64; Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Existing desktop settings unchanged.
+- Render Pipeline: Existing URP PC_RPAsset; no pipeline/package changes.
+
+# Game Mechanics
+## Core Gameplay Loop
+Breeding record → existing `KoiGeneticsRules.Resolve` → small stage-appearance recipe → bind when the stage renderer changes. Maturation reveals traits (MDA progression/readability) without changing genome, identity, growth or animation.
+
+| Stage | Appearance policy |
+|---|---|
+| Fry | Muted gray/brown/olive palette; original surface/eye detail, minimal pigmentation. Red/black markings initially off, metallic sheen off. No miniature adult pattern. |
+| Juvenile | Subdued inherited base color, independently enabled red and black, simple Solid/HeadSpot/Distributed organization, restrained metallic response. Emerging patterns, not adult replicas. |
+| Adult | Existing detailed material assets and current selection behavior unchanged. No tinting, compositing, texture transfers or material edits. |
+
+**Selected approach:** one shared early-stage shader, stage-specific scalar/vector parameters and existing stage maps. Alternative reusable mask textures offers more art control but creates unnecessary assets; defer it. No complex noise, procedural pattern generator, texture baking or per-variety library.
+- Recipe consumes `KoiTraits`, not founder names: base color, red presence, black presence, pattern, metallic and separate fin coverage. A Kohaku fixture is only the first preview, not an architecture branch.
+- Use a few fixed, reviewed UV0 marking regions: one head spot or a few broad body patches; deterministic red/black overlap precedence. Solid has no localized patch organization; present pigment channels use a subdued uniform contribution. Keep placement stable on the same mesh throughout animation.
+- Reuse original stage albedo for protected eyes/lips/fins and bounded surface detail, plus existing normal/roughness maps. Neutral body color must replace baked pigmentation, not merely tint it. Blind desaturation/luminance reuse can retain old dark patches; reduce that contribution to zero where needed and retain relief through existing normals. Document remaining baked-map limitations, not refine source maps.
+- UV protection/placement uses shader parameters only, fitted independently to each stage; no adult correspondence or adult texture sampling. If shared UVs prevent protecting eyes/fins while neutralizing body pigmentation, report the blocker rather than edit UVs or introduce hidden texture work.
+- Mixed-trait combinations compose on Fry/Juvenile without nearest-variety matching or new textures. **Adult hybrid coverage remains limited by unchanged existing materials/catalog.** Keep an explicit unsupported result and the existing authored fallback; do not claim full-lifetime hybrid rendering. Hirenaga geometry remains unsupported without changing its genes.
+
+## Controls and Input Methods
+No player-input changes; New Input System retained. First preview uses Inspector shader parameters and supplied resolved Kohaku traits, not new controls or growth wiring.
+
+# UI
+No UI assets or production interface changes. Minimal Inspector/review layout:
+```
+Original Fry | Neutral Kohaku Fry
+Original Juvenile | Simplified Kohaku Juvenile
+Stage | Resolved traits | Parameters | Coverage/limitations
+```
+Review both sides and top under the same local lighting; Adult may be a read-only reference.
+
+# Key Asset & Context
+- `Assets/Scripts/KoiData.cs` and `KoiGeneticsRules.cs`: six independent loci; arbitrary valid hybrid traits already supported. Reuse unchanged.
+- `GrowthSystemPrototype/Runtime/KoiStageVisuals.cs`: `AppearanceBound(KoiGrowthAppearanceContext)` already supplies birth record, traits, stage and renderer; future composition can consume this without editing growth.
+- `VisualGeneticsPrototype/Runtime/KoiGeneticAppearanceBinder.cs` currently assigns fixed early-stage baselines. `KoiAppearanceLookup.cs` requires eight Adult entries and exact matches. Preserve both in the first slice; use a separate early-stage consumer later, never competing material writers.
+- Existing Fry rig/material: `FryRiggingPrototype/Prefabs/Fry_RiggingPrototype.prefab`, `Materials/Fry_Prototype_MAT.mat`, original Fry albedo, normal and separate roughness maps.
+- Existing Juvenile rig/material: `JuvenileRiggingPrototype/Prefabs/Juvenile_RiggingPrototype.prefab`, `Materials/Juvenile_Prototype_MAT.mat`, verified `Assets/Models/Koi/New Juvenile/new_juvenile_texture.png`, existing normal and derived metallic/smoothness maps.
+- Original Meshy maps are authoritative; packed metallic/smoothness maps are derivatives, not original Meshy exports. Reuse references with their actual provenance; no packing or importer edits.
+- Current loaded scene is `Assets/Scenes/PondScene.unity`. Read-only dependency/reverse-reference inspection confirms the existing binder/catalog are used by the Visual Genetics test scene; preserve that scene and production assets.
+- Future new outputs only: unique `Assets/Models/Koi/ProofOfConcept/StageAppearancePrototype/` folder. First slice: `Shaders/KoiEarlyStageAppearance.shader`, two stage materials, one minimal isolated preview scene and a brief result note. No new meshes, rigs, textures, clips, mask assets or catalog.
+
+# Implementation Steps
+1. **Only implementation scope: UV feasibility gate, then one isolated Kohaku preview.** Dependencies: explicit implementation authorization; fresh dependency/protection baseline.
+   - **Smallest first action, before creating any shader/assets:** inspect existing Fry/Juvenile UV0, texture registration and all UV triangle owners read-only. Verify that a few simple UV parameter regions can independently recolor body skin and place Juvenile red markings while preserving BOTH eyes, lips and fins, including seams and filtering footprints. Use existing inspection tools; no new texture/mask assets.
+   - Recheck source map/material/mesh dependencies and current scene state once; preserve all experiments and production files. Verify body/protected-detail separation, not merely valid UV ranges or nondegenerate triangles.
+   - **Hard feasibility gate:** if overlapping/interleaved UVs or baked-detail limitations prevent acceptable clean coloring with simple parameters, stop and report the exact stage/region blocker. Do not create the shader/preview, attempt repeated fixes, change UVs or generate additional assets to work around it. If evidence is inconclusive, report that rather than claim feasibility.
+   - Only if feasible, create one shared shader and two new stage materials referencing existing maps. Set Kohaku parameters from existing resolved traits: neutral Fry with marking strengths zero; Juvenile with a few subdued red regions, no black and no metallic sheen.
+   - Build one isolated visual-only preview using existing meshes/rigs/internal transforms. No growth hookup, runtime binder change, adult modification or new texture output. Inspect both sides/top, both eyes, lips, fins and seams. If the first preview fails acceptable protection/coloring, report and stop rather than iterate through extra candidates/assets.
+   - Make one final preservation check and a short actual-results note; show the single preview for visual review. **Stop: no Step 2, growth integration or production changes.**
+   - User review confirms the requested execution scope is Step 1 only: asset-free UV verification first, one preview only if feasible, no adult-pattern transfers or new textures. All eyes/lips/fins, meshes, source textures, rigs, animations and production assets remain protected. Execution requires leaving planning-only mode; no implementation has occurred here.
+2. **Deferred, not approved: generalize parameter recipes, not artwork.** Dependencies: Step 1 visual acceptance and separate later authorization.
+   - Add `Runtime/KoiStageAppearanceRecipe.cs` and menu-driven `Editor/KoiStageAppearanceTests.cs` under the same new folder. Resolve independent trait channels and stage strengths; no founder switch, randomness or pattern rerolls.
+   - Test all 192 valid resolved trait combinations, including fin states. Separate representable color channels from unsupported geometry and Adult material coverage. First preview does not certify every hybrid visually.
+3. **Bind through the existing appearance boundary.** Dependencies: Step 2 and later authorization.
+   - Add `Runtime/KoiEarlyStageAppearanceBinder.cs` and a copied isolated growth preview only if needed. Use shared stage materials with per-renderer parameter overrides; measure batching later, not claim population performance.
+   - Assign composition only to Fry/Juvenile; delegate Adult to unchanged lookup/material behavior. Ensure a single stage-aware material writer and clear/reset overrides on transitions/disable. Do not alter original scenes, existing systems or catalog to achieve the preview.
+4. **Review and stop.** Dependencies: each implemented slice.
+   - One final protected-file check and short results note: actual files, captures, supported traits, baked-map/UV limitations and tests not run. No production integration or further Kohaku experiment work.
+
+# Verification & Testing
+- Planning changes only this Markdown file. Future implementation must preserve all source files/importers, Kohaku experiments, Adult materials/catalog, meshes/UVs/rigs/clips, genetics/growth and existing scenes.
+- First slice: Fry visibly gray/brown/olive with minimal patterns; Juvenile recognizably simplified emerging red, not transferred adult artwork. Both eyes/lips/fins retain registration; inspect original dark-patch and normal-outline leakage explicitly.
+- Later recipes: identical expressed traits give identical parameters despite different carrier alleles; base/red/black/pattern/metallic are independent; mixed combinations never coerced into eight founders. No Breed/RNG/identity/genome changes.
+- Stage binding/reset/re-enable clears stale overrides and avoids duplicate writers. Adult keeps the exact existing material reference, no composition shader/overrides, and explicit unsupported-hybrid coverage.
+- Use unchanged sampled Swim poses for UV stability if available; do not recertify existing rig defects or claim continuous playback from stills. Visual review and runtime tests remain NOT RUN until actually performed.
+
