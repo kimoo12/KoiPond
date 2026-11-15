@@ -1,0 +1,1 @@
+Covered texels: 2807472; editable texels: 478776; overlap samples: 15; incompatible color owners: 0

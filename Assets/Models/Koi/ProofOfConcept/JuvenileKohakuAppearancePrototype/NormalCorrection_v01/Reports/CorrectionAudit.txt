@@ -1,0 +1,2 @@
+Retained pigment components: 239; contour-band texels: 177204; changed normal texels: 176321; out-of-mask/protected normal changes: 0; normalization error: 5.960464E-08.
+Only the normal reference changes; albedo, shader, normal strength and other maps remain unchanged.

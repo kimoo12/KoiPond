@@ -1131,3 +1131,111 @@ Show uncertain regions conspicuously, never as successfully classified body.
 - Conservatively quantify protected/uncertain coverage and boundary triangles; visual review, not vertex count or thresholds alone, establishes acceptance. Missing mouth cavity and existing fin strain are not repaired or recertified.
 - All mask creation, visual review and animation checks remain **NOT RUN** in this planning assessment. Stop for approval of the diagnostic-only prototype; no implementation now.
 
+# Revision — Phase 4 Juvenile Visual Genetics: One Isolated Kohaku Appearance
+**Current scope, superseding earlier transfer, vertex-mask and shared-shader proposals for this request only.** Implementation requires approval of this revision. Create one Juvenile appearance candidate, inspect it, present it and stop for visual approval. Preserve all existing assets and experiments. No Fry work, Adult appearance sampling, additional varieties, genetics binding or production integration.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Establish one stage-appropriate Kohaku appearance on the completed Juvenile rig: natural white/cream body and 2–3 simple soft red/orange markings on the dorsal head and upper body. Markings follow the curved back without replicating detailed Adult patterns.
+- Players: Isolated asset-validation prototype; production gameplay unchanged.
+- Inspiration / Reference Games: User's appearance brief and existing Juvenile anatomy/UVs/maps only. No Adult texture or marking reference/transfer.
+- Tone / Art Direction: Natural stylized immature koi; preserve proportions, eyes, facial/lip detail and natural fins.
+- Target Platform: StandaloneWindows64; Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Existing desktop settings unchanged; labeled diagnostic captures at sufficient eye/fin detail resolution.
+- Render Pipeline: Existing URP PC_RPAsset; no pipeline/package/project-setting changes.
+
+# Game Mechanics
+## Core Gameplay Loop
+Diagnostic only: inspect Juvenile surface and source registration → author one simplified appearance → inspect both sides/top/eyes/lips/fins → present result or blocker → stop. Emerging pigmentation supports readable maturation (MDA aesthetics); it is not a genetic-expression system yet.
+## Controls and Input Methods
+Existing New Input System remains unchanged. Editor-only authoring and validation, no runtime controls, growth hooks or input assets.
+
+# UI
+No UI assets or menus. Review layout:
+```
+                      Left side    Top    Right side
+Original Juvenile     baseline     base   baseline
+Kohaku candidate      result       result result
+Details: left eye / right eye / face-lips / dorsal base / fins
+```
+Use matched neutral local lighting and camera framing. Include one clear three-quarter hero view. Label normal-enabled versus albedo-only diagnostics; capture images are evidence, not appearance variants.
+
+# Key Asset & Context
+## Actual inspected sources
+- `Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Prefabs/Juvenile_RiggingPrototype.prefab`: already rigged non-humanoid koi with FishMesh, ten bones, one blendshape.
+- `Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Meshes/Juvenile_RiggedMesh.asset`: 87,391 vertices. Reuse this exact mesh; no new geometry, vertex colors, weights, bindposes or blendshape edits.
+- `Assets/Models/Koi/ProofOfConcept/JuvenileRiggingPrototype/Materials/Juvenile_Prototype_MAT.mat`: URP/Lit, _BaseMap and _MainTex both reference `Assets/Models/Koi/New Juvenile/new_juvenile_texture.png`.
+- Existing map references: `Materials/NewMeshy/Juvenile_NewMeshy_Normal.png` and `Juvenile_NewMeshy_MetallicSmoothness_DERIVED.png` beneath the Juvenile rig prototype. Preserve references and settings initially; distinguish verified derivatives from authoritative original Meshy maps. No new normal/roughness/metallic map is authorized.
+- Dependency/reverse-reference inspection through AssetDatabase.GetDependencies confirms Juvenile mesh/material are shared by several existing rig, growth, transfer and vertex-mask scenes. All remain read-only. Dedicated dependency tooling is unavailable; use the same read-only fallback before writes.
+- `VertexMaskPrototype/Reports/MaskResults.md` records 43.2% uncertain Juvenile vertices and only 9.8% conservative body coverage. That is not an approved anatomy mask; do not reuse it as an appearance mask or refine its classifications.
+- Loaded scene is `Assets/Models/Koi/ProofOfConcept/FryColorFeasibility/Scenes/Fry_Color_FourWayComparison.unity`, clean at inspection. Preserve its setup and any subsequent unsaved work. Its global-tint shader is not used for this task.
+- Baseline Console: zero errors, one pre-existing render-texture release warning. Avoid repeating capture cleanup mistakes; restore RenderTexture.active before releasing temporary targets.
+
+## User-selected approach
+**Surface-authored albedo**, selected over direct UV-island painting. Author a few simple marking shapes on the Juvenile rest surface, then rasterize their colors into the unchanged existing UV0. This is Juvenile-only appearance authoring, NOT UV transfer from another mesh or adult-to-stage correspondence.
+- Advantage: patch placement is defined against visible anatomy, so it can cross UV islands and follow the curved back consistently; existing URP/Lit remains sufficient.
+- Cost: one new albedo and a small bounded UV-owner/filtering check. Incompatible body/protected UV sharing is a blocker, not something to average away.
+- Alternative considered: direct UV painting. Less authoring tooling but higher fragmented-island seam/wrapping risk; not selected. Do not automatically switch methods if the selected method fails.
+- Define 2–3 broad patches, preferably a small dorsal-head patch and two upper-body patches, using reviewed surface landmarks. Keep all below-dorsal face, eyes/eyelids, lips and fin blades free of new red. Do not force three patches if two better fit the anatomy.
+- Neutral body color replaces old baked body pigmentation; it is not a tint over existing markings. Preserve source eye/face/lip/fin sampling. Retain only source detail demonstrably free of old pigment; do not blindly preserve luminance that carries old dark patches. Existing normals provide relief. Do not create elaborate procedural patterns, charts transferred from adults, AI repainting or a vertex-color mask refinement pipeline.
+- Surface ownership/protection is local authoring information in the editor bake, not a modified mesh stream. Resolve it once from actual Juvenile surface selection/landmarks, including fin blades and dorsal attachment. Do not promote prior broad position/bone thresholds to certified anatomy.
+
+## Isolated outputs
+New root: `Assets/Models/Koi/ProofOfConcept/JuvenileKohakuAppearancePrototype/` (absent at inspection). If occupied before implementation, inspect and use a unique sibling without overwriting anything.
+- `Editor/JuvenileKohakuAppearanceAuthoring.cs`: minimal surface authoring, UV rasterization/ownership checks, preservation and preview capture. No edits or execution of old hardcoded bake/refinement commands.
+- `Textures/Juvenile_Kohaku_Appearance_v01.png`: **exactly one** new appearance albedo, matching source resolution where adequate; complete in memory before saving. No intermediate appearance assets or extra variants.
+- `Materials/Juvenile_Kohaku_Appearance_v01.mat`: independent copy of actual Juvenile material; change only relevant base-albedo references, preserving shader, UV transforms, normal/packed-map references and unaffected scalar/render settings.
+- `Prefabs/Juvenile_Kohaku_AppearancePrototype.prefab`: isolated appearance instance retaining complete original rig/internal transforms, exact mesh and proportions; material override only. No production behavior or diagnostic animation writer inherited from other scenes.
+- `Scenes/Juvenile_Kohaku_AppearanceReview.unity`: isolated original control and single candidate, neutral local preview lighting/cameras. No existing scene saved or changed.
+- `Reports/AppearanceResults.md`, concise protection/configuration inventory and labeled `Reports/Captures/`. Record authoring landmarks/patch/protection parameters sufficiently to reproduce the one candidate; diagnostics are not additional appearance textures.
+- New Unity metadata for these outputs. All existing source/experiment files, textures/importers, shaders, prefabs, meshes, animations, genetics/growth/catalog/binder systems, packages and project settings remain unchanged.
+
+# Implementation Steps
+1. **One fresh protection baseline and source verification.** Dependencies: approval of this revision.
+   - Recheck dependencies/reverse references, actual Juvenile material/UV registration, scene dirty state and output collision immediately before edits. Hash protected existing assets and metadata once, with special attention to all existing experiments and source maps.
+   - Read the completed mesh and original texture without changing import settings. Verify both pupils and facial/fin UV footprints. Inspect rest orientation, dorsal curvature and fin roots visually rather than infer anatomy from bounds alone.
+2. **Bounded surface-authoring feasibility gate.** Dependencies: Step 1.
+   - Identify clean body/head marking surfaces and explicit protected eye/eyelid/face/lip/fin surfaces. Inspect triangle owners in UV interiors and relevant bilinear/mip footprints, including seam duplicates and thin fin surfaces.
+   - Confirm a neutral body and simple upper-body/head patches can coexist with protected detail. Store only minimal editor authoring configuration; no vertex-mask mesh copies or iterative segmentation project.
+   - Hard stop if body/protected UV sharing, ambiguous essential anatomy, unavailable source access or unavoidable baked-map artifacts prevent a reliable result. Report the exact region and evidence; do not retry failed approaches or create a misleading preview.
+3. **Author the one candidate in memory.** Dependencies: Step 2 passed.
+   - Choose cream/white body and subdued red/orange pigment appropriate to the user's brief. Define 2–3 large simple soft-edged regions against verified rest anatomy, with continuous wrapping across the curved dorsal surface and no detailed adult motifs.
+   - Rasterize Juvenile triangles at texel centers using their existing UV0 and interpolated rest-surface coordinates. Apply authored color only to allowed body skin; source-sample protected eye/face/lip/fin detail unchanged. Handle seams consistently across owners rather than first-owner wins or conflict averaging.
+   - Soft edges are measured on the surface, not UV-island size. Padding is limited to unused UV gutters; it must not overwrite occupied protected texels or hide unresolved conflicts. Keep alpha consistent with the source/material.
+   - Validate protection, finite colors, anatomy and seam continuity before saving exactly one albedo. A repeatability check may recompute the same candidate in memory but must not create another candidate or change the design.
+4. **Build the isolated preview without altering source rigs.** Dependencies: Step 3 passed.
+   - Save the one albedo/material, appearance-only prefab and separate review scene. Preserve mesh references, skeleton hierarchy, transforms, outer scale, weights, shapes and all original animations; no retopology, UV edits or generated mesh.
+   - Keep source-map settings unchanged. Compare albedo-only and full material to identify normal/packed-map residuals. If significant old-pattern relief or another map artifact defeats the goal, stop and report; no new map repairs or compensating tints.
+5. **Verify before presenting.** Dependencies: Step 4.
+   - Review left, right, top and three-quarter views plus both eye close-ups, face/lips, dorsal fin base and every fin. Check soft edges, 2–3 distinct simple markings, curved-back continuity, cream body, no accidental red, old dark pigmentation, seams or halos.
+   - Sample unchanged Swim and Eat at representative/extreme poses on a temporary isolated instance if available, checking texture attachment and eye/fin protection only. Do not modify or recertify existing deformation. Distinguish sampled checks from continuous playback.
+   - Require actual image/scene visual inspection, not only nonblank image checks. If capture/review capability is unavailable, state which checks are NOT RUN and do not claim successful appearance verification.
+6. **One final preservation check, concise report, stop.** Dependencies: Step 5.
+   - Compare protected hashes and scene state; list actual new files and source/derivative provenance. Restore original editor setup without saving protected scenes or discarding user work; dispose capture targets exception-safely.
+   - Present the single candidate with both-side/top evidence and detail checks, or report the blocker. Visual approval remains pending even if implementation tests pass.
+   - No second candidate, repeated refinement, production integration, variety expansion, growth changes or genetics binding.
+
+# Verification & Testing
+- Existing sources/experiments and metadata/import settings unchanged; all implementation writes inside the new prototype root. One protection baseline and one final check; no redundant project audits.
+- Exact original mesh reference and all vertices/UVs/indices/normals/tangents/weights/bindposes/blendshapes unchanged. Complete original rig transforms, scale/proportions and clip references preserved; only isolated appearance references change.
+- Exactly one appearance albedo and one candidate fish. No Adult texture, marking, correspondence or chroma extraction is consumed.
+- Both pupils/eyelids and protected face/lips/fins retain registered source artwork. No incompatible protected/body UV edits, opposite-surface contamination or accidental markings on blades/edges. Examine triangle interiors and filtering footprints, not merely vertex labels.
+- 2–3 coherent broad soft red/orange patches follow the dorsal head/upper body and curved back; neutral body is natural white/cream without residual old pigmentation. No miniature detailed adult pattern, global tint solution or noisy patch generator.
+- Verify full-material and albedo-only side/top/details, seams and normal-dependent artifacts. Existing source-map limitations are reported rather than repeatedly repaired.
+- Captures visually reviewed before presentation; unsupported image/runtime tests explicitly NOT RUN. Static animation sampling is not continuous-playback certification.
+- Console has no new authoring/capture errors. Restore RenderTexture.active and camera target state before releasing targets. Preserve user's clean/dirty scene state.
+- Any significant unavoidable artifact triggers STOP with the exact blocker; do not weaken anatomy protection or start another method/variant. Final stop for user visual approval; not production-ready or genetics-bound.
+
+## Deferred Phase 4 Milestones — Not Current Implementation Scope
+The isolated Kohaku Juvenile candidate, its selected method and every feasibility/protection/stop check above remain unchanged. The single baked Kohaku Juvenile texture is **a visual feasibility test only**, not proof of scalable genetic appearance composition or inherited-trait coverage.
+
+1. **Evaluate scalable inherited Juvenile appearances after visual approval.** Dependencies: successful Juvenile feasibility review, user visual approval and separate authorization for this evaluation.
+   - Separately assess whether surface authoring can provide reusable anatomical marking domains and composable base/red/black/pattern/metallic channels driven by existing inherited traits, without manually creating a texture for every genotype.
+   - Compare viable reusable authoring/composition approaches against the verified Juvenile UV/protection constraints. Evaluate trait independence, hybrid combinations, consistent appearance for equivalent expressed traits, animation attachment, artist workload and runtime cost. Do not assume the single bake establishes these capabilities.
+   - Produce a separate proposal and feasibility criteria before implementation. No recipe system, additional texture library, genetic binder or growth integration is authorized by the current prototype approval.
+2. **Adult hybrid appearance milestone after Juvenile feasibility review.** Dependencies: Juvenile feasibility review and separate planning/implementation approval.
+   - Adult hybrids must visibly reflect inherited trait combinations beyond the eight starter varieties. Select appearance from expressed inherited traits, not the nearest founder label; do not substitute unrelated founder materials for unsupported hybrids.
+   - Preserve every existing Adult material and its artwork. Any later hybrid composition work must use separately approved isolated assets/overrides and explicitly distinguish represented traits from unsupported features; Hirenaga geometry remains a separate capability.
+   - Evaluate composable base color, red/black presence and organization, and metallic response with representative non-starter/hybrid trait fixtures. Define visual acceptance evidence before implementation; matching only one starter appearance or a lookup entry is insufficient.
+   - Current approval grants **no Adult hybrid implementation, genetics integration, production changes or additional Juvenile candidates**. These milestones are deferred roadmap items, not additions to the one-candidate execution scope.
+

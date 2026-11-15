@@ -1,0 +1,3 @@
+Protected files checked: 3762
+All protected file bytes and metadata unchanged; no unexpected outside files.
+Same original mesh and full rig/rest transforms: True

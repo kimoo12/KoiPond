@@ -1,0 +1,2 @@
+Checked 3812 pre-existing files. All original bytes/metadata unchanged; no outside files created.
+All material properties/maps except normal reference unchanged: True
