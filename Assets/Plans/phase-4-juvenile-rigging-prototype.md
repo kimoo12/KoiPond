@@ -1063,3 +1063,71 @@ Review both sides and top under the same local lighting; Adult may be a read-onl
 - Stage binding/reset/re-enable clears stale overrides and avoids duplicate writers. Adult keeps the exact existing material reference, no composition shader/overrides, and explicit unsupported-hybrid coverage.
 - Use unchanged sampled Swim poses for UV stability if available; do not recertify existing rig defects or claim continuous playback from stills. Visual review and runtime tests remain NOT RUN until actually performed.
 
+# Revision — Anatomy-Based Vertex Masks: Feasibility Assessment
+**Current scope: planning only.** The simple UV-region approach is closed; do not retry it. Supersedes prior implementation permissions for this request. Only this plan is edited now; all proposed prototype work requires separate approval. Preserve every source and Kohaku experiment. No texture generation/transfers, production or growth integration.
+
+# Project Overview
+- Game Title: KoiPond.
+- High-Level Concept: Assess rest-anatomy masks stored in vertex colors on isolated copies of completed Fry/Juvenile meshes. Validate protected anatomy first, then consider neutral Fry and simplified inherited Juvenile markings.
+- Players: Isolated asset validation; gameplay/player model unchanged.
+- Inspiration / Reference Games: Original stage-development design and existing stage anatomy.
+- Tone / Art Direction: Gray/brown/olive Fry; subdued emerging Juvenile patterns; unchanged detailed Adults.
+- Target Platform: StandaloneWindows64; Unity 6000.6.6f1.
+- Screen Orientation / Resolution: Existing desktop settings unchanged.
+- Render Pipeline: Existing URP PC_RPAsset unchanged.
+
+# Game Mechanics
+## Core Gameplay Loop
+Diagnostic only: identify anatomy → inspect mask boundaries → verify protection and seam continuity → approve or stop. Existing resolved traits remain the eventual inputs; no breeding, identity, RNG, growth or animation changes.
+## Controls and Input Methods
+Inspector/editor diagnostics only; existing New Input System unchanged.
+
+# UI
+No production UI. Future diagnostic views:
+```
+Fry original | Fry region mask
+Juvenile original | Juvenile region mask
+Body / Left eye / Right eye / Lips / All fins / Uncertain
+Side / Opposite side / Top / Face and fin-root close-ups
+```
+Show uncertain regions conspicuously, never as successfully classified body.
+
+# Key Asset & Context
+## Read-only findings and feasibility
+- Sources: `FryRiggingPrototype/Meshes/Fry_RiggedMesh.asset` and `JuvenileRiggingPrototype/Meshes/Juvenile_RiggedMesh.asset`, with their existing prefabs/materials under `Assets/Models/Koi/ProofOfConcept/`. Dependencies/reverse references were inspected using read-only AssetDatabase APIs; both meshes are used by multiple existing test scenes and growth/appearance prototypes. Never edit these shared assets.
+- Fry: 81,417 vertices, 149,086 triangles; Juvenile: 87,391 vertices, 159,982 triangles. Both have one submesh, ten bones, one blendshape and **no existing vertex colors**. A new color stream on copies need not replace another authored color channel.
+- Index connectivity is also fragmented: 344 components Fry, 322 Juvenile. Flood fill on raw indices alone cannot recover continuous anatomical regions. About 13,061/14,156 vertices belong to coincident-position candidate groups at 1e-6 prefab-local quantization. These can support virtual seam adjacency, but are not automatically proven equivalent surfaces; do not weld geometry.
+- Mesh arrays were readable through current EditMode inspection, although Fry `isReadable=false` and Juvenile `true`. Do not change source readability/importers. If a copy cannot be prepared through supported editor access, stop and report.
+- Bone names/frames provide useful landmarks, not segmentation. Only 54/107 Fry vertices exceed .8 left/right pectoral influence versus 3,338/3,662 Juvenile vertices; neither mesh has vertices above .8 Mouth influence. Eyes have no dedicated bone/region. Existing builders use broad positional thresholds, not certified eye/lip/all-fin labels; do not rerun them.
+- **Technical feasibility: yes, conditionally.** Vertex masks do not depend on UV island layout; rest-derived values interpolate over triangles and remain attached during skinning/blendshape animation. High vertex counts are promising for broad patterns, not proof of adequate local boundary resolution.
+- **Reliable anatomical separation: not yet certified.** Body interiors and broad Juvenile patches are plausible. Eye/eyelid extents, lip borders, fin blades/roots and coincident seams require reviewed stage-specific landmarks and surface selections. No claim that automatic classification already works.
+- Original Meshy maps remain authoritative; existing packed metallic/smoothness maps are derivatives. Retaining a map also retains its baked pigmentation/relief limitations. Current PondScene is clean; preserve scene setup and unsaved work.
+
+## Recommended method and alternative
+- **Recommended: conservative geometry + reviewed landmarks/seeds.** Use stage-local rest positions, normals, triangle adjacency and existing bone weights as supporting hints. Confirm both eyes/eyelids, upper/lower lips and every fin with explicit surface selections. Establish protected regions before body eligibility; ambiguous regions remain protected/uncertain. This is more reliable than bone thresholds alone while keeping anatomy setup once per stage, not once per variety.
+- Alternative: fully automatic spatial/bone thresholds. Less setup, but not recommended: weak Fry fin signals, blended mouth weights, unboned fins and missing eye labels prevent dependable protection.
+- Build virtual seam links only for verified matching rest position, compatible surface orientation and skinning behavior; no proximity-only bridging of opposite thin-fin surfaces. Keep original indices/UVs/vertices intact.
+- If a triangle crosses a protected boundary, keep the whole triangle protected initially. Feather only inside confirmed body; do not let interpolation recolor eye/lip/fin vertices. If this leaves unacceptable halos or boundaries lack sufficient vertices, report the limitation—no subdivision, retopology or extra texture masks.
+- Later simplified markings: evaluate a few broad ellipses/bands in a measured rest-body frame (longitudinal position and lateral/dorsal position), then store their strengths at vertices, multiplied by body eligibility. No animated-world-position patterns, adult correspondence, complex noise or UV-based retry. Verify wrapping/seam continuity rather than assuming a single box gives correct anatomy.
+- Proposed appearance encoding after diagnostics: R=body eligibility, G=generic red-domain strength, B=generic black-domain strength, A=review/debug status. Keep categorical anatomy labels in the editor inspection/report, not interpolated shader classifications. Protected vertices have R/G/B=0; opacity is not derived from A. Trait scalars independently enable channels; no founder-specific mesh copies.
+- Start Fry marking channels at zero. Juvenile Kohaku enables only a few subdued red patches; mixed-trait rendering is a later extension using the same channels. Adult materials/lookup and unsupported Adult hybrid/Hirenaga limitations remain unchanged.
+
+# Implementation Steps
+1. **Smallest safe prototype: diagnostic anatomy masks ONLY on two isolated mesh copies.** Dependencies: separate user approval; fresh source protection/dependency baseline.
+   - New unique root: `Assets/Models/Koi/ProofOfConcept/VertexMaskPrototype/`. Proposed minimum outputs: two copied `.asset` meshes, one editor builder/validator, one diagnostic vertex-color shader/material, one isolated visual-only scene, and a short report/captures. No textures, copied clips, new rigs, production binder or catalog.
+   - First inspect stage-specific landmarks, candidate seam links and triangle resolution. Prepare exact mesh copies and reviewed labels; assign diagnostic vertex colors only. Reconstruct fresh visual hierarchies with existing transforms, bones/bindposes and materials as controls; replace meshes only on new diagnostic instances.
+   - Review both eyes, lips, every fin/root and body on both sides/top with close-ups; show uncertain labels. Check a few unchanged Swim/Eat sampled poses for mask attachment, not animation certification.
+   - **Stop for mask approval before neutral coloring or red-pattern compositing.** If separation is ambiguous or requires changing topology/UVs, report the exact stage/region and stop. No repeated workaround attempts or new texture assets.
+2. **Deferred appearance proof, NOT part of the smallest prototype.** Dependencies: successful diagnostic review and separate approval.
+   - Reuse the two copies and approved body mask. Add generic anatomy-derived marking strengths; one shared composition shader and two stage materials use existing maps and resolved Kohaku traits.
+   - Neutralize eligible Fry body; add simple subdued Juvenile red only. Preserve protected original texture samples, normal/roughness references, geometry and animation. Limit source body albedo detail to avoid carrying old pigmentation; disclose normal-driven residual patterns.
+   - Produce one side/top preview and stop. No growth binding, hybrid expansion, source/experiment edits or Adult work.
+
+# Verification & Testing
+- Only this Markdown file changes during planning. Future prototype copies must match source vertices, all UVs, indices/submeshes, normals/tangents, weights/bindposes, blendshape frames and bounds exactly; only vertex colors differ. Source files/.meta/importers, rigs/clips/materials/scenes and all experiments remain unchanged.
+- Every vertex receives a valid diagnostic status; no uncertain vertex becomes editable body. Reviewed eyes/eyelids/lips/fins have zero editable and marking strength. Inspect triangle interiors as well as vertices; protection takes precedence at shared boundaries.
+- Verified anatomical seams have consistent values without welding; no cross-fin/body links. Check known skinning differences before propagating labels between coincident vertices.
+- Broad Juvenile markings stay within body eligibility, align to reviewed anatomy and remain attached in sampled poses; no UV-island fragmentation artifacts or per-frame reroll.
+- Conservatively quantify protected/uncertain coverage and boundary triangles; visual review, not vertex count or thresholds alone, establishes acceptance. Missing mouth cavity and existing fin strain are not repaired or recertified.
+- All mask creation, visual review and animation checks remain **NOT RUN** in this planning assessment. Stop for approval of the diagnostic-only prototype; no implementation now.
+

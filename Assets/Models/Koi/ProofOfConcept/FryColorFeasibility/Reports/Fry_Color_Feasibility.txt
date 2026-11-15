@@ -1,0 +1,36 @@
+FRY COLOR FEASIBILITY — FIRST TEST ONLY
+
+Decision: STOP. Not approved for further color variants or production integration.
+
+Scope
+- Vertex-mask refinement stopped. All existing prototypes preserved.
+- One olive-brown material test only, alongside an original-material control.
+- Gray-silver and pale gold/cream variants deferred after the first-test limitation.
+- Juvenile pattern work deferred until Fry feasibility is reviewed.
+- No generated textures, texture/import changes, mesh edits, rig changes, animation edits, or production integration.
+
+Isolated assets
+- Scenes/Fry_Color_FirstTest.unity
+- Materials/Fry_OliveBrown_FirstTest.mat
+- Shaders/FrySimpleTint.shader
+- Reports/Original_vs_OliveBrown.png
+Paths are relative to Assets/Models/Koi/ProofOfConcept/FryColorFeasibility.
+
+Method
+The existing FryOriginalMaps shader has no tint property. A separate shader copy adds only a global RGB multiplier to albedo. Original shader and material are unchanged. The isolated material retains the exact original base-color, normal and roughness texture references and all other material settings. Tint: RGB (0.78, 0.80, 0.64), alpha 1.
+
+Verification
+- Isolated shader checked with ShaderUtil: no errors.
+- Original and test use the same Fry_RiggedMesh asset, 10-bone rig and one blendshape.
+- Base-color, normal and roughness texture references match the original control.
+- Multi-angle Scene View inspected: separate controls, unchanged geometry; global yellow/olive cast affects the eye rim and fins as well as the body. Peach/orange body markings remain visible, particularly from above.
+- Black eye center remains dark, but surrounding eye colors are not independently protected.
+- No anatomical masking exists: lips receive the same global tint. Natural lips were NOT cleared by a successful closeup inspection.
+- Diagnostic Edit Mode camera sheet saved: left original, right test; rows side, eyes/lips closeup, top. The image-viewer tool could not resolve the saved image ID, so this sheet still needs human closeup review.
+- No Play Mode or animation playback test performed; animation assets and playback systems were not changed or integrated. Editor remains in Edit Mode.
+
+Limitation
+Simple multiplicative tint cannot independently preserve eyes, lips and fins or remove/desaturate selected baked-in markings. In this first test it produces an anatomical color cast while retaining conspicuous warm markings. Increasing the tint or making more variants is not pursued. No claim of natural eyes/lips/fins or feasibility approval is made.
+
+Next action
+Human review only. No repeated iterations, new textures, Juvenile pattern work or production integration without a new instruction.
